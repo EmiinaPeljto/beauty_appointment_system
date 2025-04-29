@@ -5,7 +5,7 @@ const db = require("./config/db");
 
 app.use(express.json());
 
-app.use("/users", routes);
+app.use("/api/v1/gen/users", routes);
 
 // first route
 app.get("/", (req, res) => {
