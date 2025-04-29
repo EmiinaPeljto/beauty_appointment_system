@@ -1,7 +1,11 @@
 const express = require("express");
 const app = express();
+const routes = require("./routes/api/v1/gen/users");
+const db = require("./config/db");
 
 app.use(express.json());
+
+app.use("/users", routes);
 
 // first route
 app.get("/", (req, res) => {
