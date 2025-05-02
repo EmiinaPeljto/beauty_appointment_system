@@ -42,3 +42,14 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: "Error while logging in!" });
   }
 };
+
+exports.getUsersFullName = async (req, res) => {
+  try {
+    const { id } = req.params; // Extract id from route parameter
+    const users = await userModel.getUsersFullName(id);
+    res.json(users);
+  } catch (error) {
+    console.error("Error fetching user's full name:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

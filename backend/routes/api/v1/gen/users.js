@@ -10,4 +10,7 @@ router.post("/register", userController.register);
 //login route
 router.post("/login", userController.login);
 
+//get users full name route
+router.get("/full-name/:id", userController.getUsersFullName);
+
 module.exports = router;

@@ -20,3 +20,11 @@ exports.login = async (email, password) => {
     );
     return rows[0]; // Return the first matching user
 };
+
+exports.getUsersFullName = async (id) => {
+    const [rows] = await db.query (
+        'SELECT CONCAT(first_name, " ", last_name) AS full_name FROM users WHERE id = ?',
+        [id]
+    );
+    return rows;
+}
