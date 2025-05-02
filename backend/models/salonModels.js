@@ -6,3 +6,10 @@ exports.getSalonsByCategory = async (category_id) => {
     );
     return rows;
 };
+
+exports.getSalonById = async (salon_id) => {
+    const [rows] = await db.query('SELECT * FROM salons WHERE id = ?', 
+        [salon_id]
+    );
+    return rows[0]; 
+};

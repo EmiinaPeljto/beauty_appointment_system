@@ -10,3 +10,17 @@ exports.getSalonsByCategory = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+exports.getSalonById = async (req, res) => {
+    try {
+        const salon_id = req.params.salon_id; 
+        const salon = await salonModel.getSalonById(salon_id);
+        if (!salon) {
+            return res.status(404).json({ message: "Salon not found" });
+        }
+        res.json(salon);
+    } catch (error) {
+        console.error("Error fetching salon:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
