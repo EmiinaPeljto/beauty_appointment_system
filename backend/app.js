@@ -9,9 +9,10 @@ const supportRequestRoutes = require("./routes/api/v1/gen/supportRequests");
 const salonRoutes = require("./routes/api/v1/gen/salons");
 const reviewRoutes = require("./routes/api/v1/gen/reviews");
 const serviceRoutes = require("./routes/api/v1/gen/services");
-const categoryRoutes = require("./routes/api/v1/gen/categories"); 
+const categoryRoutes = require("./routes/api/v1/gen/categories");
 const favouriteRoutes = require("./routes/api/v1/gen/favourites");
 const appointmentRoutes = require("./routes/api/v1/gen/appointments");
+const invoiceRoutes = require("./routes/api/v1/gen/invoices");
 
 app.use("/api/v1/gen/users", userRoutes);
 app.use("/api/v1/gen/supportRequests", supportRequestRoutes);
@@ -21,13 +22,12 @@ app.use("/api/v1/gen/services", serviceRoutes);
 app.use("/api/v1/gen/categories", categoryRoutes);
 app.use("/api/v1/gen/favourites", favouriteRoutes);
 app.use("/api/v1/gen/appointments", appointmentRoutes);
+app.use("/api/v1/gen/invoices", invoiceRoutes);
 
 // first route
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
-
-
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
