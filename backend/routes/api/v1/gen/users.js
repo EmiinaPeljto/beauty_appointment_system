@@ -13,4 +13,7 @@ router.post("/login", userController.login);
 //get users full name route
 router.get("/full-name/:id", userController.getUsersFullName);
 
+//get user by id route
+router.get("/:id", userController.getUserById);
+
 module.exports = router;
