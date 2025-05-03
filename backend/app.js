@@ -10,6 +10,7 @@ const salonRoutes = require("./routes/api/v1/gen/salons");
 const reviewRoutes = require("./routes/api/v1/gen/reviews");
 const serviceRoutes = require("./routes/api/v1/gen/services");
 const categoryRoutes = require("./routes/api/v1/gen/categories"); 
+const favouriteRoutes = require("./routes/api/v1/gen/favourites");
 
 app.use("/api/v1/gen/users", userRoutes);
 app.use("/api/v1/gen/supportRequests", supportRequestRoutes);
@@ -17,6 +18,7 @@ app.use("/api/v1/gen/salons", salonRoutes);
 app.use("/api/v1/gen/reviews", reviewRoutes);
 app.use("/api/v1/gen/services", serviceRoutes);
 app.use("/api/v1/gen/categories", categoryRoutes);
+app.use("/api/v1/gen/favourites", favouriteRoutes);
 
 // first route
 app.get("/", (req, res) => {
