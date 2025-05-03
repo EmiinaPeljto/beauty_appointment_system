@@ -93,3 +93,13 @@ exports.getAvailableTimeSlots = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+exports.getBestRatedSalons = async (req, res) => {
+    try {
+        const bestRatedSalons = await salonModel.getBestRatedSalons();
+        res.status(200).json(bestRatedSalons);
+    } catch (error) {
+        console.error("Error fetching best-rated salons:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};

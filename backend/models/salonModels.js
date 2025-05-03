@@ -41,3 +41,11 @@ exports.getSlotInterval = async (salon_id) => {
 
     return rows[0].slot_interval_time; // Return the slot interval
 };
+
+exports.getBestRatedSalons = async () => {
+    const [rows] = await db.query (
+        'SELECT s.image, s.name , s.location , avg(r.rating) AS rating FROM reviews r JOIN salons s ON r.salon_id = s.id GROUP BY s.id ORDER BY avg (r.rating) DESC LIMIT 4',
+        []
+    );
+    return rows; // Return the best-rated salons
+};

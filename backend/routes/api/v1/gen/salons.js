@@ -17,6 +17,7 @@ router.get('/availableTimeSlots/:salon_id/:date', salonController.getAvailableTi
 // Route to get the slot interval for a salon
 //router.get('/slotInterval/:salon_id', salonController.getSlotInterval);
 
-
+// Route to get the best-rated salons
+router.get('/bestRatedSalons', salonController.getBestRatedSalons);
 
 module.exports = router;
