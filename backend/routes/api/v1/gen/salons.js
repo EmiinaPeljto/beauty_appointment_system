@@ -8,4 +8,15 @@ router.get('/salonById/:salon_id', salonController.getSalonById);
 // Route to get salons by category ID
 router.get('/salonsByCategory/:category_id', salonController.getSalonsByCategory);
 
+// Route to get available dates for a salon
+router.get('/availableDates/:salon_id', salonController.getAvailableDates);
+
+// Route to get available time slots for a salon on a specific date
+router.get('/availableTimeSlots/:salon_id/:date', salonController.getAvailableTimeSlots);
+
+// Route to get the slot interval for a salon
+//router.get('/slotInterval/:salon_id', salonController.getSlotInterval);
+
+
+
 module.exports = router;

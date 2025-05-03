@@ -13,3 +13,31 @@ exports.getSalonById = async (salon_id) => {
     );
     return rows[0]; 
 };
+
+exports.getAvailableDates = async (salon_id) => {
+    const [rows] = await db.query(
+        'SELECT day_of_week FROM working_hours WHERE salon_id = ?',
+        [salon_id]
+    );
+    return rows.map(row => row.day_of_week);
+};
+
+exports.getAvailableTimeSlots = async (salon_id, day_of_week) => {
+    const [rows] = await db.query(
+        'SELECT open_time, close_time FROM working_hours WHERE salon_id = ? AND day_of_week = ?',
+        [salon_id, day_of_week]
+    );
+    return rows; // Assuming only one row is returned for a specific salon and day_of_week
+};
+
+exports.getSlotInterval = async (salon_id) => {
+    const [rows] = await db.query (
+        'SELECT slot_interval_time FROM salon_settings WHERE salon_id = ?',
+        [salon_id]
+    );
+    if (!rows || rows.length === 0) {
+        throw new Error('No slot interval found for the given salon ID');
+    }
+
+    return rows[0].slot_interval_time; // Return the slot interval
+};
