@@ -8,4 +8,9 @@ router.get("/getFavoritesByUserId/:user_id", favouritesController.getFavoritesBy
 // Route to delete a favourite by user ID and salon ID
 router.delete("/deleteFavouriteById/:user_id/:salon_id", favouritesController.deleteFavouriteById);
 
+// Route to add a favourite by user ID and salon ID
+router.post("/addFavourite/:user_id/:salon_id", favouritesController.addFavourite);
+
+
+
 module.exports = router;

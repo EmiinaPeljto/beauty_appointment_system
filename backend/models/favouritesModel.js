@@ -16,3 +16,11 @@ exports.deleteFavouriteById = async (user_id, salon_id) => {
     return rows;
 }
 
+exports.addFavourite = async (user_id, salon_id) => {
+    const [rows] = await db.query(
+        'INSERT INTO favorites (user_id, salon_id) VALUES (?, ?)',
+        [user_id, salon_id]
+    );
+    return rows;
+}
+
