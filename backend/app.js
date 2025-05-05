@@ -14,6 +14,7 @@ const favouriteRoutes = require("./routes/api/v1/gen/favourites");
 const appointmentRoutes = require("./routes/api/v1/gen/appointments");
 const invoiceRoutes = require("./routes/api/v1/gen/invoices");
 
+
 app.use("/api/v1/gen/users", userRoutes);
 app.use("/api/v1/gen/supportRequests", supportRequestRoutes);
 app.use("/api/v1/gen/salons", salonRoutes);
