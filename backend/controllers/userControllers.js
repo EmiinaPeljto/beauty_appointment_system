@@ -1,4 +1,6 @@
 const userModel = require("../models/userModels");
+const validateRegistrationInput = require("../contracts/registrationValidation");
+const bcrypt = require("bcrypt");
 
 exports.getAllUsers = async (req, res) => {
   try {
@@ -12,13 +14,24 @@ exports.getAllUsers = async (req, res) => {
 
 exports.register = async(req, res) => {
   try {
-    const {first_name, last_name, email, phone_number, password} = req.body;
+    // Extract user data from request body
+    const {first_name, last_name,  email, password, phone_number} = req.body;
 
-    if (!first_name || !last_name || !email || !phone_number || !password) {
-      return res.status(400).json({ message: "All fields are required" });
+    // GetAllUsers to check for existing users
+    const existingUsers = await userModel.getAllUsers();
+
+    // Validate user input
+    const {valid, errors} = await validateRegistrationInput({first_name, last_name, email, password, phone_number}, existingUsers);
+
+    if (!valid) {
+      return res.status(400).json({errors});
     }
 
-    const result = await userModel.register(first_name, last_name, email, phone_number, password);
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10); 
+
+    // Register user
+    const result = await userModel.register(first_name, last_name, email, phone_number, hashedPassword);
 
     res.status(201).json({message: "User registered successfully", userId: result.insertId});
   } catch (error) {
