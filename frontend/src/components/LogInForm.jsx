@@ -1,6 +1,6 @@
 import React from "react";
 
-const SignUpForm = () => {
+const LogInForm = () => {
   return (
     <div className="flex min-h-screen items-center justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -88,4 +88,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default LogInForm;
