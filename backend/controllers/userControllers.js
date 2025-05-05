@@ -42,17 +42,26 @@ exports.register = async(req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const {email, password} = req.body;
-    const user = await userModel.login(email, password);
+    const { email, password } = req.body;
 
-    if(email != user.email || password != user.password) {
-      return res.status(401).json({ message: "Error while logging in" });
+    // Fetch user by email
+    const user = await userModel.getUserByEmail(email); // Ensure this function fetches the user by email
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
     }
-    
-    res.status(200).json({message: "User logged in successfully", userId: user.id});
+
+    // Compare the plain-text password with the hashed password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    res.status(200).json({ message: "User logged in successfully", userId: user.id });
   } catch (error) {
     console.error("Error logging in user:", error);
-    res.status(500).json({ message: "Error while logging in!" });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 

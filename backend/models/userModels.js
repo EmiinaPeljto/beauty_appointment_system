@@ -13,12 +13,20 @@ exports.register = async (first_name, last_name, email, phone_number, password) 
     return rows;
 };
 
-exports.login = async (email, password) => {
+exports.login = async (email) => {
     const [rows] = await db.query(
         'SELECT * FROM users WHERE email = ? AND password = ?',
         [email, password]
     );
     return rows[0]; // Return the first matching user
+};
+
+exports.getUserByEmail = async (email) => {
+    const [rows] = await db.query(
+        'SELECT * FROM users WHERE email = ?',
+        [email]
+    );
+    return rows[0]; 
 };
 
 exports.getUsersFullName = async (id) => {
