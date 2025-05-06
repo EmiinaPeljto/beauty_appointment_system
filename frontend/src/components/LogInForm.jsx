@@ -17,8 +17,6 @@ const LogInForm = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-
   return (
     <div className="flex min-h-screen items-center justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
