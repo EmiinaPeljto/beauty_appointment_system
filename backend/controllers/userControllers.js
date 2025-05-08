@@ -48,14 +48,14 @@ exports.login = async (req, res) => {
     const user = await userModel.getUserByEmail(email); // Ensure this function fetches the user by email
 
     if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid email or password. Please, try again." });
     }
 
     // Compare the plain-text password with the hashed password
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid email or password. Please try again." });
     }
 
     res.status(200).json({ message: "User logged in successfully", userId: user.id });

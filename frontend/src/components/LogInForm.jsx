@@ -17,11 +17,9 @@ const LogInForm = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-
   return (
     <div className="flex min-h-screen items-center justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="sm:mx-auto sm:w-full sm:max-w-lg border border-gray-300 rounded-lg shadow-lg p-6 bg-white">
         <img
           alt="Your Company"
           src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
@@ -32,7 +30,7 @@ const LogInForm = () => {
         </h2>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form onSubmit={handleSubmit} method="POST" className="space-y-6">
+          <form onSubmit={handleSubmit} method="POST" className="space-y-4">
             <div>
               <label
                 htmlFor="email"
@@ -63,11 +61,6 @@ const LogInForm = () => {
                 >
                   Password
                 </label>
-                <div className="text-sm">
-                  <a href="#" className="font-semibold  hover:text-[#FF66B2]">
-                    Forgot password?
-                  </a>
-                </div>
               </div>
               <div className="mt-2">
                 <input
@@ -83,6 +76,14 @@ const LogInForm = () => {
                 />
               </div>
             </div>
+            <div className="text-right">
+              <a
+                href="#"
+                className="font-semibold  hover:text-[#FF66B2] block text-sm font-medium text-gray-900"
+              >
+                Forgot password?
+              </a>
+            </div>
 
             <div>
               <button
@@ -94,13 +95,9 @@ const LogInForm = () => {
             </div>
           </form>
 
-          {error && (
-            <div className="mt-4 p-3 rounded-md bg-red-100 border border-red-400 text-red-700">
-              <p className="text-sm font-medium">{error}</p>
-            </div>
-          )}
+          <p className="text-center font-medium text-red-700 p-4">{error}</p>
 
-          <p className="mt-10 text-center text-sm text-gray-500">
+          <p className="mt-5 text-center text-sm text-gray-500">
             Don't have an account?{" "}
             <a
               href="#"
