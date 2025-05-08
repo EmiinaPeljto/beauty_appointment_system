@@ -65,14 +65,13 @@ async function validateRegistrationInput({ first_name, last_name, email, passwor
         }
     }
 
-    // Validate phone number
-    const phone = parsePhoneNumberFromString(phone_number);
-    if (phone && phone.isValid() && phone.getType() === 'MOBILE') {
-        console.log('Valid mobile phone number');
-    } else {
-        console.log('Invalid phone number');
-    }
-
+// Validate phone number
+const phone = parsePhoneNumberFromString(phone_number, "BA"); // Specify the country code
+if (!phone || !phone.isValid()) {
+    errors.phone_number = 'Invalid phone number. Please provide a valid mobile number.';
+} else if (existingUsers.find(user => user.phone_number === phone.formatInternational())) {
+    errors.phone_number = 'Phone number already used.';
+}
     return {
         valid: Object.keys(errors).length === 0,
         errors,

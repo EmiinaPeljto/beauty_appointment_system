@@ -1,6 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
+import useRegisterUser from "../hooks/useRegisterUser";
 
 const SignUpForm = () => {
+  const { user, registerUser, error, loading } = useRegisterUser();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Frontend validation
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    // Call the registerUser function from the hook
+    const response = await registerUser(
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      password
+    );
+
+    if (response) {
+      console.log("User registered successfully:", response);
+      // Redirect or perform any other action after successful registration
+    } else {
+      console.error("Registration failed:", error);
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-lg border border-gray-300 rounded-lg shadow-lg p-6 bg-white">
@@ -12,8 +47,9 @@ const SignUpForm = () => {
         <h2 className="mt-10 mb-10 text-center text-2xl leading-9 font-bold tracking-tight text-gray-900">
           Create your account
         </h2>
-        <form action="#" method="POST" className="space-y-6">
-          {/* First Name and Last Name in the same row */}
+        <form onSubmit={handleSubmit} method="POST" className="space-y-6">
+
+          {/* First Name and Last Name */}
           <div className="flex gap-6">
             <div className="w-1/2">
               <label
@@ -30,8 +66,12 @@ const SignUpForm = () => {
                   required
                   autoComplete="given-name"
                   placeholder="Enter your first name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-[#FF66B2] sm:text-sm"
                 />
+                  {error?.first_name && <p className="text-red-500 text-sm">{error.first_name}</p>}
+
               </div>
             </div>
             <div className="w-1/2">
@@ -49,13 +89,17 @@ const SignUpForm = () => {
                   required
                   autoComplete="family-name"
                   placeholder="Enter your last name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-[#FF66B2] sm:text-sm"
                 />
+                  {error?.last_name && <p className="text-red-500 text-sm">{error.last_name}</p>}
+
               </div>
             </div>
           </div>
 
-          {/* Email and Phone Number in the same row */}
+          {/* Email and Phone Number */}
           <div className="flex gap-6">
             <div className="w-1/2">
               <label
@@ -72,8 +116,12 @@ const SignUpForm = () => {
                   required
                   autoComplete="email"
                   placeholder="Enter your email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-[#FF66B2] sm:text-sm"
                 />
+                {error?.email && <p className="text-red-500 text-sm">{error.email}</p>}
+
               </div>
             </div>
             <div className="w-1/2">
@@ -87,17 +135,20 @@ const SignUpForm = () => {
                 <input
                   id="phone_number"
                   name="phone_number"
-                  type="tel"
+                  type="text"
                   required
-                  autoComplete="tel"
                   placeholder="Enter your phone number"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-[#FF66B2] sm:text-sm"
                 />
+                  {error?.phone_number && <p className="text-red-500 text-sm">{error.phone_number}</p>}
+
               </div>
             </div>
           </div>
 
-          {/* Password and Confirm Password in the same row */}
+          {/* Password and Confirm Password */}
           <div className="flex gap-6">
             <div className="w-1/2">
               <label
@@ -114,8 +165,12 @@ const SignUpForm = () => {
                   required
                   autoComplete="new-password"
                   placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-[#FF66B2] sm:text-sm"
                 />
+                  {error?.password && <p className="text-red-500 text-sm">{error.password}</p>}
+
               </div>
             </div>
             <div className="w-1/2">
@@ -133,6 +188,8 @@ const SignUpForm = () => {
                   required
                   autoComplete="new-password"
                   placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-[#FF66B2] sm:text-sm"
                 />
               </div>
@@ -145,7 +202,7 @@ const SignUpForm = () => {
               type="submit"
               className="flex w-full justify-center rounded-md bg-[#FF66B2] px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-[#FF66B2] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF66B2]"
             >
-              Sign Up
+              {loading ? "Loading..." : "Sign Up"}
             </button>
           </div>
         </form>
