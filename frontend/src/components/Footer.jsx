@@ -29,7 +29,7 @@ const Footer = () => {
         <Link to="/" className="text-base hover:text-[#FF66B2]">
           Home
         </Link>
-        <Link to="#" className="text-base hover:text-[#FF66B2]">
+        <Link to="/help" className="text-base hover:text-[#FF66B2]">
           Services
         </Link>
         <Link to="#" className="text-base hover:text-[#FF66B2]">

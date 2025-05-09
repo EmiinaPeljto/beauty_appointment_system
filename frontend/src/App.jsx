@@ -9,6 +9,8 @@ import Footer from './components/Footer.jsx'; // Import Footer component
 
 import "./app.css";
 
+import Help from './pages/Help.jsx';
+
 function App() {
   const location = useLocation(); // Get the current route
 
@@ -22,9 +24,11 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/help" element={<Help />} /> {/* Assuming Help is the same as Home */}
         </Routes>
       </div>
       {location.pathname !== '/login' && location.pathname !== '/signup' && <Footer />}
+
     </div>
   );
 }
