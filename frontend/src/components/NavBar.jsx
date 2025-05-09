@@ -11,7 +11,7 @@ const Navbar = () => {
         <img alt="Logo" src={Logo} className="h-12 w-auto" />
         <div className="ml-2">
           <span className="text-2xl font-sans italic">GlamifyMe</span>
-          <span className="block text-xs font-sans text-gray-500">
+          <span className="block text- font-sans text-gray-500">
             Beauty Appointment System
           </span>
         </div>

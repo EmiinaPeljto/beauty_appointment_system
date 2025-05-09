@@ -6,6 +6,7 @@ import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';
 import Navbar from './components/NavBar.jsx';
 import Footer from './components/Footer.jsx'; // Import Footer component
+
 import "./app.css";
 
 function App() {
