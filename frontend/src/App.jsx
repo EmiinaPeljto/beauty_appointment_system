@@ -6,17 +6,18 @@ import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';
 import Navbar from './components/NavBar.jsx';
 import Footer from './components/Footer.jsx'; // Import Footer component
+import Help from './pages/Help.jsx';
+import Services from './pages/Services.jsx'; // Import Services component
 
 import "./app.css";
 
-import Help from './pages/Help.jsx';
 
 function App() {
   const location = useLocation(); // Get the current route
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Render Navbar except on login and signup pages */}
+      {/* Render Navbar only on the "/" route */}
       {location.pathname !== '/login' && location.pathname !== '/signup' && <Navbar />}
       <div className="flex-grow">
         <Routes>
@@ -24,7 +25,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/help" element={<Help />} /> {/* Assuming Help is the same as Home */}
+          <Route path="/help" element={<Help />} /> 
+          <Route path="/services" element={<Services />} />
         </Routes>
       </div>
       {location.pathname !== '/login' && location.pathname !== '/signup' && <Footer />}
