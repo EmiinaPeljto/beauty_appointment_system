@@ -16,8 +16,8 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Render Navbar only on the "/" route */}
-      {location.pathname === '/' && <Navbar />}
+      {/* Render Navbar except on login and signup pages */}
+      {location.pathname !== '/login' && location.pathname !== '/signup' && <Navbar />}
       <div className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />

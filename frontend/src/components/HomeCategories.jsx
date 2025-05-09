@@ -1,92 +1,128 @@
-import { useNavigate } from "react-router-dom";
-import Hair from "../assets/images/hair.jpg";
-
-// Expanded categories array with more beauty services
-const categories = [
-  {
-    id: "hair",
-    title: "Hair Styling",
-    description: "Expert cuts, coloring, and styling for all hair types and preferences.",
-    image: Hair,
-    color: "bg-pink-600",
-  },
-  {
-    id: "facial",
-    title: "Facial Treatments",
-    description: "Rejuvenating facials for glowing, healthy skin and relaxation.",
-    image: "/images/facial.jpg", // You'll need to add this image
-    color: "bg-purple-600",
-  },
-  {
-    id: "nails",
-    title: "Nail Services",
-    description: "Manicures, pedicures, and nail art by experienced technicians.",
-    image: "/images/nails.jpg", // You'll need to add this image
-    color: "bg-blue-600",
-  },
-  {
-    id: "makeup",
-    title: "Makeup Services",
-    description: "Professional makeup for special events, photoshoots, or everyday glam.",
-    image: "/images/makeup.jpg", // You'll need to add this image
-    color: "bg-red-600",
-  }
-];
-
+import React from "react";
 const HomeCategories = () => {
-  const navigate = useNavigate();
-
-  const handleCategoryClick = (id) => {
-    navigate(`/services#${id}`);
-  };
-
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">Our Beauty Services</h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Discover our comprehensive range of beauty treatments designed to enhance your natural beauty
-            and provide a relaxing, rejuvenating experience.
+    <div className="relative isolate bg-white px-6 pt-14 lg:px-8">
+      {/* Top Gradient Blur - positioned relative to this component, not the entire page */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 -z-10 transform-gpu overflow-hidden blur-3xl"
+      >
+        <div
+          style={{
+            clipPath:
+              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+          }}
+          className="relative left-[calc(50%-11rem)] aspect-1155/678 w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+        />
+      </div>
+
+      {/* Hero Section */}
+      <header className="py-16">
+        <div className="container mx-auto text-center">
+          <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl ">
+          Discover Your Perfect Beauty Service
+          </h2>
+          <h3 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl mt-4">
+            <span className="text-[#FF66B2] mt-12">From facials to full glam—browse and book in minutes. </span>
+          </h3>
+          <p className="mt-5 text-lg text-gray-600">
+          Find the right treatment for every occasion. Whether you're getting ready for a special event or just indulging in some self-care, explore our curated categories to book exactly what you need.
           </p>
         </div>
+      </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2  gap-8">
-          {categories.map((category) => (
-            <div
-              key={category.id}
-              className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:-translate-y-2"
-              onClick={() => handleCategoryClick(category.id)}
-            >
-              <div className="h-48 overflow-hidden">
-                <img
-                  src={category.image}
-                  alt={category.title}
-                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                />
-              </div>
-              <div className="p-6">
-                <div className={`w-16 h-1 ${category.color} mb-4 rounded-full`}></div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-3">{category.title}</h3>
-                <p className="text-gray-600 mb-4">{category.description}</p>
-                <button className="flex items-center text-gray-800 font-semibold group">
-                  Book Now
-                  <svg 
-                    className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24" 
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          ))}
+      {/* Project Overview Section */}
+      <section className="container mx-auto px-4">
+        <div className="flex flex-wrap justify-center gap-8">
+
+          {/* Card 1: Ad Content Generator */}
+          <div className="bg-white rounded-2xl shadow-md max-w-sm p-6 text-center">
+      <div className="flex justify-center mb-4">
+        <div className="bg-yellow-100 p-3 rounded-full">
+          {/*<Clock className="text-yellow-500 w-8 h-8" />*/}
         </div>
       </div>
-    </section>
+      <h3 className="text-lg font-semibold text-gray-900">Time-Saving Automation</h3>
+      <p className="text-sm text-gray-600 mt-2">
+        No more hours lost browsing multiple sites. <br />
+        From budget to bookings,<br />
+        <span className="font-medium text-gray-700">TripTidy</span> automates your planning flow—
+        just input, tweak, and go.
+      </p>
+    </div>
+
+          {/* Card 2: Audience Recommendations */}
+          <div className="max-w-sm p-6 bg-white border border-gray-100 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            <a href="/audience-insights">
+              <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-800">
+                Smart Audience Recommendations
+              </h5>
+            </a>
+            <p className="mb-3 font-normal text-gray-600">
+              Discover the best target audiences for your campaigns with
+              AI-driven insights. Optimize your reach and engagement by
+              connecting with the right people at the right time.
+            </p>
+            <a
+              href="/audience-insights"
+              className="inline-flex items-center px-3 py-2 text-sm font-medium bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-500 transition-colors"
+            >
+              Try it now
+              <svg
+                className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 10"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M1 5h12m0 0L9 1m4 4L9 9"
+                />
+              </svg>
+            </a>
+          </div>
+
+          {/* Card 3: Feedback Summary */}
+          <div className="max-w-sm p-6 bg-white border border-gray-100 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            <a href="#">
+              <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-800">
+                AI-Powered Feedback <br /> Summary
+              </h5>
+            </a>
+            <p className="mb-3 font-normal text-gray-600">
+              Get instant, actionable summaries of customer feedback. Understand
+              sentiment, identify trends, and improve your products or services
+              with ease.
+            </p>
+            <a
+              href="/feedback-summary"
+              className="inline-flex items-center px-3 py-2 text-sm font-medium bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-500 transition-colors"
+            >
+              Try it now
+              <svg
+                className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 10"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M1 5h12m0 0L9 1m4 4L9 9"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+      </div>
   );
 };
 
