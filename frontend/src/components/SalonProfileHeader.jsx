@@ -1,21 +1,24 @@
 import React from "react";
 
-const SalonProfileHeader = () => {
-  const [activeTab, setActiveTab] = React.useState("pricing");
+
+const SalonProfileHeader = ({ salon }) => {
+    const [activeTab, setActiveTab] = React.useState("pricing");
+
   return (
+    
     <section className="mt-8">
       {/* Images Section */}
       <div className="flex overflow-hidden gap-12 ml-16 mr-16">
         <div className="w-1/2">
           <img
-            src="https://placehold.co/800x400/e0e0e0/e0e0e0"
-            alt="Salon Interior"
+            src={salon.image || "https://placehold.co/800x400"}
+            alt={salon.name}
             className="w-full h-[300px] object-cover rounded-lg"
           />
         </div>
         <div className="w-1/2">
           <img
-            src="https://placehold.co/800x400/d0d0d0/d0d0d0"
+            src={salon.image}
             alt="Salon Mirror"
             className="w-full h-[300px] object-cover rounded-lg"
           />
@@ -25,18 +28,15 @@ const SalonProfileHeader = () => {
       {/* Salon Info Section */}
       <div className="mt-8 ml-8">
         <div className="flex items-center justify-between">
-          {" "}
-          {/* Name, Rating, and Heart */}
           <div className="flex items-center gap-x-4">
-            {" "}
-            {/* Name and Rating */}
             <h2 className="text-2xl font-semibold text-zinc-800">
-              Bon Bon Hair Salon
+              {salon.name}
             </h2>
-            <span className="text-xl font-semibold text-zinc-800">4.9 ⭐</span>
+            <span className="text-xl font-semibold text-zinc-800">
+              {salon.rating} ⭐
+            </span>
           </div>
           <button className="ml-auto mr-8 flex items-center justify-center w-10 h-10 rounded-full bg-red-100 hover:bg-red-200 text-red-500 hover:text-red-700 transition">
-            {/* Heart Icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -47,42 +47,33 @@ const SalonProfileHeader = () => {
             </svg>
           </button>
         </div>
-        <p className="mt-2 text-stone-500">Hair salon</p>
+        <p className="mt-2 text-stone-500">{salon.categories}</p>
         <address className="mt-1 text-stone-500 not-italic">
-          4 Dehart St, Morristown, NJ 07960, United States
+          {salon.location}
         </address>
-
-        <div className="flex gap-2 items-center mt-1 text-stone-500">
-          <p>Last scheduled 2 hours ago</p>
-          <span>•</span>
-          <p>Today: open until 20:00</p>
-          <span>•</span>
-          <p>Accepts payment cards</p>
-        </div>
-
-        <nav className="flex gap-8 mt-6 border-b border-gray-200">
-          <button
-            className={`pb-4 font-medium cursor-pointer ${
-              activeTab === "pricing"
-                ? "border-b border-zinc-800 text-zinc-800"
-                : "text-stone-500"
-            }`}
-            onClick={() => setActiveTab("pricing")}
-          >
-            PRICING
-          </button>
-          <button
-            className={`pb-4 cursor-pointer ${
-              activeTab === "about"
-                ? "border-b border-zinc-800 text-zinc-800"
-                : "text-stone-500"
-            }`}
-            onClick={() => setActiveTab("about")}
-          >
-            ABOUT
-          </button>
-        </nav>
       </div>
+      <nav className="flex gap-8 mt-6 ml-8 border-b border-gray-200">
+        <button
+          className={`pb-4 font-medium cursor-pointer ${
+            activeTab === "pricing"
+              ? "border-b border-zinc-800 text-zinc-800"
+              : "text-stone-500"
+          }`}
+          onClick={() => setActiveTab("pricing")}
+        >
+          PRICING
+        </button>
+        <button
+          className={`pb-4 cursor-pointer ${
+            activeTab === "about"
+              ? "border-b border-zinc-800 text-zinc-800"
+              : "text-stone-500"
+          }`}
+          onClick={() => setActiveTab("about")}
+        >
+          ABOUT
+        </button>
+      </nav>
     </section>
   );
 };

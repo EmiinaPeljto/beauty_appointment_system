@@ -28,7 +28,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/help" element={<Help />} /> 
           <Route path="/services" element={<Services />} />
-          <Route path='/salon' element={<SalonProfile />} />
+          <Route path='/salon/:salonId' element={<SalonProfile />} />
         </Routes>
       </div>
       {location.pathname !== '/login' && location.pathname !== '/signup' && <Footer />}
