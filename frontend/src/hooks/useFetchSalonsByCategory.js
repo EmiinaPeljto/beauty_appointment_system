@@ -13,6 +13,7 @@ const useFetchSalonsByCategory = (categoryId) => {
           throw new Error("Failed to fetch salons by category");
         }
         const data = await response.json();
+        console.log(data);
         setSalons(data);
       } catch (err) {
         setError(err.message);
