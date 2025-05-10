@@ -34,7 +34,7 @@ const Services = () => {
                   <SwiperSlide key={salon.id}>
                     <SalonCard
                       name={salon.name}
-                      rating="4.9"
+                      rating={salon.averageRating}
                       address={salon.location}
                       image={salon.image}
                     />

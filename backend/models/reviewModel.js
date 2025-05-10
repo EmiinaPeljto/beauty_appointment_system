@@ -18,7 +18,7 @@ exports.getReviewBySalonId = async (salon_id) => {
 
 exports.averageRating = async (salon_id) => {
     const [rows] = await db.query (
-        'SELECT AVG(r.rating) AS average_rating FROM reviews r JOIN salons s ON s.id = r.salon_id WHERE r.salon_id = ?',
+        'SELECT ROUND(AVG(r.rating), 1) AS average_rating FROM reviews r JOIN salons s ON s.id = r.salon_id WHERE r.salon_id = ?',
         [salon_id]
     );
     return rows[0].average_rating;

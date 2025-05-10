@@ -13,8 +13,18 @@ const useFetchSalonsByCategory = (categoryId) => {
           throw new Error("Failed to fetch salons by category");
         }
         const data = await response.json();
-        console.log(data);
-        setSalons(data);
+        console.log("Fetched salons: ", data);
+
+        // Fetch average rating for each salon
+        const salonsWithRatings = await Promise.all(
+          data.map(async (salon) => {
+            const ratingResponse = await fetch(`http://localhost:3000/api/v1/gen/reviews/averageRating/${salon.id}`);
+            const ratingData = await ratingResponse.json();
+            return { ...salon, averageRating: ratingData.data || "N/A" }; // Add averageRating to each salon
+          })
+        );
+
+        setSalons(salonsWithRatings);
       } catch (err) {
         setError(err.message);
       } finally {

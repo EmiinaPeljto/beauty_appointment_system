@@ -1,6 +1,6 @@
 import React from "react";
 
-const SalonCard = ({ name, address, image}) => {
+const SalonCard = ({ name, rating, address, image}) => {
   return (
     <div className="my-4 w-63 h-75 bg-white rounded-lg shadow-md overflow-hidden border border-slate-200">
       <div className="relative">
@@ -13,7 +13,9 @@ const SalonCard = ({ name, address, image}) => {
       <div className="p-4">
         <div className="flex items-center justify-between mb-1">
           <div className="text-slate-1200 text-s py-1 rounded font-bold">{name}</div>
-          <div className="text-slate-1200 text-s px-2 py-1 rounded ">4.9⭐</div>
+          <div className="text-slate-1200 text-s px-2 py-1 rounded ">
+            {rating}⭐
+          </div>
         </div>
         <p className="text-slate-600 text-sm leading-relaxed mb-4">
           {address}
