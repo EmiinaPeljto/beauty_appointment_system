@@ -1,5 +1,5 @@
 import React from "react";
-import { Clock } from "lucide-react"; // Assuming you have lucide-react installed
+
 
 const HomeCategories = () => {
   return (

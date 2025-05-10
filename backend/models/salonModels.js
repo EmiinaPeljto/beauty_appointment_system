@@ -8,7 +8,8 @@ exports.getSalonsByCategory = async (category_id) => {
 };
 
 exports.getSalonById = async (salon_id) => {
-    const [rows] = await db.query('SELECT * FROM salons WHERE id = ?', 
+    const [rows] = await db.query(
+        'SELECT group_concat(c.title), s.*, round(avg(r.rating), 1) FROM categories c JOIN salon_categories sc ON c.id = sc.category_id JOIN salons s ON sc.salon_id = s.id JOIN reviews r ON s.id = r.salon_id WHERE s.id = ?',
         [salon_id]
     );
     return rows[0]; 
@@ -44,7 +45,7 @@ exports.getSlotInterval = async (salon_id) => {
 
 exports.getBestRatedSalons = async () => {
     const [rows] = await db.query (
-        'SELECT s.image, s.name , s.location , avg(r.rating) AS rating FROM reviews r JOIN salons s ON r.salon_id = s.id GROUP BY s.id ORDER BY avg (r.rating) DESC LIMIT 4',
+        'SELECT s.image, s.name , s.location , round(avg(r.rating), 1) AS rating FROM reviews r JOIN salons s ON r.salon_id = s.id GROUP BY s.id ORDER BY avg (r.rating) DESC LIMIT 8',
         []
     );
     return rows; // Return the best-rated salons
