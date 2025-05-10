@@ -8,6 +8,7 @@ import Navbar from './components/NavBar.jsx';
 import Footer from './components/Footer.jsx'; // Import Footer component
 import Help from './pages/Help.jsx';
 import Services from './pages/Services.jsx'; // Import Services component
+import SalonProfile from './pages/SalonProfile.jsx'; // Import SalonProfile component
 
 import "./app.css";
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/help" element={<Help />} /> 
           <Route path="/services" element={<Services />} />
+          <Route path='/salon' element={<SalonProfile />} />
         </Routes>
       </div>
       {location.pathname !== '/login' && location.pathname !== '/signup' && <Footer />}
