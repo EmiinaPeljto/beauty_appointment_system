@@ -1,7 +1,7 @@
 import React from "react";
 import UserTable from "../components/UserTable";
 import HomeCategories from "../components/HomeCategories";
-import HomeCards from "../components/dd";
+import HomeCards from "../components/HomeCards";
 
 const Home = () => {
   return (
