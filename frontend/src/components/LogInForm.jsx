@@ -1,5 +1,6 @@
 import React from "react";
 import useLogInUser from "../hooks/useLogInUser"; // Assuming you have a custom hook for logging in users
+import Logo from "../assets/images/logo.png";
 
 const LogInForm = () => {
   const { user, logInUser, error, loading } = useLogInUser();
@@ -22,14 +23,14 @@ const LogInForm = () => {
       <div className="sm:mx-auto sm:w-full sm:max-w-lg border border-gray-300 rounded-lg shadow-lg p-6 bg-white">
         <img
           alt="Your Company"
-          src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-          className="mx-auto h-10 w-auto"
+          src={Logo}
+          className="mx-auto h-20 mt-6 w-auto"
         />
-        <h2 className="mt-10 text-center text-2xl leading-9 font-bold tracking-tight text-gray-900">
+        <h2 className="mt-6 text-center text-2xl leading-9 font-bold tracking-tight text-gray-900">
           LogIn to your account
         </h2>
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-sm">
           <form onSubmit={handleSubmit} method="POST" className="space-y-4">
             <div>
               <label
@@ -97,7 +98,7 @@ const LogInForm = () => {
 
           <p className="text-center font-medium text-red-700 p-4">{error}</p>
 
-          <p className="mt-5 text-center text-sm text-gray-500">
+          <p className=" text-center text-sm text-gray-500">
             Don't have an account?{" "}
             <a
               href="/signup"

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useRegisterUser from "../hooks/useRegisterUser";
+import Logo from "../assets/images/logo.png"; // Adjust the path as necessary
 
 const SignUpForm = () => {
   const { user, registerUser, error, loading } = useRegisterUser();
@@ -41,15 +42,15 @@ const SignUpForm = () => {
       <div className="sm:mx-auto sm:w-full sm:max-w-lg border border-gray-300 rounded-lg shadow-lg p-6 bg-white">
         <img
           alt="Your Company"
-          src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-          className="mx-auto h-10 w-auto"
+          src={Logo}
+          className="mx-auto h-20 w-auto"
         />
-        <h2 className="mt-10 mb-10 text-center text-2xl leading-9 font-bold tracking-tight text-gray-900">
+        <h2 className="mt-6 mb-10 text-center text-2xl leading-9 font-bold tracking-tight text-gray-900">
           Create your account
         </h2>
         <form onSubmit={handleSubmit} method="POST" className="space-y-6">
           {/* First Name and Last Name */}
-          <div className="flex gap-6">
+          <div className="flex gap-6 mt-6">
             <div className="w-1/2">
               <label
                 htmlFor="first_name"
@@ -211,7 +212,7 @@ const SignUpForm = () => {
           </div>
         </form>
 
-        <p className="mt-10 text-center text-sm text-gray-500">
+        <p className="mt-6 text-center text-sm text-gray-500">
           Already have an account?{" "}
           <a
             href="/login"
