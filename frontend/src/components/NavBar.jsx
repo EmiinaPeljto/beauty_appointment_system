@@ -33,7 +33,7 @@ const Navbar = () => {
       </div>
 
       {/* LogIn Button on the Right (Desktop) */}
-      <div className="hidden md:flex items-center ml-10">
+      <div className="hidden md:flex items-center ml-35">
         <Link
           to="/login"
           className="flex items-center text-sm md:text-base hover:text-[#FF66B2]"

@@ -23,7 +23,7 @@
   right: -1.5rem; /* Move it to the right, outside the slide */
 }
 
-/@media (max-width: 768px) {
+@media (max-width: 768px) {
   .swiper-button-prev,
   .swiper-button-next {
     width: 16px;

@@ -48,7 +48,6 @@ const SignUpForm = () => {
           Create your account
         </h2>
         <form onSubmit={handleSubmit} method="POST" className="space-y-6">
-
           {/* First Name and Last Name */}
           <div className="flex gap-6">
             <div className="w-1/2">
@@ -70,8 +69,9 @@ const SignUpForm = () => {
                   onChange={(e) => setFirstName(e.target.value)}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-[#FF66B2] sm:text-sm"
                 />
-                  {error?.first_name && <p className="text-red-500 text-sm">{error.first_name}</p>}
-
+                {error?.first_name && (
+                  <p className="text-red-500 text-sm">{error.first_name}</p>
+                )}
               </div>
             </div>
             <div className="w-1/2">
@@ -93,8 +93,9 @@ const SignUpForm = () => {
                   onChange={(e) => setLastName(e.target.value)}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-[#FF66B2] sm:text-sm"
                 />
-                  {error?.last_name && <p className="text-red-500 text-sm">{error.last_name}</p>}
-
+                {error?.last_name && (
+                  <p className="text-red-500 text-sm">{error.last_name}</p>
+                )}
               </div>
             </div>
           </div>
@@ -120,8 +121,9 @@ const SignUpForm = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-[#FF66B2] sm:text-sm"
                 />
-                {error?.email && <p className="text-red-500 text-sm">{error.email}</p>}
-
+                {error?.email && (
+                  <p className="text-red-500 text-sm">{error.email}</p>
+                )}
               </div>
             </div>
             <div className="w-1/2">
@@ -142,8 +144,9 @@ const SignUpForm = () => {
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-[#FF66B2] sm:text-sm"
                 />
-                  {error?.phone_number && <p className="text-red-500 text-sm">{error.phone_number}</p>}
-
+                {error?.phone_number && (
+                  <p className="text-red-500 text-sm">{error.phone_number}</p>
+                )}
               </div>
             </div>
           </div>
@@ -169,8 +172,9 @@ const SignUpForm = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-[#FF66B2] sm:text-sm"
                 />
-                  {error?.password && <p className="text-red-500 text-sm">{error.password}</p>}
-
+                {error?.password && (
+                  <p className="text-red-500 text-sm">{error.password}</p>
+                )}
               </div>
             </div>
             <div className="w-1/2">
@@ -210,7 +214,7 @@ const SignUpForm = () => {
         <p className="mt-10 text-center text-sm text-gray-500">
           Already have an account?{" "}
           <a
-            href="#"
+            href="/login"
             className="font-semibold text-[#FF66B2] hover:text-[#FF66B2]"
           >
             Log In

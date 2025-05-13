@@ -100,7 +100,7 @@ const LogInForm = () => {
           <p className="mt-5 text-center text-sm text-gray-500">
             Don't have an account?{" "}
             <a
-              href="#"
+              href="/signup"
               className="font-semibold text-[#F178B6] hover:text-[#FF66B2]"
             >
               SignUp
