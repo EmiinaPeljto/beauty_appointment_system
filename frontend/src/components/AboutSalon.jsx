@@ -1,7 +1,16 @@
 import React from "react";
 import useFetchWorkingHours from "../hooks/useFetchWorkingHours"; // custom hook
+import SalonMap from "./Map";
 
-const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const daysOfWeek = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 const AboutSalon = ({ salon }) => {
   const { hours, loading, error } = useFetchWorkingHours(salon.id);
@@ -12,7 +21,7 @@ const AboutSalon = ({ salon }) => {
 
   return (
     <div className="px-8 mt-8 text-gray-700">
-      <h2 className="text-xl font-semibold mb-2">About {salon.name}</h2>
+      <h2 className="text-xl font-semibold mb-2 ml-32">About {salon.name}</h2>
       <div className="max-w-5xl mx-auto px-6 py-10 text-gray-800">
         {/* Contact Info */}
         <div className="space-y-2 mb-6">
@@ -31,12 +40,8 @@ const AboutSalon = ({ salon }) => {
         </div>
 
         {/* Map Image */}
-        <div className="mb-8">
-          <img
-            src={`https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(salon.location)}&zoom=13&size=800x200&key=YOUR_API_KEY`}
-            alt="Map"
-            className="w-full h-52 object-cover rounded-md"
-          />
+        <div className="mb-8 h-64 w-full">
+          <SalonMap location={salon.location} />
         </div>
 
         {/* Working Hours & Payment Methods */}
@@ -56,7 +61,10 @@ const AboutSalon = ({ salon }) => {
                     <li key={index}>
                       {day}{" "}
                       {record ? (
-                        `${record.open_time.slice(0, 5)} – ${record.close_time.slice(0, 5)}`
+                        `${record.open_time.slice(
+                          0,
+                          5
+                        )} – ${record.close_time.slice(0, 5)}`
                       ) : (
                         <span className="text-gray-500">Closed</span>
                       )}
@@ -82,10 +90,14 @@ const AboutSalon = ({ salon }) => {
           <div className="flex items-start">
             <span className="text-yellow-500 mr-2 mt-0.5">⭐</span>
             <div>
-              <h5 className="font-semibold mb-1">{salon.name} is a Top Salon</h5>
+              <h5 className="font-semibold mb-1">
+                {salon.name} is a Top Salon
+              </h5>
               <p className="text-sm text-gray-600">
-                Top Salon is an award for salons that during the previous year provided users with an above-average good experience,
-                received the highest user ratings on GlamifyMe and always had up-to-date appointments.
+                Top Salon is an award for salons that during the previous year
+                provided users with an above-average good experience, received
+                the highest user ratings on GlamifyMe and always had up-to-date
+                appointments.
               </p>
             </div>
           </div>
