@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { setToken, setUser as storeUser } from "../utils/auth";
 
 const useLogInUser = () => {
     const [user, setUser] = useState(null);
@@ -12,6 +13,13 @@ const useLogInUser = () => {
 
         try {
             const response = await axios.post("http://localhost:3000/api/v1/gen/users/login", { email, password });
+            
+            // Store the JWT token in localStorage
+            if (response.data.token) {
+                setToken(response.data.token);
+                storeUser(response.data.user);
+            }
+            
             setUser(response.data.user);
             setLoading(false);
             return response.data;

@@ -137,3 +137,7 @@ dist
 
 # DB credentials
 backend/config/db.js
+
+# Auth credentials
+backend/config/auth.js
+

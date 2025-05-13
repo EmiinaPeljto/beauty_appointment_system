@@ -1,9 +1,10 @@
 const db = require('../config/db');
 
-exports.addSupportRequest = async (subject, message) => {
+
+exports.addSupportRequest = async (userId, subject, message) => {
     const [rows] = await db.query(
-        'INSERT INTO support_requests (subject, message) VALUES (?, ?)',
-        [subject, message]
+        'INSERT INTO support_requests (user_id, subject, message, created_at) VALUES (?, ?, ?, NOW())',
+        [userId, subject, message]
     );
     return rows;
 }

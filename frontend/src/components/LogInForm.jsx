@@ -1,20 +1,27 @@
-import React from "react";
-import useLogInUser from "../hooks/useLogInUser"; // Assuming you have a custom hook for logging in users
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import Logo from "../assets/images/logo.png";
 
 const LogInForm = () => {
-  const { user, logInUser, error, loading } = useLogInUser();
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const { login, error, loading } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [formError, setFormError] = useState("");
+  const navigate = useNavigate(); // Hook for navigation
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await logInUser(email, password);
-    if (response) {
-      console.log("User logged in successfully:", response);
-      // Redirect or perform any other action after successful login
-    } else {
-      console.error("Login failed:", error);
+    setFormError("");
+    
+    try {
+      await login(email, password);
+      console.log("User logged in successfully");
+      // Redirect to profile page after successful login
+      navigate('/profile');
+    } catch (err) {
+      console.error("Login failed:", err.message);
+      setFormError(err.message || "Login failed");
     }
   };
 
@@ -79,7 +86,7 @@ const LogInForm = () => {
             </div>
             <div className="text-right">
               <a
-                href="#"
+                href="/profile"
                 className="font-semibold  hover:text-[#FF66B2] block text-sm font-medium text-gray-900"
               >
                 Forgot password?
@@ -96,7 +103,7 @@ const LogInForm = () => {
             </div>
           </form>
 
-          <p className="text-center font-medium text-red-700 p-4">{error}</p>
+          <p className="text-center font-medium text-red-700 p-4">{formError || error}</p>
 
           <p className=" text-center text-sm text-gray-500">
             Don't have an account?{" "}

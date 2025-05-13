@@ -1,6 +1,8 @@
 const userModel = require("../models/userModels");
 const validateRegistrationInput = require("../contracts/registrationValidation");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { jwtSecret, jwtExpiration } = require("../config/auth");
 
 exports.getAllUsers = async (req, res) => {
   try {
@@ -45,7 +47,7 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     // Fetch user by email
-    const user = await userModel.getUserByEmail(email); // Ensure this function fetches the user by email
+    const user = await userModel.getUserByEmail(email);
 
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password. Please, try again." });
@@ -58,7 +60,30 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password. Please try again." });
     }
 
-    res.status(200).json({ message: "User logged in successfully", userId: user.id });
+    // Create payload for JWT token - don't include sensitive data like password
+    const payload = {
+      id: user.id,
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      role: user.role || 'user' // Default to 'user' if role is not defined
+    };
+
+    // Generate JWT token
+    const token = jwt.sign(payload, jwtSecret, { expiresIn: jwtExpiration });
+
+    // Return token along with user info
+    res.status(200).json({
+      message: "User logged in successfully",
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        role: user.role || 'user'
+      }
+    });
   } catch (error) {
     console.error("Error logging in user:", error);
     res.status(500).json({ message: "Internal server error" });

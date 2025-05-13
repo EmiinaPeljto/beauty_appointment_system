@@ -9,9 +9,10 @@ import Footer from './components/Footer.jsx'; // Import Footer component
 import Help from './pages/Help.jsx';
 import Services from './pages/Services.jsx'; // Import Services component
 import SalonProfile from './pages/SalonProfile.jsx'; // Import SalonProfile component
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 import "./app.css";
-
 
 function App() {
   const location = useLocation(); // Get the current route
@@ -23,7 +24,11 @@ function App() {
       <div className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } />
           <Route path="/login" element={<LogIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/help" element={<Help />} /> 
@@ -40,7 +45,9 @@ function App() {
 function AppWrapper() {
   return (
     <Router>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </Router>
   );
 }
