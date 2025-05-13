@@ -5,9 +5,9 @@ const ServicesList = ({ servicesByCategory }) => {
     <div className="ml-8 mt-8">
       {Object.entries(servicesByCategory).map(([category, services], idx) => (
         <div key={idx} className="mb-6">
-          <h3 className="text-xl font-semibold text-gray-800 mb-2">{category}</h3>
+          <h1 className="text-2xl font-semibold text-gray-800 mb-2 ml-12">{category}</h1>
           {services.map((service, index) => (
-            <div key={index} className="flex justify-between items-center border-b border-gray-300 py-2 pr-4 mr-8">
+            <div key={index} className="flex justify-between items-center border-b border-gray-300 py-2 pr-4 mr-24 ml-16">
               <div className="flex items-center">
                 {/* Checkbox */}
                 <input
@@ -20,7 +20,7 @@ const ServicesList = ({ servicesByCategory }) => {
                   <p className="text-sm text-gray-500">Duration: {service.duration} mins</p>
                 </label>
               </div>
-              <div className="text-right text-pink-600 font-semibold">${service.price}</div>
+              <div className="text-right text-black font-semibold">${service.price}</div>
             </div>
           ))}
         </div>
