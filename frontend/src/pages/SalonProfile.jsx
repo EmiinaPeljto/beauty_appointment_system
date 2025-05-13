@@ -1,20 +1,22 @@
 import React from "react";
-import { useParams } from "react-router-dom"; // To get the salon ID from the URL
+import { useParams } from "react-router-dom";
 import useFetchSalonById from "../hooks/useFetchSalonById";
+import useFetchServicesBySalon from "../hooks/useFetchServicesBySalon";
 import SalonProfileHeader from "../components/SalonProfileHeader";
-import ServicesList from "../components/ServicesList"; 
+import ServicesList from "../components/ServicesList";
 
 const SalonProfile = () => {
-  const { salonId } = useParams(); // Get salonId from the URL
-  const { salon, loading, error } = useFetchSalonById(salonId);
+  const { salonId } = useParams();
+  const { salon, loading: salonLoading, error: salonError } = useFetchSalonById(salonId);
+  const { servicesByCategory, loading: servicesLoading, error: servicesError } = useFetchServicesBySalon(salonId);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (salonLoading || servicesLoading) return <p>Loading...</p>;
+  if (salonError || servicesError) return <p>Error loading salon or services.</p>;
 
   return (
     <div>
       <SalonProfileHeader salon={salon} />
-      <ServicesList />
+      <ServicesList servicesByCategory={servicesByCategory} />
     </div>
   );
 };
