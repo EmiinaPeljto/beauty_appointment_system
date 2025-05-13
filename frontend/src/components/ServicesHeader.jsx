@@ -20,17 +20,21 @@ const ServicesHeader = () => {
       <header className="py-16">
         <div className="container mx-auto text-center">
           <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl ">
-          Discover Your Perfect Beauty Service
+            Explore Our Services
           </h2>
           <h3 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl mt-4">
-            <span className="text-[#FF66B2] mt-12">From facials to full glam—browse and book in minutes. </span>
+            <span className="text-[#FF66B2] mt-12">
+              Beauty, Wellness & Everything in Between{" "}
+            </span>
           </h3>
           <p className="mt-5 text-lg text-gray-600">
-          Find the right treatment for every occasion. Whether you're getting ready for a special event or just indulging in some self-care, explore our curated categories to book exactly what you need.
+            Browse our range of beauty services from expert stylists and
+            therapists near you. Whether it’s a glow-up or a fresh cut, we’ve
+            got you covered.
           </p>
         </div>
       </header>
-      </div>
+    </div>
   );
 };
 

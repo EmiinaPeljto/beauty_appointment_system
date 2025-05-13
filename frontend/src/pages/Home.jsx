@@ -10,8 +10,6 @@ const Home = () => {
       <HomeCategories />
       <HomeCards />
       <BestRatedSalons />
-      <h1>All Users</h1>
-      <UserTable />
     </div>
   );
 };

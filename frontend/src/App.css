@@ -1,13 +1,37 @@
 @import "tailwindcss";
 
-/* Change arrow colors to black */
-.swiper-button-next,
-.swiper-button-prev {
-  color: black !important;
+.swiper-container-wrapper {
+  position: relative;
+  padding: 0 1.5rem; /* enough space for arrows */
+  overflow: hidden;
 }
 
-/* Optional: Adjust arrow size */
-.swiper-button-next::after,
-.swiper-button-prev::after {
-  font-size: 2rem;
+.swiper-button-prev,
+.swiper-button-next {
+  display: block !important; /* Ensure arrows are displayed */
+  color: grey !important; /* Set arrow color */
+  width: 40px;
+  height: 40px;
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%);
+  z-index: 10; /* Ensure arrows are above other elements */
+}
+
+.swiper-button-prev {
+  left: -20px; /* Move the left arrow outside the cards */
+}
+
+.swiper-button-next {
+  right: -25px; /* Move the right arrow outside the cards */
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 2rem; /* Adjust arrow size */
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+  display: flex;
 }
