@@ -6,6 +6,7 @@ const HomeCards = () => {
   const navigate = useNavigate();
 
   const handleCategoryClick = (id) => {
+    console.log("Navigating to:", `/services#${id}`);
     navigate(`/services#${id}`);
   };
 

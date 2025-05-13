@@ -1,8 +1,11 @@
 import React from "react";
 import Logo from "../assets/images/logo.png"; // Adjust the path as necessary
-import { Link } from "react-router-dom";
 
 const Footer = () => {
+  const handleNavigation = (path) => {
+    window.location.href = path; // Reload the page and navigate to the specified path
+  };
+
   return (
     <footer className="bg-white border-t border-gray-300 py-6 px-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-800">
       {/* Left - Contact Info */}
@@ -20,21 +23,29 @@ const Footer = () => {
 
       <div className="flex items-center">
         <img alt="Logo" src={Logo} className="h-20 w-auto" />
-       
       </div>
 
-      {/* Right - App Store Buttons */}
+      {/* Right - Quick Links */}
       <div className="flex flex-col items-center md:items-end">
         <h3 className="font-semibold mb-2">Quick Links</h3>
-        <Link to="/" className="text-base hover:text-[#FF66B2]">
+        <button
+          onClick={() => handleNavigation("/")}
+          className="text-base hover:text-[#FF66B2]"
+        >
           Home
-        </Link>
-        <Link to="/help" className="text-base hover:text-[#FF66B2]">
+        </button>
+        <button
+          onClick={() => handleNavigation("/services")}
+          className="text-base hover:text-[#FF66B2]"
+        >
           Services
-        </Link>
-        <Link to="#" className="text-base hover:text-[#FF66B2]">
+        </button>
+        <button
+          onClick={() => handleNavigation("/help")}
+          className="text-base hover:text-[#FF66B2]"
+        >
           Help
-        </Link>
+        </button>
       </div>
     </footer>
   );

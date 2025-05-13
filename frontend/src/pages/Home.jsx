@@ -6,7 +6,7 @@ import BestRatedSalons from "../components/BestRatedSalons";
 
 const Home = () => {
   return (
-    <div>
+    <div className="bg-gray-50">
       <HomeCategories />
       <HomeCards />
       <BestRatedSalons />
