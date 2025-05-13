@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FiSend } from 'react-icons/fi';
 import useSubmitSupportRequest from '../hooks/useSubmitSupportRequest';
 import { useAuth } from '../contexts/AuthContext';
@@ -11,7 +11,9 @@ const SupportRequestForm = ({ onClose }) => {
     handleChange,
     submitRequest,
     resetForm
-  } = useSubmitSupportRequest();
+  } = useSubmitSupportRequest(onClose); // Pass onClose directly to the hook
+  
+  // Modal will be closed directly by the hook through the callback
 
   // Handle successful submission
   const handleSuccess = () => {
@@ -65,8 +67,6 @@ const SupportRequestForm = ({ onClose }) => {
             </div>
           )}
 
-          {/* Email field removed as requested */}
-
           <div>
             <label htmlFor="subject" className="block text-sm font-medium leading-6 text-gray-900">
               Subject
@@ -103,7 +103,6 @@ const SupportRequestForm = ({ onClose }) => {
             </div>
           </div>
 
-          {/* Error Message */}
           {status.error && (
             <div className="rounded-md bg-red-50 p-4">
               <div className="flex">
@@ -152,6 +151,7 @@ const SupportRequestForm = ({ onClose }) => {
       )}
     </>
   );
-};
+}
 
+// Make sure to export the component as default
 export default SupportRequestForm;

@@ -13,12 +13,11 @@ const LogInForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
-    
+
     try {
       await login(email, password);
       console.log("User logged in successfully");
-      // Redirect to profile page after successful login
-      navigate('/profile');
+      navigate("/");
     } catch (err) {
       console.error("Login failed:", err.message);
       setFormError(err.message || "Login failed");
@@ -103,7 +102,9 @@ const LogInForm = () => {
             </div>
           </form>
 
-          <p className="text-center font-medium text-red-700 p-4">{formError || error}</p>
+          <p className="text-center font-medium text-red-700 p-4">
+            {formError || error}
+          </p>
 
           <p className=" text-center text-sm text-gray-500">
             Don't have an account?{" "}

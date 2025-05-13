@@ -6,7 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
  * Custom hook for submitting support requests
  * @returns {Object} Form state and submission handling functions
  */
-const useSubmitSupportRequest = () => {
+const useSubmitSupportRequest = (successCallback) => {
   const { user } = useAuth();
   // Simplify form data to only include what's needed
   const [formData, setFormData] = useState({
@@ -99,6 +99,11 @@ const useSubmitSupportRequest = () => {
 
       // Clear form after successful submission
       resetForm();
+      
+      // Call the success callback if provided
+      if (typeof successCallback === 'function') {
+        successCallback();
+      }
     } catch (error) {
       console.error('Error submitting support request:', error);
       
