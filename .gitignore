@@ -141,3 +141,5 @@ backend/config/db.js
 # Auth credentials
 backend/config/auth.js
 
+frontend/src/utils/mapAPI.js
+
