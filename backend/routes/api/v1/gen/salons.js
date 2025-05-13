@@ -20,4 +20,7 @@ router.get('/availableTimeSlots/:salon_id/:date', salonController.getAvailableTi
 // Route to get the best-rated salons
 router.get('/bestRatedSalons', salonController.getBestRatedSalons);
 
+// Route to get all salons
+router.get("/workingHours/:salon_id", salonController.getWorkingHoursBySalon);
+
 module.exports = router;

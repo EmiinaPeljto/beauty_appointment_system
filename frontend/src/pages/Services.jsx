@@ -54,6 +54,7 @@ const Services = () => {
                   {salons.map((salon) => (
                     <SwiperSlide key={salon.id}>
                       <SalonCard
+                        id={salon.id}
                         name={salon.name}
                         rating={salon.averageRating}
                         address={salon.location}

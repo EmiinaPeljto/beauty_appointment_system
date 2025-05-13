@@ -50,3 +50,11 @@ exports.getBestRatedSalons = async () => {
   );
   return rows; // Return the best-rated salons
 };
+
+exports.getWorkingHoursBySalonId = async (salon_id) => {
+  const [rows] = await db.query(
+    "SELECT * FROM working_hours WHERE salon_id = ?",
+    [salon_id]
+  );
+  return rows;
+};

@@ -103,3 +103,13 @@ exports.getBestRatedSalons = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+exports.getWorkingHoursBySalon = async (req, res) => {
+  try {
+    const salon_id = req.params.salon_id;
+    const hours = await salonModel.getWorkingHoursBySalonId(salon_id);
+    res.json(hours);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching working hours" });
+  }
+};
