@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { use, useRef } from "react";
 import ServicesHeader from "../components/ServicesHeader";
 import SalonCard from "../components/SalonCard";
 import useFetchSalonsByCategory from "../hooks/useFetchSalonsByCategory";
+import useScrollToHash from "../hooks/useScrollToHash";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
@@ -17,18 +18,9 @@ const Services = () => {
   ];
 
   const sectionRefs = useRef([]);
+  const hash = window.location.hash.substring(1);
 
-  useEffect(() => {
-    const hash = window.location.hash.substring(1); // Get the hash from the URL
-    console.log("Hash:", hash); // Debugging
-    console.log("Category IDs:", categoryIds); // Debugging
-    const index = categoryIds.indexOf(hash);
-    if (index !== -1 && sectionRefs.current[index]) {
-      setTimeout(() => {
-        sectionRefs.current[index].scrollIntoView({ behavior: "smooth" });
-      }, 200); // Delay scrolling by 100ms
-    }
-  }, []);
+  useScrollToHash(hash, sectionRefs, categoryIds);
 
   return (
     <div>
