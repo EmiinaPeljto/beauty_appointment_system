@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import Logo from "../assets/images/logo.png";
 
@@ -9,6 +9,7 @@ const LogInForm = () => {
   const [password, setPassword] = useState("");
   const [formError, setFormError] = useState("");
   const navigate = useNavigate(); // Hook for navigation
+  const location = useLocation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,8 +17,18 @@ const LogInForm = () => {
 
     try {
       await login(email, password);
-      console.log("User logged in successfully");
-      navigate("/");
+      const params = new URLSearchParams(location.search);
+      console.log("Login params:", params.toString());
+      if (params.get("review") === "1" && params.get("salonId")) {
+        // Just redirect, don't set sessionStorage
+        navigate(
+          `/salon/${params.get("salonId")}?tab=${
+            params.get("tab") || "reviews"
+          }`
+        );
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       console.error("Login failed:", err.message);
       setFormError(err.message || "Login failed");

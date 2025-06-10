@@ -9,7 +9,9 @@ const useFetchBestRatedSalons = () => {
   useEffect(() => {
     const fetchBestRatedSalons = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/v1/gen/salons/bestRatedSalons");
+        const response = await axios.get(
+          "http://localhost:3000/api/v1/gen/salons/bestRatedSalons"
+        );
         setSalons(response.data);
       } catch (err) {
         setError("Failed to fetch best-rated salons");
