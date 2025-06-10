@@ -1,51 +1,47 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SalonLikeCard from "./SalonLikedCard";
+import useLikedSalons from "../hooks/useLikedSalons";
+import { useAuth } from "../contexts/AuthContext";
+import api from "../api";
 
-// Example mock data. Replace with real liked salons from your backend.
-const likedSalons = [
-  {
-    id: 1,
-    name: "Beauty Bliss",
-    rating: 4.8,
-    address: "123 Main St, Cityville",
-    image:
-      "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80",
-  },
-  {
-    id: 2,
-    name: "Glow Studio",
-    rating: 4.6,
-    address: "456 Elm St, Townsville",
-    image:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-  },
-  {
-    id: 3,
-    name: "Glow Studio",
-    rating: 4.6,
-    address: "456 Elm St, Townsville",
-    image:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-  },
-  {
-    id: 4,
-    name: "Glow Studio",
-    rating: 4.6,
-    address: "456 Elm St, Townsville",
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-  },
-];
+const Likes = () => {
+  const { user } = useAuth();
+  const userId = user?.id;
+  const { salons: initialSalons, loading, error } = useLikedSalons(userId);
 
-const Likes = ({ salons = likedSalons }) => (
-  <div className="max-w-4xl mx-auto py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-    {salons.length === 0 ? (
-      <div className="text-gray-500 text-center col-span-full">
-        No liked salons yet.
-      </div>
-    ) : (
-      salons.map((salon) => <SalonLikeCard key={salon.id} {...salon} />)
-    )}
-  </div>
-);
+  const [salons, setSalons] = useState([]);
+
+  useEffect(() => {
+    setSalons(initialSalons);
+  }, [initialSalons]);
+
+  const handleUnlike = async (salonId) => {
+    try {
+      await api.delete(`/gen/favourites/deleteFavouriteById/${userId}/${salonId}`);
+      setSalons((prev) => prev.filter((salon) => salon.id !== salonId));
+    } catch (err) {
+      alert("Failed to remove from favourites.");
+    }
+  };
+
+  if (!userId) return <div>Loading user...</div>;
+  if (loading) return <div>Loading...</div>;
+  if (error)
+    return <div className="text-red-500">Failed to load liked salons.</div>;
+
+  return (
+    <div className="max-w-4xl mx-auto py-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {salons.length === 0 ? (
+        <div className="text-gray-500 text-center col-span-full">
+          No liked salons yet.
+        </div>
+      ) : (
+        salons.map((salon) => (
+          <SalonLikeCard key={salon.id} {...salon} onUnlike={handleUnlike} />
+        ))
+      )}
+    </div>
+  );
+};
 
 export default Likes;

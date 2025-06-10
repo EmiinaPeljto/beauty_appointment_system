@@ -19,7 +19,8 @@ const ProfileCard = ({
   const tabKeys = ["Upcoming Appointments", "Completed Appointments", "Likes"];
 
   return (
-    <div className="max-w-4xl mx-4 sm:max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-4xl sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto mt-8 bg-white shadow-xl rounded-lg text-gray-900 mb-16">
+    <div className="max-w-4xl mx-4 sm:max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-4xl sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto mt-8 bg-white shadow-xl rounded-lg text-gray-900 mb-2">
+      {" "}
       <div className="rounded-t-lg h-40 overflow-hidden">
         {/* Optionally add a cover image here */}
       </div>
@@ -43,8 +44,8 @@ const ProfileCard = ({
           className={`px-2 py-1 font-semibold transition flex flex-col items-center text-center cursor-pointer
       ${
         activeTab === tabKeys[0]
-          ? "text-[#e0559c] underline"
-          : "text-gray-700 hover:text-[#e0559c] hover:underline"
+          ? "text-[#e0559c]"
+          : "text-gray-700 hover:text-[#e0559c]"
       }`}
           onClick={(e) => {
             e.preventDefault();
@@ -61,8 +62,8 @@ const ProfileCard = ({
           className={`px-48 py-1 font-semibold transition flex flex-col items-center text-center cursor-pointer mr-auto
       ${
         activeTab === tabKeys[1]
-          ? "text-[#e0559c] underline"
-          : "text-gray-700 hover:text-[#e0559c] hover:underline"
+          ? "text-[#e0559c]"
+          : "text-gray-700 hover:text-[#e0559c]"
       }`}
           onClick={(e) => {
             e.preventDefault();
@@ -79,8 +80,8 @@ const ProfileCard = ({
           className={`px-2 py-1 mr-16 font-semibold transition flex flex-col items-center text-center cursor-pointer
       ${
         activeTab === tabKeys[2]
-          ? "text-[#e0559c] underline"
-          : "text-gray-700 hover:text-[#e0559c] hover:underline"
+          ? "text-[#e0559c]"
+          : "text-gray-700 hover:text-[#e0559c]"
       }`}
           onClick={(e) => {
             e.preventDefault();
