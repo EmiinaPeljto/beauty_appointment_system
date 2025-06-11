@@ -16,5 +16,9 @@ router.get("/full-name/:id", userController.getUsersFullName);
 //get user by id route
 router.get("/:id", userController.getUserById);
 
+/////////////////// Forgot password ////////////////////
+router.post("/forgot-password", userController.forgotPassword);
+router.post("/reset-password/:token", userController.resetPassword);
+
 
 module.exports = router;

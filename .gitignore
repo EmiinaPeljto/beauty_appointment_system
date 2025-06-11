@@ -143,3 +143,5 @@ backend/config/auth.js
 
 frontend/src/utils/mapAPI.js
 
+backend/.env
+
