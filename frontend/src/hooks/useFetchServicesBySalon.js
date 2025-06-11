@@ -9,7 +9,9 @@ const useFetchServicesBySalon = (salonId) => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/v1/gen/services/servicesBySalon/${salonId}`);
+        const response = await axios.get(
+          `http://localhost:3000/api/v1/gen/services/servicesBySalon/${salonId}`
+        );
         const grouped = {};
 
         response.data.forEach((item) => {
@@ -17,9 +19,10 @@ const useFetchServicesBySalon = (salonId) => {
             grouped[item.category_name] = [];
           }
           grouped[item.category_name].push({
+            id: item.id,
             name: item.name,
             duration: item.duration,
-            price: item.price
+            price: item.price,
           });
         });
 

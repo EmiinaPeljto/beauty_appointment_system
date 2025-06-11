@@ -42,7 +42,7 @@ const SalonProfile = () => {
         setActiveTab={setActiveTab}
       />
       {activeTab === "pricing" && (
-        <ServicesList servicesByCategory={servicesByCategory} />
+        <ServicesList servicesByCategory={servicesByCategory} salonId={salonId} />
       )}
       {activeTab === "about" && <AboutSalon salon={salon} />}
       {activeTab === "reviews" && <Reviews salonId={salonId} />}

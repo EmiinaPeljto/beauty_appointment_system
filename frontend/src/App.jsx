@@ -16,6 +16,7 @@ import Services from "./pages/Services.jsx"; // Import Services component
 import SalonProfile from "./pages/SalonProfile.jsx"; // Import SalonProfile component
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Appointment from "./pages/Appointment.jsx"; // Import Appointment component
 
 import "./app.css";
 
@@ -44,6 +45,7 @@ function App() {
           <Route path="/help" element={<Help />} />
           <Route path="/services" element={<Services />} />
           <Route path="/salon/:salonId" element={<SalonProfile />} />
+          <Route path="/appointment" element={<Appointment />} />
         </Routes>
       </div>
       {location.pathname !== "/login" && location.pathname !== "/signup" && (
