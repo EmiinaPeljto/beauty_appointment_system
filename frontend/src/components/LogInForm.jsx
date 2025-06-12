@@ -96,7 +96,7 @@ const LogInForm = () => {
             </div>
             <div className="text-right">
               <a
-                href="/profile"
+                href="/forgot-password"
                 className="font-semibold  hover:text-[#FF66B2] block text-sm font-medium text-gray-900"
               >
                 Forgot password?
