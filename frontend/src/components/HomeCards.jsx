@@ -1,17 +1,44 @@
 import { useNavigate } from "react-router-dom";
 import useFetchCategory from "../hooks/useFetchCategory";
+import { useState, useEffect } from "react";
 
-const HomeCards = () => {
-  const { categories, loading, error } = useFetchCategory();
+const HomeCards = ({ initialCategories = null, skipFetching = false }) => {
+  const [categories, setCategories] = useState(initialCategories || []);
   const navigate = useNavigate();
+  
+  const { categories: fetchedCategories, loading, error } = !skipFetching 
+    ? useFetchCategory() 
+    : { categories: [], loading: false, error: null };
+  
+  useEffect(() => {
+    if (!skipFetching && fetchedCategories) {
+      setCategories(fetchedCategories);
+    }
+  }, [fetchedCategories, skipFetching]);
 
   const handleCategoryClick = (id) => {
     console.log("Navigating to:", `/services#${id}`);
     navigate(`/services#${id}`);
   };
 
+  if (!skipFetching && loading) {
+    return (
+      <div className="container mx-auto px-4 py-12 flex justify-center">
+        <div className="w-16 h-16 border-4 border-pink-200 border-t-[#FF66B2] rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (!skipFetching && error) {
+    return (
+      <div className="container mx-auto px-4 py-12">
+        <p className="text-red-500 text-center">{error}</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="container mx-auto px-4 relative z-10">
+    <div className="container mx-auto px-4 relative z-10 py-12">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {categories.map((category) => (
           <div
