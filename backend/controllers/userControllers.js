@@ -5,7 +5,10 @@ const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const { jwtSecret, jwtExpiration } = require("../config/auth");
-const { sendPasswordResetEmail, sendVerificationEmail } = require("../utils/email");
+const {
+  sendPasswordResetEmail,
+  sendVerificationEmail,
+} = require("../utils/email");
 
 exports.getAllUsers = async (req, res) => {
   try {
@@ -19,52 +22,53 @@ exports.getAllUsers = async (req, res) => {
 
 exports.register = async (req, res) => {
   try {
-    // Extract user data from request body
     const { first_name, last_name, email, password, phone_number } = req.body;
 
-    // GetAllUsers to check for existing users
+    // Validate input as before (reuse your validation logic)
     const existingUsers = await userModel.getAllUsers();
-
-    // Validate user input
     const { valid, errors } = await validateRegistrationInput(
       { first_name, last_name, email, password, phone_number },
       existingUsers
     );
-
     if (!valid) {
-      return res.status(400).json({ errors });
+      return res.status(400).json({ message: "Validation failed", errors });
     }
 
-    // Hash the password
+    // Hash password for storage
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Register user
-    const result = await userModel.register(
+    // Prepare payload
+    const payload = JSON.stringify({
       first_name,
       last_name,
       email,
       phone_number,
-      hashedPassword
+      password: hashedPassword,
+    });
+
+    // Generate code and expiration
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+    // Store in email_verifications (no userId yet)
+    await emailVerificationsModel.createEmailVerification(
+      null, // userId is null
+      email,
+      code,
+      expiresAt,
+      payload
     );
 
-    const code = Math.floor(10000000 + Math.random() * 90000000).toString();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
-    const payload = JSON.stringify({
-      first_name, 
-      last_name,
-      email,
-      phone_number,
-      password: hashedPassword
-    });
-    await emailVerificationsModel.createEmailVerification(result.insertId, code, expiresAt);
+    // Send verification email
     await sendVerificationEmail(email, first_name, code);
 
     res.status(201).json({
-      message: "User registered successfully. Verification email sent.",
-      email
+      message:
+        "Verification code sent to your email. Please verify to complete registration.",
+      email,
     });
   } catch (error) {
-    console.error("Error registering user:", error);
+    console.error("Error in registration:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

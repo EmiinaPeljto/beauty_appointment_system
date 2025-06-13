@@ -9,7 +9,7 @@ exports.getAllUsers = async ()=> {
 
 exports.register = async (first_name, last_name, email, phone_number, password ) => {
     const [rows] = await db.query(
-        'INSERT INTO users (first_name, last_name, email, phone_number, password, verified) VALUES (?, ?, ?, ?, ?, 1)',
+        'INSERT INTO users (first_name, last_name, email, phone_number, password, verified) VALUES (?, ?, ?, ?, ?, 0)',
         [first_name, last_name, email, phone_number, password]
     );
     return rows;
@@ -110,5 +110,13 @@ exports.updatePasswordById = async function (userId, hashedPassword) {
     await db.query(
         `UPDATE users SET password = ? WHERE id = ?`,
         [hashedPassword, userId]
+    );
+};
+
+//////////////// Email verification ////////////////
+exports.updateUserVerifiedByEmail = async (email) => {
+    await db.query(
+        `UPDATE users SET verified = 1 WHERE email = ?`,
+        [email]
     );
 };
