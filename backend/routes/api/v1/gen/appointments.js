@@ -7,4 +7,6 @@ router.get('/getAppointmentsByStatus/:user_id/:status', appointmentController.ge
 router.post('/makeAnAppointment', appointmentController.createAppointment);
 router.get('/price/:salon_id/:service_id', appointmentController.getServicePrice);
 
+router.post('/cancel/:appointment_id', appointmentController.cancelAppointment);
+
 module.exports = router;

@@ -30,6 +30,7 @@ const Profile = () => {
     appointments,
     loading: apptLoading,
     error: apptError,
+    refetch
   } = useUpcomingAppointments(userDetails?.id);
 
   if (!userDetails) return <div>Loading...</div>;
@@ -42,6 +43,7 @@ const Profile = () => {
         appointments={appointments}
         loading={apptLoading}
         error={apptError}
+        refetch={refetch}
       />
     );
   } else if (activeTab === "Completed Appointments") {

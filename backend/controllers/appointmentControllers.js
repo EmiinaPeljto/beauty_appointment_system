@@ -69,10 +69,7 @@ exports.createAppointment = async (req, res) => {
     let total_price = 0;
     for (const sid of service_id) {
       await appointmentModel.addAppointmentService(appointment_id, sid);
-      const price = await appointmentModel.getServicePrice(
-        salon_id,
-        sid
-      );
+      const price = await appointmentModel.getServicePrice(salon_id, sid);
       total_price += Number(price);
       console.log("Total price: " + total_price);
     }
@@ -94,12 +91,10 @@ exports.createAppointment = async (req, res) => {
     if (error.message.startsWith("Service price not found")) {
       return res.status(404).json({ message: error.message });
     }
-    res
-      .status(500)
-      .json({
-        message: "Internal server error while booking appointment.",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Internal server error while booking appointment.",
+      error: error.message,
+    });
   } finally {
     if (connection) {
       connection.release();
@@ -128,4 +123,70 @@ exports.getServicePrice = async (req, res) => {
       .status(500)
       .json({ message: "Internal server error while fetching service price." });
   }
-}
+};
+
+//////////// Cancel Appointment //////////////////
+
+exports.cancelAppointment = async (req, res) => {
+  try {
+    const { appointment_id } = req.params;
+    const { user_id } = req.body;
+
+    if (!appointment_id || !user_id) {
+      return res
+        .status(400)
+        .json({ message: "Appointment ID and user ID are required." });
+    }
+
+    const appointment = await appointmentModel.getAppointmentById(
+      appointment_id,
+      user_id
+    );
+
+    if (!appointment) {
+      return res
+        .status(404)
+        .json({
+          message: "Appointment not found or does not belong to this user.",
+        });
+    }
+
+    if (appointment.status === "canceled") {
+      return res
+        .status(400)
+        .json({ message: "This appointment has already been canceled." });
+    }
+
+    const appointmentDate = new Date(appointment.date + " " + appointment.time);
+    const currentDate = new Date();
+
+    if (appointmentDate < currentDate) {
+      return res
+        .status(400)
+        .json({ message: "Cannot cancel a past appointment." });
+    }
+
+    const canceled = await appointmentModel.cancelAppointment(
+      appointment_id,
+      user_id
+    );
+
+    if (canceled) {
+      res.status(200).json({ message: "Appointment canceled successfully." });
+    } else {
+      res
+        .status(500)
+        .json({
+          message: "Failed to cancel the appointment. Please try again.",
+        });
+    }
+  } catch (error) {
+    console.error("Error canceling appointment: ", error);
+    res
+      .status(500)
+      .json({
+        message: "Internal server error while canceling appointment.",
+        error: error.message,
+      });
+  }
+};
