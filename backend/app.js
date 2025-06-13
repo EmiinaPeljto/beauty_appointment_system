@@ -23,6 +23,7 @@ const favouriteRoutes = require("./routes/api/v1/gen/favourites");
 const appointmentRoutes = require("./routes/api/v1/gen/appointments");
 const invoiceRoutes = require("./routes/api/v1/gen/invoices");
 const protectedRoutes = require("./routes/api/v1/gen/protected");
+const emailVerificationsRoutes = require("./routes/api/v1/gen/emailVerifications");
 
 
 app.use("/api/v1/gen/users", userRoutes);
@@ -35,6 +36,7 @@ app.use("/api/v1/gen/favourites", favouriteRoutes);
 app.use("/api/v1/gen/appointments", appointmentRoutes);
 app.use("/api/v1/gen/invoices", invoiceRoutes);
 app.use("/api/v1/gen/protected", protectedRoutes);
+app.use("/api/v1/gen/emailVerifications", emailVerificationsRoutes);
 
 // first route
 app.get("/", (req, res) => {

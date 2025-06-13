@@ -7,9 +7,9 @@ exports.getAllUsers = async ()=> {
     return rows;
 };
 
-exports.register = async (first_name, last_name, email, phone_number, password) => {
+exports.register = async (first_name, last_name, email, phone_number, password ) => {
     const [rows] = await db.query(
-        'INSERT INTO users (first_name, last_name, email, phone_number, password) VALUES (?, ?, ?, ?, ?)',
+        'INSERT INTO users (first_name, last_name, email, phone_number, password, verified) VALUES (?, ?, ?, ?, ?, 1)',
         [first_name, last_name, email, phone_number, password]
     );
     return rows;

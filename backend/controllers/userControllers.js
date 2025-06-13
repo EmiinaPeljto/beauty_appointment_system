@@ -1,10 +1,11 @@
 const userModel = require("../models/userModels");
+const emailVerificationsModel = require("../models/emailVerificationsModel");
 const validateRegistrationInput = require("../contracts/registrationValidation");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const { jwtSecret, jwtExpiration } = require("../config/auth");
-const { sendPasswordResetEmail } = require("../utils/email");
+const { sendPasswordResetEmail, sendVerificationEmail } = require("../utils/email");
 
 exports.getAllUsers = async (req, res) => {
   try {
@@ -46,9 +47,21 @@ exports.register = async (req, res) => {
       hashedPassword
     );
 
+    const code = Math.floor(10000000 + Math.random() * 90000000).toString();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+    const payload = JSON.stringify({
+      first_name, 
+      last_name,
+      email,
+      phone_number,
+      password: hashedPassword
+    });
+    await emailVerificationsModel.createEmailVerification(result.insertId, code, expiresAt);
+    await sendVerificationEmail(email, first_name, code);
+
     res.status(201).json({
-      message: "User registered successfully",
-      userId: result.insertId,
+      message: "User registered successfully. Verification email sent.",
+      email
     });
   } catch (error) {
     console.error("Error registering user:", error);

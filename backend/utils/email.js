@@ -52,3 +52,20 @@ exports.sendPasswordResetEmail = async (email, name, token) => {
     return false;
   }
 };
+
+exports.sendVerificationEmail = async(email, name, code) =>{
+  const mailOptions = {
+    from: process.env.SMTP_USERNAME,
+    to: email, 
+    subject: 'Verify your email - Beauty Appointment System',
+    html: `<p>Hello ${name},<br>Your verification code is: <b>${code}</b><br>This code expires in 10 minutes.</p>`,
+    text: `Your verification code is: ${code}`,
+  };
+  try {
+    await transporter.sendMail(mailOptions);
+    return true;
+  } catch (error) {
+    console.error('Error sending verification email:', error);
+    return false;
+  }
+};
