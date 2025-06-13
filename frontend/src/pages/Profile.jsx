@@ -4,6 +4,7 @@ import UpcomingAppointments from "../components/UpcomingAppointments";
 import CompletedAppointments from "../components/CompletedAppointments";
 import Likes from "../components/Likes";
 import { useAuth } from "../contexts/AuthContext";
+import useUpcomingAppointments from "../hooks/useUpcomingAppointments";
 import api from "../utils/api";
 
 const Profile = () => {
@@ -24,12 +25,25 @@ const Profile = () => {
     fetchUserDetails();
   }, [user]);
 
+  // Use the hook to fetch upcoming appointments
+  const {
+    appointments,
+    loading: apptLoading,
+    error: apptError,
+  } = useUpcomingAppointments(userDetails?.id);
+
   if (!userDetails) return <div>Loading...</div>;
 
   // Render the correct tab content
   let tabContent = null;
   if (activeTab === "Upcoming Appointments") {
-    tabContent = <UpcomingAppointments />;
+    tabContent = (
+      <UpcomingAppointments
+        appointments={appointments}
+        loading={apptLoading}
+        error={apptError}
+      />
+    );
   } else if (activeTab === "Completed Appointments") {
     tabContent = <CompletedAppointments />;
   } else if (activeTab === "Likes") {

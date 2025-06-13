@@ -7,6 +7,7 @@ import CalendarComponent from "../components/CalendarComponent";
 import TimeSlotComponent from "../components/TimeSlotComponent";
 import { useAuth } from "../contexts/AuthContext";
 import toast from "react-hot-toast";
+import useBookAppointment from "../hooks/useBookAppointment";
 
 const Appointment = () => {
   const location = useLocation();
@@ -35,6 +36,8 @@ const Appointment = () => {
     salonId,
     selectedDate
   );
+
+  const { bookAppointment, loading: bookingLoading } = useBookAppointment();
 
   const totalPrice = selectedServices.reduce(
     (total, service) => total + parseFloat(service.price),
@@ -74,24 +77,17 @@ const Appointment = () => {
     }
   };
 
-  const handleBookAppointment = () => {
-    if (!selectedDate || !selectedTime || selectedServices.length === 0) {
-      alert("Please select date, time, and at least one service.");
-      return;
-    }
-
-    // Booking logic here
-    console.log("Booking:", {
-      salonId,
-      selectedServices,
-      selectedDate,
-      selectedTime,
-      totalPrice,
+  const handleBookAppointment = async () => {
+    const result = await bookAppointment({
+      user_id: user.id,
+      salon_id: salonId,
+      date: selectedDate,
+      time: selectedTime,
+      service_id: selectedServices.map((s) => s.id),
     });
-    alert("Appointment booking initiated (details in console).");
-    // Optionally clear localStorage here if you want
-    // localStorage.removeItem("selectedServices");
-    // localStorage.removeItem("salonId");
+    if (result && result.appointment_id) {
+      navigate(`/invoice/${result.appointment_id}`);
+    }
   };
 
   // Error if no salonId
