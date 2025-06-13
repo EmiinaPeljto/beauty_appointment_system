@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
+
+const getInitialAndColor = (name) => {
+  const initial = name ? name.charAt(0).toUpperCase() : "?";
+  const colors = [
+    "bg-red-400",
+    "bg-yellow-400",
+    "bg-blue-400",
+    "bg-green-400",
+    "bg-pink-400",
+    "bg-purple-400",
+  ];
+  const color = colors[initial.charCodeAt(0) % colors.length];
+  return { initial, color };
+};
 
 const ProfileCard = ({
   coverImage = "#",
-  avatar = "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
+  avatar,
   name = "Sarah Smith",
   email,
   phone,
@@ -10,6 +24,12 @@ const ProfileCard = ({
   onTabClick,
   activeTab = "Upcoming Appointments",
 }) => {
+  // Keep track of image loading error
+  const [imgError, setImgError] = useState(false);
+  
+  // Get initial and color for the avatar fallback
+  const { initial, color } = getInitialAndColor(name);
+  
   // Each tab as [firstLine, secondLine]
   const tabLabels = [
     ["Upcoming", "Appointments"],
@@ -24,12 +44,19 @@ const ProfileCard = ({
       <div className="rounded-t-lg h-40 overflow-hidden">
         {/* Optionally add a cover image here */}
       </div>
-      <div className="mx-auto w-36 h-36 relative -mt-30 border-4 border-white rounded-full overflow-hidden">
-        <img
-          className="object-cover object-center h-36 w-36"
-          src={avatar}
-          alt="Avatar"
-        />
+      <div className={`mx-auto w-36 h-36 relative -mt-30 border-4 border-white rounded-full overflow-hidden ${!avatar || imgError ? color : ''}`}>
+        {avatar && !imgError ? (
+          <img
+            className="object-cover object-center h-36 w-36"
+            src={avatar}
+            alt="Avatar"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <div className="flex items-center justify-center w-full h-full text-white font-semibold text-4xl">
+            {initial}
+          </div>
+        )}
       </div>
       <div className="text-center mt-0">
         <h2 className="font-semibold text-2xl">{name}</h2>
