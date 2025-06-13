@@ -55,7 +55,6 @@ CREATE TABLE `appointments` (
   `date` date DEFAULT NULL,
   `time` time DEFAULT NULL,
   `status` enum('Upcoming','Completed','Cancelled') DEFAULT NULL,
-  `reminder_enabled` tinyint(1) DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),

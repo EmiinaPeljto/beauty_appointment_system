@@ -2,14 +2,30 @@ import React from "react";
 import { FiCalendar } from "react-icons/fi";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { parseISO } from "date-fns";
+
+function formatDateToYYYYMMDD(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+const toLocalDate = (dateStr) => {
+  if (typeof dateStr !== "string") return null;
+  const [year, month, day] = dateStr.split("-");
+  if (!year || !month || !day) return null;
+  return new Date(Number(year), Number(month) - 1, Number(day));
+};
 
 const CalendarComponent = ({
   selectedDate,
   onDateChange,
   availableDates = [],
 }) => {
-  const availableDateObjs = availableDates.map((d) => parseISO(d));
+  const availableDateObjs = availableDates
+    .filter((d) => typeof d === "string" && /^\d{4}-\d{2}-\d{2}$/.test(d))
+    .map(toLocalDate)
+    .filter(Boolean);
 
   return (
     <div className="bg-white p-6 rounded-lg shadow">
@@ -17,9 +33,13 @@ const CalendarComponent = ({
         <FiCalendar className="mr-2 text-pink-500" /> Select Date
       </h3>
       <ReactDatePicker
-        selected={selectedDate ? parseISO(selectedDate) : null}
+        selected={
+          selectedDate && typeof selectedDate === "string"
+            ? toLocalDate(selectedDate)
+            : null
+        }
         onChange={(date) =>
-          onDateChange(date ? date.toISOString().slice(0, 10) : "")
+          onDateChange(date ? formatDateToYYYYMMDD(date) : "")
         }
         includeDates={availableDateObjs}
         dateFormat="yyyy-MM-dd"

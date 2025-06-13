@@ -10,8 +10,9 @@ exports.getSalonsByCategory = async (category_id) => {
 
 exports.getSalonById = async (salon_id) => {
   const [rows] = await db.query(
-    "SELECT group_concat(c.title SEPARATOR ', ') categories, s.*, round(avg(r.rating), 1) AS rating FROM categories c JOIN salon_categories sc ON c.id = sc.category_id JOIN salons s ON sc.salon_id = s.id JOIN reviews r ON s.id = r.salon_id WHERE s.id = ?", 
-    [salon_id,]);
+    "SELECT group_concat(c.title SEPARATOR ', ') categories, s.*, round(avg(r.rating), 1) AS rating FROM categories c JOIN salon_categories sc ON c.id = sc.category_id JOIN salons s ON sc.salon_id = s.id JOIN reviews r ON s.id = r.salon_id WHERE s.id = ?",
+    [salon_id]
+  );
   return rows[0];
 };
 
@@ -55,6 +56,14 @@ exports.getWorkingHoursBySalonId = async (salon_id) => {
   const [rows] = await db.query(
     "SELECT * FROM working_hours WHERE salon_id = ?",
     [salon_id]
+  );
+  return rows;
+};
+
+exports.getBookedTimes = async (salon_id, date) => {
+  const [rows] = await db.query(
+    "SELECT time FROM appointments WHERE salon_id = ? AND date = ? AND status = 'upcoming'",
+    [salon_id, date]
   );
   return rows;
 };
