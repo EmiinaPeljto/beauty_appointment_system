@@ -41,6 +41,7 @@ const BestRatedSalons = () => {
               <SwiperSlide key={salon.id}>
                 <div className="px-2">
                   <SalonCard
+                    id={salon.id}
                     name={salon.name}
                     rating={salon.rating}
                     address={salon.location}

@@ -46,7 +46,7 @@ exports.getSlotInterval = async (salon_id) => {
 
 exports.getBestRatedSalons = async () => {
   const [rows] = await db.query(
-    "SELECT s.image, s.name , s.location ,round( avg(r.rating), 1) AS rating FROM reviews r JOIN salons s ON r.salon_id = s.id GROUP BY s.id ORDER BY avg (r.rating) DESC LIMIT 8",
+    "SELECT s.id, s.image, s.name , s.location ,round( avg(r.rating), 1) AS rating FROM reviews r JOIN salons s ON r.salon_id = s.id GROUP BY s.id ORDER BY avg (r.rating) DESC LIMIT 8",
     []
   );
   return rows; // Return the best-rated salons
