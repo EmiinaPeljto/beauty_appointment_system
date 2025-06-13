@@ -20,6 +20,7 @@ import Appointment from "./pages/Appointment.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import Invoice from "./pages/Invoice.jsx";
+import EmailVerification from "./pages/EmailVerification.jsx";
 import { Toaster } from "react-hot-toast";
 
 import "./app.css";
@@ -55,6 +56,7 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/invoice/:appointment_id" element={<Invoice />}></Route>
+            <Route path="/email-verification" element={<EmailVerification />} />
           </Routes>
         </div>
         {location.pathname !== "/login" && location.pathname !== "/signup" && (

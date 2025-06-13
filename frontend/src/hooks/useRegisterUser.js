@@ -1,36 +1,43 @@
 import { useState } from "react";
-import axios from "axios";
 
 const useRegisterUser = () => {
   const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const registerUser = async (first_name, last_name, email, phone_number, password) => {
+  const registerUser = async (firstName, lastName, email, phoneNumber, password) => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await axios.post("http://localhost:3000/api/v1/gen/users/register", {
-        first_name,
-        last_name,
-        email,
-        phone_number,
-        password,
+      const response = await fetch("http://localhost:3000/api/v1/gen/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          phone_number: phoneNumber,
+          password: password,
+        }),
       });
-      setUser(response.data.user);
-      setLoading(false);
-      return response.data;
-    } catch (err) {
-      if (err.response && err.response.data.errors) {
-        // Set field-specific errors
-        setError(err.response.data.errors);
-      } else {
-        // Set a generic error message
-        setError({ general: "An error occurred. Please try again later." });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Registration failed");
       }
-      setLoading(false);
+
+      // Note: In this new flow, we don't set the user yet
+      // The user will be created after email verification
+      return data;
+    } catch (err) {
+      setError(err.message || JSON.stringify(err));
       return null;
+    } finally {
+      setLoading(false);
     }
   };
 

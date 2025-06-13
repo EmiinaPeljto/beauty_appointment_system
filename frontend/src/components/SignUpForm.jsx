@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import useRegisterUser from "../hooks/useRegisterUser";
 import Logo from "../assets/images/logo.png"; // Adjust the path as necessary
+import { useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
-  const { user, registerUser, error, loading } = useRegisterUser();
+  const { registerUser, error, loading } = useRegisterUser();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,22 +31,17 @@ const SignUpForm = () => {
       password
     );
 
-    if (response) {
-      console.log("User registered successfully:", response);
-      // Redirect or perform any other action after successful registration
-    } else {
-      console.error("Registration failed:", error);
+    if (response && response.email) {
+      console.log("Registration initiated successfully. Verification required.");
+      // Redirect to email verification page with email as state
+      navigate("/email-verification", { state: { email: response.email } });
     }
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-lg border border-gray-300 rounded-lg shadow-lg p-6 bg-white">
-        <img
-          alt="Your Company"
-          src={Logo}
-          className="mx-auto h-20 w-auto"
-        />
+        <img alt="Your Company" src={Logo} className="mx-auto h-20 w-auto" />
         <h2 className="mt-6 mb-10 text-center text-2xl leading-9 font-bold tracking-tight text-gray-900">
           Create your account
         </h2>
