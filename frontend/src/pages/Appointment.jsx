@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FiPlusCircle, FiShoppingCart, FiArrowLeft } from "react-icons/fi";
 import useAvailableTimes from "../hooks/useAvailableTimes";
 import useAvailableDates from "../hooks/useAvailableDates";
 import CalendarComponent from "../components/CalendarComponent";
 import TimeSlotComponent from "../components/TimeSlotComponent";
+import { useAuth } from "../contexts/AuthContext";
+import toast from "react-hot-toast";
 
 const Appointment = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   // Load from state or localStorage
   let initialServices = location.state?.selectedServices;
@@ -38,6 +41,25 @@ const Appointment = () => {
     0
   );
 
+  useEffect(() => {
+    if (!user) {
+      if (!window.__loginToastShown) {
+        toast.error("You need to be logged in to make an appointment.");
+        window.__loginToastShown = true;
+      }
+      localStorage.setItem(
+        "redirectAfterLogin",
+        JSON.stringify({
+          salonId,
+          selectedServices,
+        })
+      );
+      navigate(`/login`, { replace: true });
+    } else {
+      window.__loginToastShown = false;
+    }
+  }, [user, navigate, salonId, selectedServices]);
+
   const handleAddMoreServices = () => {
     navigate(`/salon/${salonId}?tab=pricing`, {
       state: { existingServices: selectedServices },
@@ -57,6 +79,7 @@ const Appointment = () => {
       alert("Please select date, time, and at least one service.");
       return;
     }
+
     // Booking logic here
     console.log("Booking:", {
       salonId,
@@ -188,7 +211,10 @@ const Appointment = () => {
           <button
             onClick={handleBookAppointment}
             disabled={
-              !selectedDate || !selectedTime || selectedServices.length === 0
+              !selectedDate ||
+              !selectedTime ||
+              selectedServices.length === 0 ||
+              !user
             }
             className="w-full md:w-auto bg-[#FF66B2] hover:bg-[#FF66B2] disabled:bg-gray-300 text-white font-semibold py-3 px-10 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105"
           >

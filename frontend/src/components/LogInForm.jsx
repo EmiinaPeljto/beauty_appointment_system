@@ -26,9 +26,7 @@ const LogInForm = () => {
             params.get("tab") || "reviews"
           }`
         );
-      } else {
-        navigate("/");
-      }
+      } 
     } catch (err) {
       console.error("Login failed:", err.message);
       setFormError(err.message || "Login failed");

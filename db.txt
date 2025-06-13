@@ -1,0 +1,511 @@
+-- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
+--
+-- Host: localhost    Database: glamify_me_db
+-- ------------------------------------------------------
+-- Server version	8.0.37
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `appointment_services`
+--
+
+DROP TABLE IF EXISTS `appointment_services`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `appointment_services` (
+  `appointment_id` int NOT NULL,
+  `service_id` int NOT NULL,
+  PRIMARY KEY (`appointment_id`,`service_id`),
+  KEY `service_id` (`service_id`),
+  CONSTRAINT `appointment_services_ibfk_1` FOREIGN KEY (`appointment_id`) REFERENCES `appointments` (`id`),
+  CONSTRAINT `appointment_services_ibfk_2` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `appointment_services`
+--
+
+LOCK TABLES `appointment_services` WRITE;
+/*!40000 ALTER TABLE `appointment_services` DISABLE KEYS */;
+/*!40000 ALTER TABLE `appointment_services` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `appointments`
+--
+
+DROP TABLE IF EXISTS `appointments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `appointments` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `salon_id` int DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `time` time DEFAULT NULL,
+  `status` enum('Upcoming','Completed','Cancelled') DEFAULT NULL,
+  `reminder_enabled` tinyint(1) DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `salon_id` (`salon_id`),
+  CONSTRAINT `appointments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `appointments_ibfk_2` FOREIGN KEY (`salon_id`) REFERENCES `salons` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `appointments`
+--
+
+LOCK TABLES `appointments` WRITE;
+/*!40000 ALTER TABLE `appointments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `appointments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `categories`
+--
+
+DROP TABLE IF EXISTS `categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `categories` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `description` text,
+  `image` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categories`
+--
+
+LOCK TABLES `categories` WRITE;
+/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+INSERT INTO `categories` VALUES (1,'Hair Salon','Welcome to our beauty appointment system, your ultimate guide to finding the perfect salon experience tailored just for you! \r\nWith our user-friendly interface, you can easily browse through a variety of options and find the salon that best suits your preferences and needs.\r\nFrom trendy hair salons to upscale boutiques offering a range of services including haircuts, styling, coloring, and more, we\'ve got you covered.','../public/hair.jpg'),(2,'Facial Treatment','Elevate your skincare routine to new heights with luxurious facial treatments!Your skin is as unique as you are. Experience the difference of personalized care with range of facial treatments designed to address your specific concerns. Say goodbye to one-size-fits-all and hello to radiant, healthy skin.\r\n','../public/facial_treatment.jpg'),(3,'Body Treatment','Indulge in the ultimate self-care experience with rejuvenating body treatmentsEscape the daily hustle and treat yourself to a blissful oasis of relaxation. Skilled therapists are here to pamper you with luxurious body treatments designed to soothe your senses and renew your spirit.','../public/body_treatment.jpg'),(4,'Nails','Indulge in the ultimate pampering experience for your nails with our comprehensive nail care services. From classic manicures and pedicures to intricate nail art designs, our talented professionals are here to elevate your nail game to new heights. Transform your nails into works of art and experience the ultimate in luxury nail care with our beauty app. ','../public/nail_care.jpg');
+/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `favorites`
+--
+
+DROP TABLE IF EXISTS `favorites`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `favorites` (
+  `user_id` int NOT NULL,
+  `salon_id` int NOT NULL,
+  PRIMARY KEY (`user_id`,`salon_id`),
+  KEY `salon_id` (`salon_id`),
+  CONSTRAINT `favorites_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`salon_id`) REFERENCES `salons` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `favorites`
+--
+
+LOCK TABLES `favorites` WRITE;
+/*!40000 ALTER TABLE `favorites` DISABLE KEYS */;
+INSERT INTO `favorites` VALUES (13,1),(13,2),(13,4);
+/*!40000 ALTER TABLE `favorites` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `invoice`
+--
+
+DROP TABLE IF EXISTS `invoice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invoice` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `appointment_id` int DEFAULT NULL,
+  `total_price` decimal(10,2) DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `appointment_id` (`appointment_id`),
+  CONSTRAINT `invoice_ibfk_1` FOREIGN KEY (`appointment_id`) REFERENCES `appointment_services` (`appointment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `invoice`
+--
+
+LOCK TABLES `invoice` WRITE;
+/*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
+/*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `password_reset_attempts`
+--
+
+DROP TABLE IF EXISTS `password_reset_attempts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `password_reset_attempts` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `attempted_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `password_reset_attempts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `password_reset_attempts`
+--
+
+LOCK TABLES `password_reset_attempts` WRITE;
+/*!40000 ALTER TABLE `password_reset_attempts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `password_reset_attempts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `password_resets`
+--
+
+DROP TABLE IF EXISTS `password_resets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `password_resets` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `reset_token` varchar(255) DEFAULT NULL,
+  `expires_at` datetime DEFAULT NULL,
+  `used` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `password_resets_users_FK` (`user_id`),
+  CONSTRAINT `password_resets_users_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `password_resets`
+--
+
+LOCK TABLES `password_resets` WRITE;
+/*!40000 ALTER TABLE `password_resets` DISABLE KEYS */;
+INSERT INTO `password_resets` VALUES (1,13,'ce50391cea954a3438e8fcb90e274789c5abd3c31ecc5d92084ee4ea519ff752','2025-06-11 17:08:17',0,'2025-06-11 17:03:16'),(2,13,'8605d5b0217114f67a04d7bc230edb747f7064efa177dc5ba3c635cdf4c6ec5c','2025-06-11 17:12:00',0,'2025-06-11 17:06:59'),(3,14,'031ab1b312675844be3dbb0e77590112128d9035a694916c0ea39fe2ee94d52b','2025-06-11 17:30:12',0,'2025-06-11 17:25:11'),(4,13,'bb3e5b10b8268e9db00bdd718f31fd77f8bda4a7c000cf6f89d14695a92cb8f9','2025-06-12 13:50:48',0,'2025-06-12 13:45:47'),(5,13,'e1a89023cfe4a9b58f9e57f51f39e367c09f59a98917bd37a6168305fa9f7a63','2025-06-12 14:08:20',0,'2025-06-12 14:03:19'),(6,13,'8fb573a09f3b283e0d230e3982bc899a0f3a7eb5ec8a2c25e0a05369cacaf9c8','2025-06-12 14:21:36',1,'2025-06-12 14:16:35'),(7,13,'b862691dd15a4790ee5a7b5be7a6339470cc9c95215b37bdd13013688f4e4e18','2025-06-12 14:52:39',1,'2025-06-12 14:47:38'),(8,13,'591c110927118cb14710e23d9a5c8cdcacd9bf2d1e55f82d2859eca3066e2e59','2025-06-12 14:58:17',1,'2025-06-12 14:53:17');
+/*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reviews`
+--
+
+DROP TABLE IF EXISTS `reviews`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reviews` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `salon_id` int DEFAULT NULL,
+  `rating` int DEFAULT NULL,
+  `review_text` text,
+  `review_image` text,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `salon_id` (`salon_id`),
+  CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`salon_id`) REFERENCES `salons` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reviews`
+--
+
+LOCK TABLES `reviews` WRITE;
+/*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
+INSERT INTO `reviews` VALUES (1,1,1,5,'test',NULL,'2025-05-03 00:28:09'),(2,1,2,5,'test',NULL,'2025-05-03 00:39:17'),(3,1,2,4,'test',NULL,'2025-05-03 00:55:11'),(4,1,2,3,'test',NULL,'2025-05-03 00:55:20'),(5,1,5,5,'test',NULL,'2025-05-10 19:15:27'),(6,1,4,5,'test',NULL,'2025-05-13 19:52:17'),(7,13,1,4,'All good',NULL,'2025-06-10 22:40:08');
+/*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `salon_categories`
+--
+
+DROP TABLE IF EXISTS `salon_categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `salon_categories` (
+  `salon_id` int NOT NULL,
+  `category_id` int NOT NULL,
+  PRIMARY KEY (`salon_id`,`category_id`),
+  KEY `category_id` (`category_id`),
+  CONSTRAINT `salon_categories_categories_FK` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
+  CONSTRAINT `salon_categories_salons_FK` FOREIGN KEY (`salon_id`) REFERENCES `salons` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `salon_categories`
+--
+
+LOCK TABLES `salon_categories` WRITE;
+/*!40000 ALTER TABLE `salon_categories` DISABLE KEYS */;
+INSERT INTO `salon_categories` VALUES (1,1),(2,1),(4,1),(6,1),(9,1),(14,1),(15,1),(16,1),(17,1),(18,1),(19,1),(20,1),(22,1),(24,1),(26,1),(27,1),(28,1),(30,1),(31,1),(32,1),(33,1),(34,1),(35,1),(36,1),(37,1),(38,1),(39,1),(40,1),(41,1),(42,1),(43,1),(44,1),(45,1),(46,1),(47,1),(48,1),(49,1),(3,2),(5,2),(7,2),(10,2),(13,2),(21,2),(23,2),(25,2),(29,2),(31,2),(33,2),(36,2),(37,2),(39,2),(43,2),(47,2),(3,3),(5,3),(7,3),(10,3),(13,3),(21,3),(23,3),(25,3),(29,3),(31,3),(33,3),(36,3),(37,3),(39,3),(43,3),(47,3),(3,4),(5,4),(7,4),(10,4),(13,4),(21,4),(23,4),(25,4),(29,4),(31,4),(33,4),(36,4),(37,4),(39,4),(43,4),(47,4);
+/*!40000 ALTER TABLE `salon_categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `salon_services`
+--
+
+DROP TABLE IF EXISTS `salon_services`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `salon_services` (
+  `salon_id` int NOT NULL,
+  `service_id` int NOT NULL,
+  `price` decimal(10,0) DEFAULT NULL,
+  `duration` int DEFAULT NULL,
+  PRIMARY KEY (`salon_id`,`service_id`),
+  KEY `service_id` (`service_id`),
+  CONSTRAINT `salon_services_ibfk_1` FOREIGN KEY (`salon_id`) REFERENCES `salons` (`id`),
+  CONSTRAINT `salon_services_ibfk_2` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `salon_services`
+--
+
+LOCK TABLES `salon_services` WRITE;
+/*!40000 ALTER TABLE `salon_services` DISABLE KEYS */;
+INSERT INTO `salon_services` VALUES (1,1,45,45),(1,2,40,45),(1,3,55,60),(1,4,35,30),(1,5,25,20),(1,6,40,45),(1,7,30,30),(1,8,50,60),(1,9,45,45),(1,10,20,15),(1,21,35,45),(1,22,50,60),(1,25,60,60),(1,31,45,60),(1,32,60,75),(1,35,55,60),(1,41,70,60),(1,42,90,75),(1,43,80,60),(1,44,100,75),(1,45,65,45),(1,46,85,60),(1,47,110,90),(1,48,75,50),(1,51,80,60),(1,52,100,75),(1,53,90,60),(1,54,75,45),(1,55,120,90),(1,56,95,60),(1,57,85,60),(1,58,110,75),(1,61,25,30),(1,65,50,45),(1,71,40,45),(1,74,50,30),(1,81,50,45),(1,84,70,60),(1,91,60,60),(1,93,120,90),(1,96,100,75),(2,1,50,45),(2,2,45,45),(2,3,60,60),(2,4,40,30),(2,5,30,20),(2,6,45,45),(2,7,35,30),(2,8,55,60),(2,9,50,45),(2,10,25,15),(2,11,90,90),(2,12,60,45),(2,13,80,75),(2,14,100,90),(2,15,130,120),(2,16,70,60),(2,17,50,45),(2,18,85,75),(2,19,65,60),(2,20,105,90),(2,21,30,45),(2,22,45,60),(2,31,40,60),(2,32,55,75),(2,41,70,60),(2,45,65,45),(2,51,80,60),(2,55,120,90),(2,61,25,30),(2,65,50,45),(2,71,40,45),(2,74,50,30),(2,81,50,45),(2,84,70,60),(2,91,60,60),(2,93,120,90),(3,1,45,45),(3,6,40,45),(3,11,85,90),(3,15,120,120),(3,21,35,45),(3,22,50,60),(3,31,45,60),(3,32,60,75),(3,41,75,60),(3,42,95,75),(3,43,85,60),(3,44,105,75),(3,45,70,45),(3,46,90,60),(3,47,115,90),(3,48,80,50),(3,49,100,75),(3,50,125,90),(3,51,85,60),(3,52,105,75),(3,53,95,60),(3,54,80,45),(3,55,125,90),(3,56,100,60),(3,57,90,60),(3,58,115,75),(3,59,70,45),(3,60,135,90),(3,61,25,30),(3,65,50,45),(3,71,40,45),(3,74,50,30),(3,81,50,45),(3,84,70,60),(3,91,60,60),(3,93,120,90),(4,1,30,45),(4,2,25,45),(4,3,40,60),(4,4,20,30),(4,5,15,20),(4,6,25,45),(4,7,20,30),(4,8,35,60),(4,9,30,45),(4,10,15,15),(4,21,25,45),(4,31,30,60),(4,61,15,30),(4,71,25,45),(4,81,30,45),(4,82,35,60),(4,83,30,45),(4,84,45,60),(4,85,40,45),(4,86,50,60),(4,87,60,75),(4,91,40,60),(5,1,50,45),(5,6,45,45),(5,21,40,45),(5,22,55,60),(5,31,50,60),(5,32,65,75),(5,41,80,60),(5,42,100,75),(5,43,90,60),(5,44,110,75),(5,45,75,45),(5,46,95,60),(5,47,120,90),(5,48,85,50),(5,49,105,75),(5,50,130,90),(5,51,90,60),(5,52,110,75),(5,53,100,60),(5,54,85,45),(5,55,130,90),(5,56,105,60),(5,57,95,60),(5,61,30,30),(5,65,55,45),(5,81,55,45),(5,84,75,60),(5,91,70,60),(5,93,130,90),(6,1,55,45),(6,2,50,45),(6,3,65,60),(6,4,45,30),(6,5,35,20),(6,6,50,45),(6,7,40,30),(6,8,60,60),(6,9,55,45),(6,10,30,15),(6,21,45,45),(6,22,60,60),(6,25,70,60),(6,31,55,60),(6,32,70,75),(6,35,65,60),(6,41,85,60),(6,42,105,75),(6,43,95,60),(6,44,115,75),(6,45,80,45),(6,46,100,60),(6,47,125,90),(6,48,90,50),(6,49,110,75),(6,50,135,90),(6,51,95,60),(6,52,115,75),(6,53,105,60),(6,54,90,45),(6,55,135,90),(6,56,110,60),(6,57,100,60),(6,58,125,75),(6,59,80,45),(6,60,140,90),(6,61,35,30),(6,65,60,45),(6,71,50,45),(6,74,60,30),(6,81,60,45),(6,84,80,60),(6,91,75,60),(6,93,135,90),(6,96,115,75),(7,21,35,45),(7,22,50,60),(7,41,70,60),(7,45,65,45),(7,61,30,30),(7,65,55,45),(7,71,45,45),(7,72,40,30),(7,73,50,45),(7,74,55,30),(7,75,65,45),(7,76,60,45),(7,77,75,60),(7,78,50,30),(7,79,70,45),(7,80,55,30),(7,81,50,45),(7,84,70,60),(7,91,65,60),(7,92,80,75),(7,93,130,90),(7,94,90,60),(7,95,70,45),(7,96,110,75),(7,97,160,120),(7,98,85,60),(7,99,120,90),(7,100,75,45),(8,1,50,45),(8,2,45,45),(8,3,60,60),(8,4,40,30),(8,6,45,45),(8,8,55,60),(8,9,50,45),(8,11,95,90),(8,12,65,45),(8,13,85,75),(8,14,105,90),(8,15,135,120),(8,16,75,60),(8,17,55,45),(8,18,90,75),(8,19,70,60),(8,20,110,90),(8,21,35,45),(8,22,50,60),(8,41,75,60),(8,45,70,45),(8,81,55,45),(8,84,75,60),(9,1,55,45),(9,2,50,45),(9,3,65,60),(9,4,45,30),(9,5,35,20),(9,6,50,45),(9,7,40,30),(9,8,60,60),(9,9,55,45),(9,10,30,15),(9,11,90,90),(9,15,130,120),(9,21,40,45),(9,22,55,60),(9,81,60,45),(9,82,70,60),(9,83,65,45),(9,84,80,60),(9,85,75,45),(9,86,90,60),(9,87,100,75),(9,88,85,60),(9,89,95,60),(9,90,70,45),(9,91,65,60),(9,93,125,90),(10,21,40,45),(10,22,55,60),(10,31,50,60),(10,32,65,75),(10,41,80,60),(10,42,100,75),(10,43,90,60),(10,44,110,75),(10,45,75,45),(10,46,95,60),(10,47,120,90),(10,48,85,50),(10,49,105,75),(10,50,130,90),(10,51,90,60),(10,52,110,75),(10,53,100,60),(10,54,85,45),(10,55,130,90),(10,56,105,60),(10,57,95,60),(10,58,120,75),(10,59,75,45),(10,60,140,90),(10,61,35,30),(10,65,60,45),(11,1,50,45),(11,3,60,60),(11,21,40,45),(11,22,55,60),(11,61,35,30),(11,65,60,45),(11,81,65,45),(11,82,75,60),(11,83,70,45),(11,84,85,60),(11,85,80,45),(11,86,95,60),(11,87,105,75),(11,88,90,60),(11,89,100,60),(11,90,75,45),(11,91,70,60),(11,92,85,75),(11,93,140,90),(11,94,95,60),(11,95,75,45),(11,96,115,75),(11,97,165,120),(11,98,90,60),(11,99,125,90),(11,100,80,45),(12,21,40,45),(12,22,55,60),(12,23,45,45),(12,24,60,60),(12,25,65,60),(12,26,50,45),(12,27,70,75),(12,28,35,30),(12,29,55,60),(12,30,45,45),(12,41,75,60),(12,45,70,45),(12,61,35,30),(12,65,60,45),(12,71,45,45),(12,72,40,30),(12,73,50,45),(12,74,55,30),(12,75,65,45),(12,76,60,45),(12,77,75,60),(12,78,50,30),(12,79,70,45),(12,80,55,30),(12,91,65,60),(12,93,125,90),(13,21,45,45),(13,22,60,60),(13,23,50,45),(13,24,65,60),(13,25,70,60),(13,26,55,45),(13,27,75,75),(13,28,40,30),(13,29,60,60),(13,30,50,45),(13,31,55,60),(13,32,70,75),(13,33,60,60),(13,34,50,45),(13,35,65,60),(13,36,80,75),(13,37,75,60),(13,38,55,45),(13,39,70,60),(13,40,60,45),(13,41,80,60),(13,45,75,45),(13,61,40,30),(13,65,65,45),(13,91,70,60),(13,93,130,90),(14,4,40,30),(14,6,45,45),(14,7,35,30),(14,8,55,60),(14,103,25,15),(14,107,50,45),(14,109,60,60),(15,1,55,45),(15,2,50,45),(15,3,65,60),(15,4,45,30),(15,5,35,20),(15,6,50,45),(15,7,40,30),(15,8,60,60),(15,9,55,45),(15,10,30,15),(15,21,40,45),(15,22,55,60),(15,41,75,60),(15,45,70,45),(15,81,60,45),(15,84,80,60),(15,91,70,60),(15,92,85,75),(15,93,140,90),(15,94,95,60),(15,95,75,45),(15,96,115,75),(15,97,165,120),(15,98,90,60),(15,99,125,90),(15,100,80,45),(16,1,50,45),(16,2,45,45),(16,3,60,60),(16,4,40,30),(16,5,30,20),(16,6,45,45),(16,7,35,30),(16,8,55,60),(16,9,50,45),(16,10,25,15),(16,21,40,45),(16,22,55,60),(16,23,45,45),(16,24,60,60),(16,25,65,60),(16,26,50,45),(16,27,70,75),(16,28,35,30),(16,29,55,60),(16,30,45,45),(16,41,75,60),(16,45,70,45),(16,81,55,45),(16,84,75,60),(16,91,65,60),(16,93,125,90),(17,21,45,45),(17,22,60,60),(17,31,55,60),(17,32,70,75),(17,41,85,60),(17,42,105,75),(17,43,95,60),(17,44,115,75),(17,45,80,45),(17,46,100,60),(17,47,125,90),(17,48,90,50),(17,49,110,75),(17,50,135,90),(17,51,95,60),(17,52,115,75),(17,53,105,60),(17,54,90,45),(17,55,135,90),(17,56,110,60),(17,57,100,60),(17,58,125,75),(17,59,80,45),(17,60,140,90),(17,61,40,30),(17,65,65,45),(18,1,50,45),(18,2,45,45),(18,3,60,60),(18,4,40,30),(18,5,30,20),(18,6,45,45),(18,7,35,30),(18,8,55,60),(18,9,50,45),(18,10,25,15),(18,11,90,90),(18,12,60,45),(18,13,80,75),(18,14,100,90),(18,15,130,120),(18,16,70,60),(18,17,50,45),(18,18,85,75),(18,19,65,60),(18,20,105,90),(18,21,35,45),(18,22,50,60),(18,41,75,60),(18,45,70,45),(18,81,55,45),(18,84,75,60),(19,21,40,45),(19,22,55,60),(19,41,80,60),(19,45,75,45),(19,61,35,30),(19,62,40,30),(19,63,45,45),(19,64,50,30),(19,65,60,45),(19,66,55,45),(19,67,70,60),(19,68,45,30),(19,69,65,45),(19,70,50,30),(19,81,60,45),(19,84,80,60),(19,91,75,60),(19,92,90,75),(19,93,145,90),(19,94,100,60),(19,95,80,45),(19,96,120,75),(19,97,170,120),(19,98,95,60),(19,99,130,90),(19,100,85,45),(20,1,55,45),(20,2,50,45),(20,3,65,60),(20,4,45,30),(20,6,50,45),(20,8,60,60),(20,9,55,45),(20,21,40,45),(20,22,55,60),(20,41,75,60),(20,45,70,45),(20,81,65,45),(20,82,75,60),(20,83,70,45),(20,84,85,60),(20,85,80,45),(20,86,95,60),(20,87,105,75),(20,88,90,60),(20,89,100,60),(20,90,75,45),(20,91,70,60),(20,93,130,90),(21,1,45,45),(21,2,40,45),(21,3,55,60),(21,5,25,20),(21,7,30,30),(21,8,50,60),(21,9,45,45),(21,10,20,15),(21,21,35,45),(21,22,50,60),(21,25,60,60),(21,41,70,60),(21,45,65,45),(21,47,110,90),(21,61,25,30),(21,65,50,45),(21,71,40,45),(21,81,50,45),(21,84,70,60),(21,91,60,60),(21,92,75,75),(21,93,120,90),(21,94,85,60),(21,95,65,45),(21,96,100,75),(21,97,150,120),(21,98,80,60),(21,99,110,90),(21,100,70,45),(22,1,60,45),(22,2,55,45),(22,3,70,60),(22,4,50,30),(22,6,55,45),(22,8,65,60),(22,9,60,45),(22,10,35,15),(22,21,50,45),(22,22,65,60),(22,23,55,45),(22,24,70,60),(22,25,75,60),(22,26,60,45),(22,27,80,75),(22,28,45,30),(22,29,65,60),(22,30,55,45),(22,41,85,60),(22,45,80,45),(22,51,95,60),(22,55,135,90),(22,81,65,45),(22,84,85,60),(22,91,75,60),(22,93,135,90),(23,21,45,45),(23,22,60,60),(23,31,55,60),(23,32,70,75),(23,41,85,60),(23,42,105,75),(23,43,95,60),(23,44,115,75),(23,45,80,45),(23,46,100,60),(23,47,125,90),(23,48,90,50),(23,49,110,75),(23,50,135,90),(23,51,90,60),(23,52,110,75),(23,53,100,60),(23,54,85,45),(23,55,130,90),(23,56,105,60),(23,57,95,60),(23,58,120,75),(23,59,75,45),(23,60,140,90),(23,81,60,45),(23,84,80,60),(24,1,50,45),(24,2,45,45),(24,3,60,60),(24,4,40,30),(24,6,45,45),(24,8,55,60),(24,9,50,45),(24,11,90,90),(24,12,60,45),(24,15,130,120),(24,18,85,75),(24,21,40,45),(24,22,55,60),(24,41,75,60),(24,45,70,45),(24,81,55,45),(24,82,65,60),(24,84,75,60),(24,87,95,75),(24,91,65,60),(24,93,125,90),(25,1,55,45),(25,2,50,45),(25,3,65,60),(25,5,35,20),(25,7,40,30),(25,8,60,60),(25,9,55,45),(25,10,30,15),(25,21,40,45),(25,22,55,60),(25,41,75,60),(25,45,70,45),(25,81,60,45),(25,82,70,60),(25,83,65,45),(25,84,80,60),(25,85,75,45),(25,86,90,60),(25,87,100,75),(25,88,85,60),(25,89,95,60),(25,91,65,60),(25,93,125,90),(26,1,50,45),(26,2,45,45),(26,3,60,60),(26,4,40,30),(26,6,45,45),(26,8,55,60),(26,9,50,45),(26,10,25,15),(26,21,40,45),(26,22,55,60),(26,41,75,60),(26,45,70,45),(26,61,35,30),(26,65,60,45),(26,81,55,45),(26,84,75,60),(26,91,70,60),(26,92,85,75),(26,93,140,90),(26,94,95,60),(26,95,75,45),(26,96,115,75),(26,97,165,120),(26,98,90,60),(26,99,125,90),(26,100,80,45),(27,1,55,45),(27,2,50,45),(27,3,65,60),(27,4,45,30),(27,6,50,45),(27,8,60,60),(27,9,55,45),(27,11,95,90),(27,12,65,45),(27,13,85,75),(27,14,105,90),(27,15,135,120),(27,16,75,60),(27,17,55,45),(27,18,90,75),(27,19,70,60),(27,20,110,90),(27,21,40,45),(27,22,55,60),(27,41,75,60),(27,45,70,45),(27,81,60,45),(27,84,80,60),(28,1,50,45),(28,2,45,45),(28,3,60,60),(28,4,40,30),(28,5,30,20),(28,6,45,45),(28,7,35,30),(28,8,55,60),(28,9,50,45),(28,10,25,15),(28,11,90,90),(28,12,60,45),(28,13,80,75),(28,14,100,90),(28,15,130,120),(28,16,70,60),(28,21,40,45),(28,22,55,60),(28,41,75,60),(28,45,70,45),(28,81,55,45),(28,82,65,60),(28,84,75,60),(28,87,95,75),(28,91,65,60),(28,93,125,90),(29,21,40,45),(29,22,55,60),(29,41,80,60),(29,45,75,45),(29,61,35,30),(29,62,40,30),(29,63,45,45),(29,64,50,30),(29,65,60,45),(29,66,55,45),(29,67,70,60),(29,68,45,30),(29,69,65,45),(29,70,50,30),(29,81,60,45),(29,84,80,60),(29,91,75,60),(29,92,90,75),(29,93,145,90),(29,94,100,60),(29,95,80,45),(29,96,120,75),(29,97,170,120),(29,98,95,60),(29,99,130,90),(29,100,85,45),(30,21,45,45),(30,22,60,60),(30,25,70,60),(30,41,85,60),(30,45,80,45),(30,47,125,90),(30,61,40,30),(30,65,65,45),(30,81,70,45),(30,82,80,60),(30,83,75,45),(30,84,90,60),(30,85,85,45),(30,86,100,60),(30,87,110,75),(30,88,95,60),(30,89,105,60),(30,90,80,45),(30,91,80,60),(30,92,95,75),(30,93,150,90),(30,94,105,60),(30,95,85,45),(30,96,120,75),(30,97,175,120),(30,98,100,60),(30,99,135,90),(30,100,90,45),(31,1,60,45),(31,2,55,45),(31,3,70,60),(31,4,50,30),(31,6,55,45),(31,8,65,60),(31,9,60,45),(31,11,100,90),(31,15,140,120),(31,21,50,45),(31,22,65,60),(31,25,75,60),(31,41,90,60),(31,42,110,75),(31,43,100,60),(31,44,120,75),(31,45,85,45),(31,46,105,60),(31,47,130,90),(31,48,95,50),(31,49,115,75),(31,50,140,90),(31,51,100,60),(31,55,140,90),(31,81,70,45),(31,91,80,60),(31,93,150,90),(32,1,55,45),(32,2,50,45),(32,3,65,60),(32,5,35,20),(32,7,40,30),(32,8,60,60),(32,9,55,45),(32,11,95,90),(32,13,85,75),(32,15,135,120),(32,21,45,45),(32,22,60,60),(32,61,40,30),(32,65,65,45),(32,81,65,45),(32,84,85,60),(32,91,75,60),(32,92,90,75),(32,93,145,90),(32,94,100,60),(32,95,80,45),(32,96,120,75),(32,97,170,120),(32,98,95,60),(32,99,130,90),(32,100,85,45),(33,1,50,45),(33,3,60,60),(33,5,30,20),(33,7,35,30),(33,9,50,45),(33,11,90,90),(33,15,130,120),(33,19,70,60),(33,21,40,45),(33,41,75,60),(33,61,35,30),(33,81,55,45),(33,83,70,45),(33,84,75,60),(33,87,95,75),(33,101,65,45),(33,102,85,60),(33,103,75,45),(33,104,95,60),(33,105,55,30),(34,1,55,45),(34,2,50,45),(34,3,65,60),(34,4,45,30),(34,5,35,20),(34,6,50,45),(34,7,40,30),(34,8,60,60),(34,9,55,45),(34,10,30,15),(34,21,45,45),(34,22,60,60),(34,61,40,30),(34,81,65,45),(34,82,75,60),(34,83,70,45),(34,84,85,60),(34,85,80,45),(34,86,95,60),(34,87,105,75),(34,88,90,60),(34,89,100,60),(34,90,75,45),(34,91,75,60),(35,1,50,45),(35,3,60,60),(35,5,30,20),(35,11,90,90),(35,12,60,45),(35,15,130,120),(35,16,75,60),(35,17,55,45),(35,18,85,75),(35,19,70,60),(35,21,40,45),(35,41,75,60),(35,51,85,60),(35,61,35,30),(35,81,55,45),(35,82,65,60),(35,84,75,60),(35,101,65,45),(35,102,85,60),(36,1,55,45),(36,3,65,60),(36,11,95,90),(36,15,135,120),(36,21,45,45),(36,22,60,60),(36,25,70,60),(36,41,80,60),(36,42,100,75),(36,45,75,45),(36,51,90,60),(36,55,130,90),(36,61,40,30),(36,65,65,45),(36,71,50,45),(36,81,65,45),(36,84,85,60),(36,91,75,60),(36,93,140,90),(36,97,170,120),(37,1,55,45),(37,2,50,45),(37,3,65,60),(37,4,45,30),(37,5,35,20),(37,6,50,45),(37,7,40,30),(37,8,60,60),(37,9,55,45),(37,10,30,15),(37,21,40,45),(37,41,75,60),(37,81,60,45),(37,91,70,60),(37,101,70,60),(37,102,60,45),(37,103,75,60),(37,104,55,45),(37,105,65,60),(38,1,50,45),(38,2,45,45),(38,3,60,60),(38,4,40,30),(38,6,45,45),(38,8,55,60),(38,11,90,90),(38,15,130,120),(38,21,40,45),(38,22,55,60),(38,25,65,60),(38,31,50,60),(38,32,65,75),(38,41,75,60),(38,42,95,75),(38,45,70,45),(38,51,85,60),(38,55,125,90),(38,61,35,30),(38,65,60,45),(38,71,45,45),(38,74,55,30),(38,81,55,45),(38,84,75,60),(38,91,70,60),(38,93,130,90),(39,1,60,45),(39,2,55,45),(39,3,70,60),(39,4,50,30),(39,5,40,20),(39,6,55,45),(39,7,45,30),(39,8,65,60),(39,9,60,45),(39,10,35,15),(39,11,95,90),(39,12,65,45),(39,15,135,120),(39,18,90,75),(39,21,45,45),(39,41,80,60),(39,51,90,60),(39,81,65,45),(39,82,75,60),(39,84,85,60),(39,87,105,75),(39,91,75,60),(40,1,55,45),(40,3,65,60),(40,11,95,90),(40,15,135,120),(40,21,50,45),(40,22,65,60),(40,25,75,60),(40,41,85,60),(40,42,105,75),(40,45,80,45),(40,51,95,60),(40,55,135,90),(40,61,45,30),(40,65,70,45),(40,71,55,45),(40,81,70,45),(40,84,90,60),(40,91,80,60),(40,93,150,90),(40,97,180,120),(40,101,75,45),(40,102,95,60),(41,1,65,45),(41,2,60,45),(41,3,75,60),(41,4,55,30),(41,6,60,45),(41,8,70,60),(41,11,100,90),(41,15,140,120),(41,21,55,45),(41,22,70,60),(41,25,80,60),(41,41,90,60),(41,42,110,75),(41,45,85,45),(41,51,100,60),(41,55,140,90),(41,61,50,30),(41,65,75,45),(41,71,60,45),(41,81,75,45),(41,84,95,60),(41,91,85,60),(41,93,155,90),(41,97,185,120),(42,1,60,45),(42,3,70,60),(42,8,65,60),(42,11,95,90),(42,15,135,120),(42,21,50,45),(42,41,85,60),(42,51,95,60),(42,81,70,45),(42,82,80,60),(42,83,75,45),(42,84,90,60),(42,85,85,45),(42,86,100,60),(42,87,110,75),(42,88,95,60),(42,89,105,60),(42,90,80,45),(42,91,80,60),(42,93,150,90),(43,1,55,45),(43,11,95,90),(43,12,65,45),(43,13,85,75),(43,14,105,90),(43,15,135,120),(43,16,75,60),(43,17,55,45),(43,18,90,75),(43,19,70,60),(43,20,110,90),(43,21,45,45),(43,81,60,45),(43,91,75,60),(43,101,70,45),(43,102,90,60),(43,103,80,45),(43,104,100,60),(43,105,60,30),(44,1,55,45),(44,3,65,60),(44,8,60,60),(44,11,95,90),(44,13,85,75),(44,15,135,120),(44,18,90,75),(44,21,50,45),(44,22,65,60),(44,61,45,30),(44,65,70,45),(44,81,65,45),(44,82,75,60),(44,84,85,60),(44,87,105,75),(44,91,80,60),(44,92,95,75),(44,93,150,90),(44,96,120,75),(44,97,175,120),(45,1,65,45),(45,2,60,45),(45,3,75,60),(45,4,55,30),(45,5,45,20),(45,6,60,45),(45,7,50,30),(45,8,70,60),(45,9,65,45),(45,10,40,15),(45,11,100,90),(45,15,140,120),(45,21,55,45),(45,41,90,60),(45,61,50,30),(45,81,75,45),(45,82,85,60),(45,84,95,60),(45,87,115,75),(45,91,85,60),(45,93,155,90),(46,1,50,45),(46,21,45,45),(46,41,75,60),(46,61,40,30),(46,81,60,45),(46,82,70,60),(46,83,65,45),(46,84,80,60),(46,85,75,45),(46,86,90,60),(46,87,100,75),(46,88,85,60),(46,89,95,60),(46,90,70,45),(46,101,65,45),(46,102,85,60),(47,1,35,30),(47,2,30,30),(47,4,25,20),(47,5,15,15),(47,6,30,30),(47,7,25,20),(47,10,20,15),(47,12,40,30),(47,17,35,30),(47,21,30,30),(47,26,35,30),(47,61,20,15),(47,62,25,20),(47,71,30,30),(47,81,35,30),(48,1,55,45),(48,3,65,60),(48,5,35,20),(48,8,60,60),(48,11,95,90),(48,15,130,120),(48,21,45,45),(48,22,60,60),(48,25,70,60),(48,41,80,60),(48,45,75,45),(48,61,40,30),(48,65,65,45),(48,81,65,45),(48,82,75,60),(48,84,85,60),(48,91,75,60),(48,93,140,90),(49,1,50,45),(49,11,90,90),(49,21,45,45),(49,61,40,30),(49,81,55,45),(49,82,65,60),(49,83,60,45),(49,84,75,60),(49,85,70,45),(49,86,85,60),(49,87,95,75),(49,88,80,60),(49,89,90,60),(49,90,65,45),(49,101,60,45),(49,102,80,60),(49,103,70,45),(49,104,90,60),(49,105,50,30),(50,21,50,45),(50,22,65,60),(50,25,75,60),(50,31,60,60),(50,32,75,75),(50,41,90,60),(50,42,110,75),(50,45,85,45),(50,51,100,60),(50,55,140,90),(50,81,75,45),(50,82,85,60),(50,83,80,45),(50,84,95,60),(50,85,90,45),(50,86,105,60),(50,87,115,75),(50,88,100,60),(50,89,110,60),(50,90,85,45),(50,91,85,60),(50,92,100,75),(50,93,160,90),(50,94,110,60),(50,95,90,45),(50,96,130,75),(50,97,185,120),(50,98,110,60),(50,99,145,90),(50,100,95,45);
+/*!40000 ALTER TABLE `salon_services` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `salon_settings`
+--
+
+DROP TABLE IF EXISTS `salon_settings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `salon_settings` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `salon_id` int DEFAULT NULL,
+  `slot_interval_time` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `salon_id` (`salon_id`),
+  CONSTRAINT `salon_settings_ibfk_1` FOREIGN KEY (`salon_id`) REFERENCES `salons` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `salon_settings`
+--
+
+LOCK TABLES `salon_settings` WRITE;
+/*!40000 ALTER TABLE `salon_settings` DISABLE KEYS */;
+INSERT INTO `salon_settings` VALUES (1,1,60),(2,2,60),(3,3,50),(4,4,45),(5,5,55),(6,6,30),(7,7,40),(8,8,35),(9,9,50),(10,10,45),(11,11,40),(12,12,45),(13,13,50),(14,14,35),(15,15,60),(16,16,55),(17,17,35),(18,18,30),(19,19,60),(20,20,50),(21,21,40),(22,22,35),(23,23,45),(24,24,60),(25,25,30),(26,26,30),(27,27,55),(28,28,40),(29,29,50),(30,30,35),(31,31,40),(32,32,50),(33,33,30),(34,34,55),(35,35,30),(36,36,35),(37,37,50),(38,38,55),(39,39,30),(40,40,55),(41,41,60),(42,42,55),(43,43,60),(44,44,60),(45,45,50),(46,46,55),(47,47,45),(48,48,40),(49,49,40),(50,50,40);
+/*!40000 ALTER TABLE `salon_settings` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `salons`
+--
+
+DROP TABLE IF EXISTS `salons`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `salons` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `phone_number` varchar(50) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `image` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `salons`
+--
+
+LOCK TABLES `salons` WRITE;
+/*!40000 ALTER TABLE `salons` DISABLE KEYS */;
+INSERT INTO `salons` VALUES (1,'Glam Haven','123 Glam Street, Downtown, New York, NY 10001','+1-540-783-2660','glamhaven@glamify.me','https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c2Fsb258ZW58MHx8MHx8fDA%3D'),(2,'Style Studio','456 Style Avenue, Old Town, Boston, MA 02108','+1-511-632-3658','stylestudio@example.com','https://images.unsplash.com/photo-1633681926035-ec1ac984418a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHNhbG9ufGVufDB8fDB8fHww'),(3,'Bliss Beauty','789 Serenity Road, East Side, Chicago, IL 60601','+1-425-676-2883','blissbeauty@glamify.me','https://images.unsplash.com/photo-1626379501846-0df4067b8bb9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHNhbG9ufGVufDB8fDB8fHww'),(4,'Chic Cuts','321 Chic Lane, East Side, San Francisco, CA 94110','+1-465-127-6834','chiccuts@beautynet.org','https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2Fsb258ZW58MHx8MHx8fDA%3D'),(5,'Radiant Room','111 Radiant Blvd, East Side, Austin, TX 78701','+1-457-903-5583','radiantroom@glamify.me','https://media.istockphoto.com/id/1856117770/photo/modern-beauty-salon.jpg?s=612x612&w=0&k=20&c=dVZtsePk2pgbqDXwVkMm-yIw5imnZ2rnkAruR7zf8EA='),(6,'Luxe Lounge','222 Luxe Crescent, Old Town, Charleston, SC 29401','+1-518-493-6302','luxelounge@salonhub.com','https://images.unsplash.com/photo-1595944024804-733665a112db?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDJ8fHNhbG9ufGVufDB8fDB8fHww'),(7,'The Beauty Bar','333 Beauty Way, West End, Los Angeles, CA 90015','+1-384-546-5041','thebeautybar@example.com','https://images.unsplash.com/photo-1633681926019-03bd9325ec20?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Njd8fHNhbG9ufGVufDB8fDB8fHww'),(8,'Glow Up Salon','444 Glow Street, East Side, Orlando, FL 32801','+1-540-919-9672','glowupsalon@salonhub.com','https://images.unsplash.com/photo-1580618662966-832a2dcea59f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nzh8fHNhbG9ufGVufDB8fDB8fHww'),(9,'Urban Chic','555 Urban Drive, Old Town, Philadelphia, PA 19106','+1-264-445-1987','urbanchic@salonhub.com','https://images.unsplash.com/photo-1633681138600-295fcd688876?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTAwfHxzYWxvbnxlbnwwfHwwfHx8MA%3D%3D'),(10,'Serenity Styles','666 Serenity Blvd, Uptown, Denver, CO 80203','+1-612-459-1139','serenitystyles@glamify.me','https://t4.ftcdn.net/jpg/05/85/17/17/240_F_585171734_O1byek8b22dC5eJ4zyFB0y7VqQG86Ouz.jpg'),(11,'The Glam Spot','777 Glamour Avenue, West End, Seattle, WA 98101','+1-604-596-3118','theglamspot@salonhub.com','https://t3.ftcdn.net/jpg/06/63/40/20/240_F_663402090_aYxyQFoT3aQNGGzZRIh5Fmj82RFAgwI3.jpg'),(12,'Vanity Vibe','888 Vanity Road, West End, Miami, FL 33101','+1-389-990-5660','vanityvibe@example.com','https://t4.ftcdn.net/jpg/01/81/61/29/240_F_181612908_uiOH8a4qWiNGuGS2Pg5dgwUIKJZ0C02w.jpg'),(13,'Polished Palace','999 Polished Plaza, Central Plaza, Houston, TX 77002','+1-890-980-4977','polishedpalace@glamify.me','https://images.unsplash.com/photo-1556740758-90de374c12ad?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTh8fHNhbG9ufGVufDB8fDB8fHww'),(14,'Glamour Garage','101 Glamour Garage Street, Uptown, San Diego, CA 92101','+1-333-974-3255','glamourgarage@beautynet.org','https://t4.ftcdn.net/jpg/06/53/00/35/360_F_653003534_TvjtsbAWKpEkwcqVpkOnFqOmIyCkqSyT.webp'),(15,'The Style Loft','202 Loft Lane, Downtown, Minneapolis, MN 55401','+1-792-999-4779','thestyleloft@example.com','https://img.freepik.com/free-photo/blonde-girl-getting-her-hair-done_23-2148108889.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(16,'Gloss & Glam','303 Gloss Street, West End, Atlanta, GA 30303','+1-398-889-5741','gloss&glam@glamify.me','https://img.freepik.com/premium-photo/satisfied-young-woman-looking-mirror-touching-face-after-professional-cosmetology-treatment-with-beautician-modern-beauty-clinic_633611-5811.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(17,'Velvet Touch','404 Velvet Road, West End, Las Vegas, NV 89101','+1-221-490-5609','velvettouch@example.com','https://media.istockphoto.com/id/1423513079/photo/luxury-hairdressing-and-beauty-salon-interior-with-chairs-mirrors-and-spotlights.jpg?s=612x612&w=0&k=20&c=T2cw6HblRzWPOlxPHsMcV9KRV8aLGOaLojvLe3Yoi_A='),(18,'Hair & Grace','505 Grace Lane, Central Plaza, Columbus, OH 43215','+1-216-242-1727','hair&grace@glamify.me','https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzF8fHNhbG9ufGVufDB8fDB8fHww'),(19,'Shimmer Studio','606 Shimmer Drive, Uptown, Phoenix, AZ 85004','+1-202-749-5418','shimmerstudio@glamify.me','https://img.freepik.com/premium-photo/interior-design-contemporary-spa-salon-with-comfortable-exquisite-furniture_447912-3123.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(20,'The Blowout Bar','707 Blowout Blvd, Downtown, Charlotte, NC 28202','+1-571-524-6427','theblowoutbar@salonhub.com','https://img.freepik.com/premium-photo/applying-makeup-eyebrows-beauty-salon-high-quality-photo_217333-788.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(21,'Pretty Parlor','808 Parlor Way, Central Plaza, San Antonio, TX 78205','+1-847-493-3534','prettyparlor@example.com','https://img.freepik.com/premium-photo/young-girl-hairdresser-washes-her-hair-with-shampoo-massages-head-young-woman-modern-barber-salon_199620-3910.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(22,'Elegance Edge','909 Elegance Street, Downtown, Pittsburgh, PA 15222','+1-491-311-2899','eleganceedge@glamify.me','https://img.freepik.com/premium-photo/woman-is-getting-her-hair-done-by-model_926199-3904930.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(23,'Bella Bliss','111 Bella Lane, Central Plaza, Sacramento, CA 95814','+1-973-325-7841','bellabliss@beautynet.org','https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Njh8fHNhbG9ufGVufDB8fDB8fHww'),(24,'Silk & Shine','222 Silk Avenue, Downtown, Salt Lake City, UT 84101','+1-944-272-3687','silk&shine@salonhub.com','https://img.freepik.com/premium-photo/two-hairdressers-styling-women-hair-beauty-salon_10069-12709.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(25,'Trend Tribe','333 Tribe Circle, Central Plaza, Raleigh, NC 27601','+1-745-948-8960','trendtribe@salonhub.com','https://media.istockphoto.com/id/1479350890/photo/relax-spa-and-zen-woman-with-candles-for-beauty-physical-therapy-or-skincare-female-client-on.webp?a=1&b=1&s=612x612&w=0&k=20&c=oXOwNHuQcblCbgBast8nf6wPa05M_PreLOTw9MXPtk0='),(26,'Mirror Mirror','444 Mirror Lane, West End, Portland, OR 97201','+1-918-824-7732','mirrormirror@glamify.me','https://img.freepik.com/free-photo/hairdresser-taking-care-her-client_23-2149319772.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(27,'Prism Beauty','555 Prism Street, Downtown, Cincinnati, OH 45202','+1-556-810-8772','prismbeauty@glamify.me','https://img.freepik.com/premium-photo/closeup-barber-splashes-client-hair-spray-easy-combing_199620-8829.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(28,'The Hair Lounge','666 Hair Lounge Road, Downtown, Kansas City, MO 64106','+1-518-620-3785','thehairlounge@glamify.me','https://img.freepik.com/premium-photo/portrait-female-hairdresser-salon_392895-22573.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(29,'Flaunt It','777 Flaunt It Street, East Side, Tampa, FL 33602','+1-994-254-5567','flauntit@glamify.me','https://img.freepik.com/premium-photo/nice-cheerful-young-make-up-artist-stand-blonde-model-smile-her-beauty-room_152404-9517.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(30,'Dazzle Den','888 Dazzle Way, Uptown, Milwaukee, WI 53202','+1-262-261-2537','dazzleden@beautynet.org','https://img.freepik.com/free-photo/mid-shot-make-up-artist-applying-lipstick-lips-with-brush_23-2148332517.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(31,'Beauteque','999 Beauteque Avenue, East Side, Jacksonville, FL 32202','+1-348-619-1827','beauteque@salonhub.com','https://img.freepik.com/premium-photo/working-places-masters-hairdressing-beauty-salon_285484-1493.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(32,'Vogue Visions','1010 Vogue Street, Midtown, Indianapolis, IN 46204','+1-604-389-4483','voguevisions@example.com','https://img.freepik.com/premium-photo/group-girlfriends-relax-manicure-procedure-beauty-salon_266732-19490.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(33,'Curl Craft','1111 Curl Craft Blvd, City Center, Omaha, NE 68102','+1-326-795-4269','curlcraft@example.com','https://img.freepik.com/premium-photo/hairdressers-styling-women-hair-beauty-salon_10069-10856.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(34,'Style Maven','1212 Maven Lane, West End, Detroit, MI 48226','+1-582-144-9524','stylemaven@example.com','https://img.freepik.com/premium-photo/hairdresser-attending-beauty-blonde-woman-hair-salon_138670-4120.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(35,'Lush Locks','1313 Lush Road, East Side, Raleigh, NC 27603','+1-442-808-7593','lushlocks@beautynet.org','https://img.freepik.com/premium-photo/hairdressers-makeup-artist-working-beauty-salon_10069-11140.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(36,'The Makeover Room','1414 Makeover Avenue, East Side, Tulsa, OK 74103','+1-338-772-8859','themakeoverroom@salonhub.com','https://img.freepik.com/premium-photo/clean-modern-hair-salon-with-white-furniture-woodpaneled-wall_36682-102468.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(37,'Shear Genius','1515 Genius Street, Old Town, Buffalo, NY 14202','+1-518-869-4601','sheargenius@salonhub.com','https://img.freepik.com/free-photo/brunette-woman-getting-her-hair-done_23-2148108782.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(38,'The Beauty Hive','1616 Hive Road, City Center, Richmond, VA 23219','+1-415-455-1600','thebeautyhive@beautynet.org','https://img.freepik.com/premium-photo/beauty-salon-banners-beauty-parlor-spa-salon-hair-makeup-self-grooming-personal-care_1028100-9.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(39,'Cut Above','1717 Cut Above Blvd, Central Plaza, Des Moines, IA 50309','+1-697-728-7309','cutabove@glamify.me','https://img.freepik.com/premium-photo/beauty-salon-template-design_1120772-16177.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(40,'Allure Lab','1818 Allure Street, East Side, Boise, ID 83702','+1-482-742-5687','allurelab@beautynet.org','https://img.freepik.com/free-photo/close-up-hairdresser-shop-instruments_23-2149319780.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(41,'The Glam Room','1919 Glam Room Drive, West End, Cleveland, OH 44114','+1-639-997-5916','theglamroom@glamify.me','https://img.freepik.com/free-photo/modern-beauty-salon-interior_23-2148910541.jpg?ga=GA1.1.1802923830.1744904661&semt=ais_hybrid&w=740'),(42,'Envy Studio','2020 Envy Lane, Old Town, St. Louis, MO 63101','+1-247-369-8316','envystudio@glamify.me','https://images.unsplash.com/photo-1596740926849-2d473dee8d60?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTcxfHxzYWxvbnxlbnwwfHwwfHx8MA%3D%3D'),(43,'Chroma Beauty','2121 Chroma Avenue, Uptown, Little Rock, AR 72201','+1-560-531-6633','chromabeauty@salonhub.com','https://images.pexels.com/photos/1654834/pexels-photo-1654834.jpeg?auto=compress&cs=tinysrgb&w=600'),(44,'Bold & Beautiful','2222 Bold Street, Uptown, New Haven, CT 06510','+1-362-136-8173','bold&beautiful@beautynet.org','https://images.pexels.com/photos/853427/pexels-photo-853427.jpeg?auto=compress&cs=tinysrgb&w=600'),(45,'Couture Cuts','2323 Couture Way, Central Plaza, Baton Rouge, LA 70802','+1-832-923-5482','couturecuts@beautynet.org','https://images.pexels.com/photos/705255/pexels-photo-705255.jpeg?auto=compress&cs=tinysrgb&w=600'),(46,'Blow Dry Bar','2424 Blow Dry Blvd, Central Plaza, Lexington, KY 40507','+1-418-903-4459','blowdrybar@salonhub.com','https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzZ8fG5haWwlMjBzYWxvbnxlbnwwfHwwfHx8MA%3D%3D'),(47,'Snip Snip','2525 Snip Snip Avenue, Midtown, Albany, NY 12207','+1-570-531-5503','snipsnip@glamify.me','https://images.unsplash.com/photo-1744095407400-aa337918bbb1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFrZXVwJTIwc2Fsb258ZW58MHx8MHx8fDA%3D'),(48,'The Hair Boutique','2626 Hair Boutique Rd, City Center, Providence, RI 02903','+1-867-289-8822','thehairboutique@example.com','https://images.unsplash.com/photo-1582582450303-48cc2cfa2c43?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTU0fHxzYWxvbnxlbnwwfHwwfHx8MA%3D%3D'),(49,'Braid & Bloom','2727 Braid Bloom Blvd, East Side, Anchorage, AK 99501','+1-820-447-4002','braid&bloom@example.com','https://images.unsplash.com/photo-1595475693741-b445b025aec7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTIzfHxzYWxvbnxlbnwwfHwwfHx8MA%3D%3D'),(50,'Crown & Glory','2828 Crown Glory St, Old Town, Dover, DE 19901','+1-963-203-4585','crown&glory@salonhub.com','https://images.unsplash.com/photo-1633681926053-9074b76e21a7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTEwfHxzYWxvbnxlbnwwfHwwfHx8MA%3D%3D');
+/*!40000 ALTER TABLE `salons` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `service_categories`
+--
+
+DROP TABLE IF EXISTS `service_categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `service_categories` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `service_categories`
+--
+
+LOCK TABLES `service_categories` WRITE;
+/*!40000 ALTER TABLE `service_categories` DISABLE KEYS */;
+INSERT INTO `service_categories` VALUES (1,'Haircut'),(2,'Hair Dyeing'),(3,'Manicure'),(4,'Pedicure'),(5,'Facial Cleansing'),(6,'Massage'),(7,'Eyebrow Shaping'),(8,'Waxing'),(9,'Hair Styling'),(10,'Makeup'),(11,'Men\'s Grooming');
+/*!40000 ALTER TABLE `service_categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `services`
+--
+
+DROP TABLE IF EXISTS `services`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `services` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `service_category_id` int DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `service_category_id` (`service_category_id`),
+  CONSTRAINT `services_ibfk_2` FOREIGN KEY (`service_category_id`) REFERENCES `service_categories` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `services`
+--
+
+LOCK TABLES `services` WRITE;
+/*!40000 ALTER TABLE `services` DISABLE KEYS */;
+INSERT INTO `services` VALUES (1,1,'Women\'s Short Haircut'),(2,1,'Women\'s Medium Haircut'),(3,1,'Women\'s Long Haircut'),(4,1,'Men\'s Classic Haircut'),(5,1,'Men\'s Fade Haircut'),(6,1,'Children\'s Haircut (under 12)'),(7,1,'Bang/Trim'),(8,1,'Pixie Cut'),(9,1,'Bob Haircut'),(10,1,'Undercut'),(11,2,'Full Color Application'),(12,2,'Root Touch-Up'),(13,2,'Partial Highlights'),(14,2,'Full Highlights'),(15,2,'Balayage'),(16,2,'Ombre'),(17,2,'Color Correction'),(18,2,'Toner Application'),(19,2,'Gloss Treatment'),(20,2,'Gray Coverage'),(21,3,'Classic Manicure'),(22,3,'Gel Manicure'),(23,3,'French Manicure'),(24,3,'Spa Manicure'),(25,3,'Acrylic Full Set'),(26,3,'Dip Powder Manicure'),(27,3,'Nail Art Design'),(28,3,'Nail Repair'),(29,3,'Russian Manicure'),(30,3,'Paraffin Treatment'),(31,4,'Classic Pedicure'),(32,4,'Gel Pedicure'),(33,4,'French Pedicure'),(34,4,'Spa Pedicure'),(35,4,'Medical Pedicure'),(36,4,'Athletic Pedicure'),(37,4,'Sugar Scrub Pedicure'),(38,4,'Callus Treatment'),(39,4,'Sole Renewal'),(40,4,'Fish Pedicure'),(41,5,'Basic Facial'),(42,5,'Deep Cleansing Facial'),(43,5,'Anti-Aging Facial'),(44,5,'Acne Treatment Facial'),(45,5,'Hydrating Facial'),(46,5,'LED Light Therapy'),(47,5,'Microdermabrasion'),(48,5,'Chemical Peel'),(49,5,'Oxygen Facial'),(50,5,'Gold Facial'),(51,6,'Swedish Massage'),(52,6,'Deep Tissue Massage'),(53,6,'Hot Stone Massage'),(54,6,'Aromatherapy Massage'),(55,6,'Prenatal Massage'),(56,6,'Sports Massage'),(57,6,'Reflexology'),(58,6,'Lymphatic Drainage'),(59,6,'Couples Massage'),(60,6,'Shiatsu Massage'),(61,7,'Eyebrow Waxing'),(62,7,'Eyebrow Threading'),(63,7,'Eyebrow Tinting'),(64,7,'Eyebrow Lamination'),(65,7,'Microblading'),(66,7,'Henna Brows'),(67,7,'Brow Mapping'),(68,7,'Brow Cleanup'),(69,7,'Brow Lamination'),(70,7,'Brow Correction'),(71,8,'Leg Waxing'),(72,8,'Arm Waxing'),(73,8,'Underarm Waxing'),(74,8,'Bikini Wax'),(75,8,'Brazilian Wax'),(76,8,'Back Waxing'),(77,8,'Chest Waxing'),(78,8,'Facial Waxing'),(79,8,'Full Body Wax'),(80,8,'Half Leg Wax'),(81,9,'Blowout'),(82,9,'Flat Iron Styling'),(83,9,'Curling'),(84,9,'Updo Styling'),(85,9,'Bridal Styling'),(86,9,'Formal Updo'),(87,9,'Braiding'),(88,9,'Extensions Styling'),(89,9,'Half-Up Half-Down'),(90,9,'Vintage Styling'),(91,10,'Day Makeup'),(92,10,'Evening Makeup'),(93,10,'Bridal Makeup'),(94,10,'Airbrush Makeup'),(95,10,'Contouring'),(96,10,'False Lash Application'),(97,10,'Special Effects'),(98,10,'Makeup Lesson'),(99,10,'Photoshoot Makeup'),(100,10,'Engagement Makeup'),(101,11,'Classic Men\'s Cut'),(102,11,'Skin Fade'),(103,11,'Buzz Cut'),(104,11,'Beard Trim & Shape'),(105,11,'Hot Towel Beard Treatment'),(106,11,'Royal Shave'),(107,11,'Executive Package'),(108,11,'Grooming Refresh'),(109,11,'Hair Tattoo'),(110,11,'Scalp Treatment');
+/*!40000 ALTER TABLE `services` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `support_requests`
+--
+
+DROP TABLE IF EXISTS `support_requests`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `support_requests` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `subject` varchar(255) DEFAULT NULL,
+  `message` text,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `support_requests_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `support_requests`
+--
+
+LOCK TABLES `support_requests` WRITE;
+/*!40000 ALTER TABLE `support_requests` DISABLE KEYS */;
+INSERT INTO `support_requests` VALUES (2,NULL,'test','test','2025-05-08 18:10:42'),(3,NULL,'test2','test2','2025-05-08 18:23:29'),(4,11,'sssss','test','2025-05-13 23:04:57'),(5,11,'ertzg','guz','2025-05-14 00:23:25'),(6,11,'gdgdgf','bvvb','2025-05-14 09:14:27'),(7,11,'sdgjhdskj','fkjfjsjfs','2025-05-15 12:20:54');
+/*!40000 ALTER TABLE `support_requests` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `phone_number` varchar(50) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `profile_image` text,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'samira','zeba','samira.zeba@gmail.com','38761601536','testest',NULL,'2025-05-02 23:23:39'),(4,'Emina','Peljto','emina@gmail.com','061601536','$2b$10$Vk2PyffVnSEBhSxyTWaCv.BT30o6p28OqGo9yfHGYOko0GBD4pKyy',NULL,'2025-05-06 19:34:17'),(5,'Emina','Peljto','emina@hotmail.com','06160153','$2b$10$SjzQuLbnJhgNLTlt7CXUpumNIfvAT6nBFxWWZt68ak2ckZMQFMuNi',NULL,'2025-05-06 19:34:46'),(6,'Emina','Peljto','emina@yahoo.com','123','$2b$10$CLeTk9GSOu52/HEeQpwcu.6uM/JNzWPUO7oUGPEK8wvM6t/62yC2S',NULL,'2025-05-06 19:35:54'),(7,'Emina','Peljto','samira.zeba@hotmail.com','+38761601536','$2b$10$ECFf.NyB8EPzstx2QM3Xzudw68HXBRGwiRCiDKb2fFWGgYTymTjp2',NULL,'2025-05-06 20:02:44'),(8,'Emina','Peljto','samira.zeba@yahoo.com','38761601536','$2b$10$GOrCA8pqRYm2b8IUOI5AFOaa.hC9lLII5.aHTzO2Yix6BS3frjj7e',NULL,'2025-05-06 20:02:56'),(9,'Emina','Peljto','samira.zeba@outlook.com','061601536','$2b$10$LeXNvH7bWZFONUHkECaites1HRawD72Js2TieViffC0Liio2jj/S.',NULL,'2025-05-06 20:03:25'),(10,'Emina','Peljto','aaaaa@gmail.com','062837470','$2b$10$fT3MdEaxe0NBJ6bdIhfuyuE5UmoAAYCEIzDqLX/OrWVu0txYE5EhG',NULL,'2025-05-06 20:04:08'),(11,'Samira','Zeba','samira@gmail.com','38761601536','$2b$10$wCOlXB2YnERFDmUKydE9De9HsG5gwoSykKeY8Zz/IV9yoYMyhmD2y',NULL,'2025-05-13 23:03:02'),(13,'Samira ','Zeba','samira.zeba@stu.ibu.edu.ba','061601536','$2b$10$m.phpf0DacZ4Nh8iDqJauuq6asPuSxiLe3sCimk6lWvCYzPFlnwSq',NULL,'2025-06-09 17:30:50'),(14,'Emina','Peljto','emina.peljto@stu.ibu.edu.ba','061601536','$2b$10$zyoxYublgwdmVr1gGoXasOAWryuyJgGBiZYTbGgtzHluujDd1D7Ci',NULL,'2025-06-11 17:21:50');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `working_hours`
+--
+
+DROP TABLE IF EXISTS `working_hours`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `working_hours` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `salon_id` int DEFAULT NULL,
+  `day_of_week` int DEFAULT NULL,
+  `open_time` time DEFAULT NULL,
+  `close_time` time DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `salon_id` (`salon_id`),
+  CONSTRAINT `working_hours_ibfk_1` FOREIGN KEY (`salon_id`) REFERENCES `salons` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=351 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `working_hours`
+--
+
+LOCK TABLES `working_hours` WRITE;
+/*!40000 ALTER TABLE `working_hours` DISABLE KEYS */;
+INSERT INTO `working_hours` VALUES (1,1,0,'08:00:00','19:00:00'),(2,1,1,'10:00:00','18:00:00'),(3,1,2,'09:00:00','18:00:00'),(4,1,3,'10:00:00','18:00:00'),(5,1,4,'08:00:00','19:00:00'),(6,1,5,'10:00:00','17:00:00'),(7,1,6,'10:00:00','17:00:00'),(8,2,0,'10:00:00','18:00:00'),(9,2,1,'10:00:00','18:00:00'),(10,2,2,'09:00:00','18:00:00'),(11,2,3,'10:00:00','19:00:00'),(12,2,4,'09:00:00','18:00:00'),(13,2,5,'09:00:00','18:00:00'),(14,2,6,'08:00:00','18:00:00'),(15,3,0,'09:00:00','17:00:00'),(16,3,1,'08:00:00','18:00:00'),(17,3,2,'09:00:00','18:00:00'),(18,3,3,'09:00:00','18:00:00'),(19,3,4,'08:00:00','19:00:00'),(20,3,5,'09:00:00','18:00:00'),(21,3,6,'08:00:00','18:00:00'),(22,4,0,'08:00:00','17:00:00'),(23,4,1,'08:00:00','18:00:00'),(24,4,2,'10:00:00','19:00:00'),(25,4,3,'08:00:00','17:00:00'),(26,4,4,'08:00:00','19:00:00'),(27,4,5,'10:00:00','18:00:00'),(28,4,6,'10:00:00','19:00:00'),(29,5,0,'09:00:00','19:00:00'),(30,5,1,'08:00:00','17:00:00'),(31,5,2,'10:00:00','17:00:00'),(32,5,3,'08:00:00','18:00:00'),(33,5,4,'08:00:00','18:00:00'),(34,5,5,'09:00:00','17:00:00'),(35,5,6,'08:00:00','17:00:00'),(36,6,0,'09:00:00','19:00:00'),(37,6,1,'09:00:00','19:00:00'),(38,6,2,'08:00:00','19:00:00'),(39,6,3,'08:00:00','19:00:00'),(40,6,4,'08:00:00','19:00:00'),(41,6,5,'10:00:00','19:00:00'),(42,6,6,'08:00:00','18:00:00'),(43,7,0,'08:00:00','19:00:00'),(44,7,1,'09:00:00','17:00:00'),(45,7,2,'08:00:00','17:00:00'),(46,7,3,'09:00:00','18:00:00'),(47,7,4,'10:00:00','17:00:00'),(48,7,5,'09:00:00','19:00:00'),(49,7,6,'08:00:00','18:00:00'),(50,8,0,'10:00:00','18:00:00'),(51,8,1,'09:00:00','18:00:00'),(52,8,2,'09:00:00','17:00:00'),(53,8,3,'10:00:00','17:00:00'),(54,8,4,'09:00:00','17:00:00'),(55,8,5,'08:00:00','17:00:00'),(56,8,6,'08:00:00','18:00:00'),(57,9,0,'09:00:00','17:00:00'),(58,9,1,'08:00:00','18:00:00'),(59,9,2,'09:00:00','19:00:00'),(60,9,3,'09:00:00','18:00:00'),(61,9,4,'09:00:00','18:00:00'),(62,9,5,'09:00:00','18:00:00'),(63,9,6,'09:00:00','17:00:00'),(64,10,0,'10:00:00','17:00:00'),(65,10,1,'09:00:00','17:00:00'),(66,10,2,'09:00:00','18:00:00'),(67,10,3,'09:00:00','17:00:00'),(68,10,4,'09:00:00','19:00:00'),(69,10,5,'08:00:00','18:00:00'),(70,10,6,'09:00:00','18:00:00'),(71,11,0,'10:00:00','17:00:00'),(72,11,1,'08:00:00','18:00:00'),(73,11,2,'09:00:00','19:00:00'),(74,11,3,'08:00:00','18:00:00'),(75,11,4,'10:00:00','18:00:00'),(76,11,5,'08:00:00','19:00:00'),(77,11,6,'09:00:00','18:00:00'),(78,12,0,'10:00:00','17:00:00'),(79,12,1,'08:00:00','17:00:00'),(80,12,2,'10:00:00','19:00:00'),(81,12,3,'08:00:00','19:00:00'),(82,12,4,'09:00:00','19:00:00'),(83,12,5,'10:00:00','18:00:00'),(84,12,6,'10:00:00','17:00:00'),(85,13,0,'08:00:00','17:00:00'),(86,13,1,'10:00:00','17:00:00'),(87,13,2,'10:00:00','18:00:00'),(88,13,3,'10:00:00','18:00:00'),(89,13,4,'10:00:00','17:00:00'),(90,13,5,'09:00:00','18:00:00'),(91,13,6,'10:00:00','18:00:00'),(92,14,0,'10:00:00','17:00:00'),(93,14,1,'10:00:00','17:00:00'),(94,14,2,'10:00:00','17:00:00'),(95,14,3,'10:00:00','17:00:00'),(96,14,4,'09:00:00','17:00:00'),(97,14,5,'09:00:00','18:00:00'),(98,14,6,'10:00:00','19:00:00'),(99,15,0,'08:00:00','18:00:00'),(100,15,1,'10:00:00','19:00:00'),(101,15,2,'09:00:00','17:00:00'),(102,15,3,'08:00:00','18:00:00'),(103,15,4,'10:00:00','17:00:00'),(104,15,5,'09:00:00','19:00:00'),(105,15,6,'09:00:00','17:00:00'),(106,16,0,'08:00:00','19:00:00'),(107,16,1,'08:00:00','18:00:00'),(108,16,2,'08:00:00','17:00:00'),(109,16,3,'08:00:00','18:00:00'),(110,16,4,'09:00:00','18:00:00'),(111,16,5,'10:00:00','19:00:00'),(112,16,6,'09:00:00','18:00:00'),(113,17,0,'10:00:00','19:00:00'),(114,17,1,'10:00:00','18:00:00'),(115,17,2,'08:00:00','17:00:00'),(116,17,3,'08:00:00','19:00:00'),(117,17,4,'09:00:00','17:00:00'),(118,17,5,'10:00:00','19:00:00'),(119,17,6,'10:00:00','19:00:00'),(120,18,0,'10:00:00','17:00:00'),(121,18,1,'10:00:00','18:00:00'),(122,18,2,'08:00:00','18:00:00'),(123,18,3,'10:00:00','17:00:00'),(124,18,4,'08:00:00','17:00:00'),(125,18,5,'10:00:00','19:00:00'),(126,18,6,'08:00:00','19:00:00'),(127,19,0,'08:00:00','17:00:00'),(128,19,1,'10:00:00','19:00:00'),(129,19,2,'10:00:00','17:00:00'),(130,19,3,'09:00:00','17:00:00'),(131,19,4,'10:00:00','17:00:00'),(132,19,5,'10:00:00','18:00:00'),(133,19,6,'09:00:00','18:00:00'),(134,20,0,'08:00:00','18:00:00'),(135,20,1,'08:00:00','19:00:00'),(136,20,2,'08:00:00','18:00:00'),(137,20,3,'09:00:00','19:00:00'),(138,20,4,'09:00:00','17:00:00'),(139,20,5,'08:00:00','17:00:00'),(140,20,6,'10:00:00','19:00:00'),(141,21,0,'10:00:00','18:00:00'),(142,21,1,'09:00:00','18:00:00'),(143,21,2,'08:00:00','19:00:00'),(144,21,3,'08:00:00','19:00:00'),(145,21,4,'08:00:00','17:00:00'),(146,21,5,'10:00:00','17:00:00'),(147,21,6,'08:00:00','17:00:00'),(148,22,0,'10:00:00','18:00:00'),(149,22,1,'10:00:00','18:00:00'),(150,22,2,'10:00:00','19:00:00'),(151,22,3,'08:00:00','17:00:00'),(152,22,4,'09:00:00','19:00:00'),(153,22,5,'08:00:00','19:00:00'),(154,22,6,'10:00:00','19:00:00'),(155,23,0,'08:00:00','17:00:00'),(156,23,1,'10:00:00','19:00:00'),(157,23,2,'10:00:00','19:00:00'),(158,23,3,'08:00:00','19:00:00'),(159,23,4,'10:00:00','18:00:00'),(160,23,5,'10:00:00','19:00:00'),(161,23,6,'08:00:00','17:00:00'),(162,24,0,'10:00:00','17:00:00'),(163,24,1,'09:00:00','17:00:00'),(164,24,2,'09:00:00','19:00:00'),(165,24,3,'09:00:00','19:00:00'),(166,24,4,'08:00:00','19:00:00'),(167,24,5,'09:00:00','19:00:00'),(168,24,6,'08:00:00','19:00:00'),(169,25,0,'10:00:00','19:00:00'),(170,25,1,'09:00:00','18:00:00'),(171,25,2,'09:00:00','18:00:00'),(172,25,3,'10:00:00','18:00:00'),(173,25,4,'09:00:00','17:00:00'),(174,25,5,'08:00:00','17:00:00'),(175,25,6,'09:00:00','19:00:00'),(176,26,0,'10:00:00','19:00:00'),(177,26,1,'08:00:00','18:00:00'),(178,26,2,'10:00:00','17:00:00'),(179,26,3,'10:00:00','19:00:00'),(180,26,4,'10:00:00','17:00:00'),(181,26,5,'10:00:00','18:00:00'),(182,26,6,'10:00:00','19:00:00'),(183,27,0,'09:00:00','18:00:00'),(184,27,1,'09:00:00','19:00:00'),(185,27,2,'08:00:00','19:00:00'),(186,27,3,'10:00:00','19:00:00'),(187,27,4,'08:00:00','18:00:00'),(188,27,5,'09:00:00','19:00:00'),(189,27,6,'10:00:00','18:00:00'),(190,28,0,'08:00:00','17:00:00'),(191,28,1,'08:00:00','19:00:00'),(192,28,2,'10:00:00','18:00:00'),(193,28,3,'08:00:00','19:00:00'),(194,28,4,'10:00:00','18:00:00'),(195,28,5,'10:00:00','19:00:00'),(196,28,6,'10:00:00','19:00:00'),(197,29,0,'09:00:00','17:00:00'),(198,29,1,'09:00:00','17:00:00'),(199,29,2,'08:00:00','18:00:00'),(200,29,3,'08:00:00','19:00:00'),(201,29,4,'10:00:00','17:00:00'),(202,29,5,'09:00:00','19:00:00'),(203,29,6,'10:00:00','17:00:00'),(204,30,0,'09:00:00','18:00:00'),(205,30,1,'08:00:00','19:00:00'),(206,30,2,'10:00:00','18:00:00'),(207,30,3,'10:00:00','19:00:00'),(208,30,4,'09:00:00','19:00:00'),(209,30,5,'08:00:00','17:00:00'),(210,30,6,'10:00:00','17:00:00'),(211,31,0,'10:00:00','17:00:00'),(212,31,1,'09:00:00','18:00:00'),(213,31,2,'08:00:00','17:00:00'),(214,31,3,'10:00:00','18:00:00'),(215,31,4,'09:00:00','19:00:00'),(216,31,5,'08:00:00','18:00:00'),(217,31,6,'08:00:00','19:00:00'),(218,32,0,'08:00:00','19:00:00'),(219,32,1,'09:00:00','18:00:00'),(220,32,2,'09:00:00','17:00:00'),(221,32,3,'08:00:00','17:00:00'),(222,32,4,'08:00:00','17:00:00'),(223,32,5,'10:00:00','19:00:00'),(224,32,6,'10:00:00','19:00:00'),(225,33,0,'09:00:00','17:00:00'),(226,33,1,'10:00:00','19:00:00'),(227,33,2,'09:00:00','17:00:00'),(228,33,3,'09:00:00','18:00:00'),(229,33,4,'10:00:00','17:00:00'),(230,33,5,'09:00:00','17:00:00'),(231,33,6,'10:00:00','19:00:00'),(232,34,0,'09:00:00','17:00:00'),(233,34,1,'08:00:00','18:00:00'),(234,34,2,'08:00:00','17:00:00'),(235,34,3,'10:00:00','18:00:00'),(236,34,4,'09:00:00','18:00:00'),(237,34,5,'10:00:00','19:00:00'),(238,34,6,'10:00:00','19:00:00'),(239,35,0,'09:00:00','17:00:00'),(240,35,1,'08:00:00','18:00:00'),(241,35,2,'09:00:00','17:00:00'),(242,35,3,'08:00:00','18:00:00'),(243,35,4,'08:00:00','17:00:00'),(244,35,5,'08:00:00','18:00:00'),(245,35,6,'10:00:00','17:00:00'),(246,36,0,'09:00:00','18:00:00'),(247,36,1,'08:00:00','18:00:00'),(248,36,2,'08:00:00','19:00:00'),(249,36,3,'08:00:00','17:00:00'),(250,36,4,'08:00:00','18:00:00'),(251,36,5,'09:00:00','18:00:00'),(252,36,6,'08:00:00','18:00:00'),(253,37,0,'08:00:00','18:00:00'),(254,37,1,'08:00:00','19:00:00'),(255,37,2,'10:00:00','19:00:00'),(256,37,3,'08:00:00','17:00:00'),(257,37,4,'09:00:00','18:00:00'),(258,37,5,'08:00:00','18:00:00'),(259,37,6,'10:00:00','18:00:00'),(260,38,0,'08:00:00','17:00:00'),(261,38,1,'08:00:00','19:00:00'),(262,38,2,'09:00:00','19:00:00'),(263,38,3,'09:00:00','17:00:00'),(264,38,4,'08:00:00','19:00:00'),(265,38,5,'10:00:00','17:00:00'),(266,38,6,'09:00:00','18:00:00'),(267,39,0,'10:00:00','17:00:00'),(268,39,1,'08:00:00','18:00:00'),(269,39,2,'10:00:00','18:00:00'),(270,39,3,'08:00:00','19:00:00'),(271,39,4,'08:00:00','17:00:00'),(272,39,5,'09:00:00','18:00:00'),(273,39,6,'09:00:00','18:00:00'),(274,40,0,'08:00:00','18:00:00'),(275,40,1,'09:00:00','19:00:00'),(276,40,2,'09:00:00','19:00:00'),(277,40,3,'09:00:00','17:00:00'),(278,40,4,'09:00:00','17:00:00'),(279,40,5,'08:00:00','17:00:00'),(280,40,6,'08:00:00','18:00:00'),(281,41,0,'08:00:00','19:00:00'),(282,41,1,'08:00:00','17:00:00'),(283,41,2,'08:00:00','17:00:00'),(284,41,3,'08:00:00','17:00:00'),(285,41,4,'09:00:00','18:00:00'),(286,41,5,'08:00:00','17:00:00'),(287,41,6,'10:00:00','18:00:00'),(288,42,0,'09:00:00','18:00:00'),(289,42,1,'10:00:00','18:00:00'),(290,42,2,'10:00:00','17:00:00'),(291,42,3,'09:00:00','17:00:00'),(292,42,4,'09:00:00','18:00:00'),(293,42,5,'09:00:00','18:00:00'),(294,42,6,'08:00:00','19:00:00'),(295,43,0,'10:00:00','17:00:00'),(296,43,1,'08:00:00','18:00:00'),(297,43,2,'08:00:00','17:00:00'),(298,43,3,'08:00:00','17:00:00'),(299,43,4,'09:00:00','19:00:00'),(300,43,5,'10:00:00','17:00:00'),(301,43,6,'10:00:00','18:00:00'),(302,44,0,'10:00:00','18:00:00'),(303,44,1,'08:00:00','19:00:00'),(304,44,2,'09:00:00','18:00:00'),(305,44,3,'09:00:00','18:00:00'),(306,44,4,'09:00:00','18:00:00'),(307,44,5,'08:00:00','19:00:00'),(308,44,6,'08:00:00','19:00:00'),(309,45,0,'10:00:00','18:00:00'),(310,45,1,'09:00:00','18:00:00'),(311,45,2,'10:00:00','19:00:00'),(312,45,3,'09:00:00','17:00:00'),(313,45,4,'10:00:00','19:00:00'),(314,45,5,'10:00:00','17:00:00'),(315,45,6,'10:00:00','19:00:00'),(316,46,0,'08:00:00','18:00:00'),(317,46,1,'08:00:00','18:00:00'),(318,46,2,'08:00:00','18:00:00'),(319,46,3,'10:00:00','17:00:00'),(320,46,4,'09:00:00','17:00:00'),(321,46,5,'08:00:00','17:00:00'),(322,46,6,'10:00:00','17:00:00'),(323,47,0,'09:00:00','19:00:00'),(324,47,1,'10:00:00','19:00:00'),(325,47,2,'08:00:00','18:00:00'),(326,47,3,'08:00:00','19:00:00'),(327,47,4,'09:00:00','18:00:00'),(328,47,5,'08:00:00','19:00:00'),(329,47,6,'10:00:00','19:00:00'),(330,48,0,'09:00:00','18:00:00'),(331,48,1,'08:00:00','17:00:00'),(332,48,2,'10:00:00','17:00:00'),(333,48,3,'09:00:00','17:00:00'),(334,48,4,'09:00:00','19:00:00'),(335,48,5,'09:00:00','18:00:00'),(336,48,6,'09:00:00','18:00:00'),(337,49,0,'10:00:00','19:00:00'),(338,49,1,'09:00:00','17:00:00'),(339,49,2,'08:00:00','19:00:00'),(340,49,3,'09:00:00','19:00:00'),(341,49,4,'08:00:00','17:00:00'),(342,49,5,'09:00:00','19:00:00'),(343,49,6,'10:00:00','18:00:00'),(344,50,0,'10:00:00','19:00:00'),(345,50,1,'09:00:00','19:00:00'),(346,50,2,'09:00:00','18:00:00'),(347,50,3,'09:00:00','17:00:00'),(348,50,4,'08:00:00','18:00:00'),(349,50,5,'09:00:00','19:00:00'),(350,50,6,'10:00:00','19:00:00');
+/*!40000 ALTER TABLE `working_hours` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'glamify_me_db'
+--
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-06-12 19:34:02
