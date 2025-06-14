@@ -5,17 +5,37 @@ const db = require("./config/db");
 require("dotenv").config();
 const cron = require("node-cron");
 const appointmentController = require("./controllers/appointmentControllers");
+const auth = require("./config/auth");
 
 app.use(express.json());
 
 // Enable CORS
-app.use(
-  cors({
-    origin: "http://localhost:5173", // Allow requests from your frontend
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
-    credentials: true, // Allow cookies if needed
-  })
-);
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'cache-control', 'pragma', 'Accept'],
+  exposedHeaders: ['Set-Cookie']
+}));
+
+// Enable trust proxy - CRITICAL for secure cookies behind a proxy
+app.set('trust proxy', 1);
+
+// Session configuration
+app.use(session({ 
+  secret: auth.jwtSecret, 
+  resave: true,
+  saveUninitialized: true,
+  name: 'session_name', 
+  cookie: {
+    secure: true, 
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000,
+    sameSite: 'none',
+    path: '/'
+  },
+  proxy: true
+}));
 
 const userRoutes = require("./routes/api/v1/gen/users");
 const supportRequestRoutes = require("./routes/api/v1/gen/supportRequests");

@@ -23,7 +23,7 @@ import Invoice from "./pages/Invoice.jsx";
 import EmailVerification from "./pages/EmailVerification.jsx";
 import { Toaster } from "react-hot-toast";
 
-import "./app.css";
+import "./App.css";
 
 function App() {
   const location = useLocation();
