@@ -50,6 +50,10 @@ const Appointment = () => {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  },[]);
+
+  useEffect(() => {
     if (!user) {
       if (!window.__loginToastShown) {
         toast.error("You need to be logged in to make an appointment.");

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { FiChevronDown, FiChevronUp, FiCheck } from "react-icons/fi";
 
 const ServicesList = ({ servicesByCategory, salonId }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [expandedCategories, setExpandedCategories] = useState({});
 
   const [selectedServices, setSelectedServices] = useState(
     location.state?.existingServices || []
@@ -34,6 +36,13 @@ const ServicesList = ({ servicesByCategory, salonId }) => {
           )
         );
       }
+
+      // Initialize expanded categories state - all collapsed by default
+      const initialExpandedState = Object.keys(servicesByCategory).reduce((acc, category) => {
+        acc[category] = false;
+        return acc;
+      }, {});
+      setExpandedCategories(initialExpandedState);
     }
   }, [servicesByCategory, location.state?.existingServices]);
 
@@ -55,6 +64,17 @@ const ServicesList = ({ servicesByCategory, salonId }) => {
         return [...prevSelected, serviceToToggle];
       }
     });
+  };
+
+  const toggleCategory = (category) => {
+    setExpandedCategories(prev => ({
+      ...prev,
+      [category]: !prev[category]
+    }));
+  };
+
+  const isServiceSelected = (serviceId) => {
+    return selectedServices.some(selected => selected.id === serviceId);
   };
 
   const handleProceedToAppointment = () => {
@@ -81,76 +101,89 @@ const ServicesList = ({ servicesByCategory, salonId }) => {
   }
 
   return (
-    <div className="ml-4 md:ml-8 mt-8 mb-16">
-      {Object.entries(servicesByCategory).map(([category, services]) => {
-        if (!services || services.length === 0) {
-          return null;
-        }
-        return (
-          <div key={category} className="mb-6">
-            <h1 className="text-xl md:text-2xl font-semibold text-gray-800 mb-3 ml-8 md:ml-12">
-              {category}
-            </h1>
-            {services.map((service) => {
-              if (typeof service.id === "undefined") {
-                console.warn(
-                  "Service with undefined ID found, skipping render:",
-                  service
-                );
-                return null; // Skip rendering this service to prevent errors
-              }
+    <div className="mx-4 md:mx-8 mt-8 mb-16 ">
+      <div className="space-y-4">
+        {Object.entries(servicesByCategory).map(([category, services]) => {
+          if (!services || services.length === 0) {
+            return null;
+          }
+          
+          return (
+            <div 
+              key={category}
+              className="bg-white overflow-hidden py-2 border-b border-gray-200" 
+            >
+              {/* Category header - clickable to expand/collapse */}
+              <div 
+                className="p-4 flex justify-between items-center cursor-pointer w-full"
+                onClick={() => toggleCategory(category)}
+              >
+                <h3 className="font-medium text-xl text-gray-800">{category}</h3>
+                {expandedCategories[category] ? (
+                  <FiChevronUp className="text-gray-800" />
+                ) : (
+                  <FiChevronDown className="text-gray-800" />
+                )}
+              </div>
 
-              return (
-                <div
-                  key={service.id}
-                  className="flex justify-between items-center border-b border-gray-200 py-3 pr-4 md:mr-24 ml-10 md:ml-16  transition-colors duration-150 rounded-md"
-                >
-                  <div className="flex items-center flex-grow">
-                    <input
-                      type="checkbox"
-                      id={`service-${service.id}`}
-                      className="w-4 h-4 accent-pink-500 bg-gray-100 border-gray-300 rounded-sm focus:ring-pink-500 dark:focus:ring-pink-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
-                      checked={selectedServices.some(
-                        (s) => s.id === service.id
-                      )}
-                      onChange={() => handleServiceToggle(service)}
-                    />
-                    <label
-                      htmlFor={`service-${service.id}`}
-                      className="ml-3 flex flex-col flex-grow cursor-pointer"
-                      onClick={(e) => {
-                        // Allow clicking label to toggle checkbox
-                        e.stopPropagation();
-                        handleServiceToggle(service);
-                      }}
-                    >
-                      <p className="font-medium text-gray-800">
-                        {service.name}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        Duration: {service.duration_minutes || service.duration}{" "}
-                        mins
-                      </p>
-                    </label>
-                  </div>
-                  <div className="text-right text-gray-700 font-semibold pr-2">
-                    ${parseFloat(service.price).toFixed(2)}
-                  </div>
+              {/* Services in this category */}
+              {expandedCategories[category] && (
+                <div className="p-4">
+                  {services.map((service) => {
+                    if (typeof service.id === "undefined") {
+                      console.warn(
+                        "Service with undefined ID found, skipping render:",
+                        service
+                      );
+                      return null; // Skip rendering this service to prevent errors
+                    }
+
+                    return (
+                      <div 
+                        key={service.id}
+                        className={`p-3 border-b border-gray-100 last:border-b-0 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition-colors ${
+                          isServiceSelected(service.id) ? 'bg-gray-100' : ''
+                        }`}
+                        onClick={() => handleServiceToggle(service)}
+                      >
+                        <div className="flex-1">
+                          <div className="font-medium text-gray-700">{service.name}</div>
+                          <div className="text-sm text-gray-500">Duration: {service.duration_minutes || service.duration} mins</div>
+                        </div>
+                        <div className="flex items-center">
+                          <div className="font-medium text-gray-800 mr-3">${parseFloat(service.price).toFixed(2)}</div>
+                          {isServiceSelected(service.id) && (
+                            <div className="bg-pink-500 text-white rounded-full p-1">
+                              <FiCheck size={14} />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              );
-            })}
-          </div>
-        );
-      })}
+              )}
+            </div>
+          );
+        })}
+      </div>
 
       {selectedServices.length > 0 && (
-        <div className="mt-10 text-center px-4 md:px-0">
+        <div className="mt-2 text-center px-4 md:px-0">
+          
+            <div className="flex justify-end items-center p-8">
+              <span className="font-medium text-gary-800 text-xl">
+                Total: ${selectedServices.reduce((sum, service) => 
+                  sum + parseFloat(service.price), 0).toFixed(2)}
+              </span>
+            </div>
+          
+          
           <button
             onClick={handleProceedToAppointment}
-            className="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105"
+            className="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 mt-4"
           >
-            Proceed to Book ({selectedServices.length} service
-            {selectedServices.length !== 1 ? "s" : ""})
+            Make an Appointment
           </button>
         </div>
       )}

@@ -6,11 +6,16 @@ import SalonProfileHeader from "../components/SalonProfileHeader";
 import ServicesList from "../components/ServicesList";
 import AboutSalon from "../components/AboutSalon";
 import Reviews from "../components/Reviews";
+import ServiceCategoryList from "../components/ServiceCategoryList";
 
 const SalonProfile = () => {
   const { salonId } = useParams();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState("pricing");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -24,7 +29,7 @@ const SalonProfile = () => {
     loading: salonLoading,
     error: salonError,
   } = useFetchSalonById(salonId);
-  
+
   const {
     servicesByCategory,
     loading: servicesLoading,
@@ -61,7 +66,10 @@ const SalonProfile = () => {
         setActiveTab={setActiveTab}
       />
       {activeTab === "pricing" && (
-        <ServicesList servicesByCategory={servicesByCategory} salonId={salonId} />
+        <ServicesList
+          servicesByCategory={servicesByCategory}
+          salonId={salonId}
+        />
       )}
       {activeTab === "about" && <AboutSalon salon={salon} />}
       {activeTab === "reviews" && <Reviews salonId={salonId} />}

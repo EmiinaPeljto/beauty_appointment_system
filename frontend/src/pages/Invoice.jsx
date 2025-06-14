@@ -1,6 +1,7 @@
 import useFetchInvoice from "../hooks/useFetchInvoice";
 import { useParams, Link } from "react-router-dom";
 import { FiCheckCircle, FiArrowLeft } from "react-icons/fi";
+import { useEffect } from "react";
 
 // Helper to format ISO date string to YYYY-MM-DD
 function formatDateToYYYYMMDD(dateString) {
@@ -11,6 +12,10 @@ function formatDateToYYYYMMDD(dateString) {
 const Invoice = () => {
   const { appointment_id } = useParams();
   const { invoice, loading, error } = useFetchInvoice(appointment_id);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (loading)
     return (
@@ -101,13 +106,13 @@ const Invoice = () => {
         <div className="flex flex-col items-center">
           <Link
             to="/profile"
-            className="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-6 rounded-lg shadow transition mb-3"
+            className="bg-[#F178B6] hover:bg-[#FF66B2] text-white font-semibold py-2 px-6 rounded-lg shadow transition mb-3"
           >
             View My Appointments
           </Link>
           <Link
             to="/"
-            className="flex items-center text-pink-600 hover:text-pink-800 transition"
+            className="flex items-center text-[#F178B6] hover:text-[#FF66B2] transition"
           >
             <FiArrowLeft className="mr-2" /> Back to Home
           </Link>
