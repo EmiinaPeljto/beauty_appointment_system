@@ -71,14 +71,14 @@ const EmptyAppointmentsState = () => {
       
       <h3 className="text-xl font-semibold text-gray-800 mb-3">No Appointments Yet</h3>
       
-      <p className="text-gray-600 mb-6">
+      <p className="text-gray-400 mb-6">
         You don't have any upcoming appointments. 
         Book a service with one of our beauty professionals today!
       </p>
       
       <button 
         onClick={() => navigate('/services')}
-        className="bg-[#FF66B2] hover:bg-[#ff4da6] text-white font-medium py-3 px-6 rounded-lg shadow-md flex items-center justify-center mx-auto transition-transform hover:scale-105"
+        className="bg-[#F178B6] hover:bg-[#FF66B2] text-white font-medium py-3 px-6 rounded-lg shadow-md flex items-center justify-center mx-auto transition-transform hover:scale-105"
       >
         Book Your Appointment <FiArrowRight className="ml-2" />
       </button>
