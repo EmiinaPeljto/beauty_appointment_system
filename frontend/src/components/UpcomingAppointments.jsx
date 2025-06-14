@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useCancelAppointment from "../hooks/useCancelAppointment";
 import { getUser } from "../utils/auth";
 import ConfirmationModal from "./CancelAppointmentModal";
 import useFetchInvoice from "../hooks/useFetchInvoice";
+import { FiCalendar, FiArrowRight } from "react-icons/fi";
 
 // Helper to format ISO date string to YYYY-MM-DD
 const toDateOnly = (isoString) => (isoString ? isoString.slice(0, 10) : "");
@@ -57,6 +59,29 @@ const AppointmentCard = ({
           </button>
         )}
       </div>
+    </div>
+  );
+};
+
+const EmptyAppointmentsState = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="bg-white shadow-md rounded-2xl p-8 text-center mt-4">
+      
+      <h3 className="text-xl font-semibold text-gray-800 mb-3">No Appointments Yet</h3>
+      
+      <p className="text-gray-600 mb-6">
+        You don't have any upcoming appointments. 
+        Book a service with one of our beauty professionals today!
+      </p>
+      
+      <button 
+        onClick={() => navigate('/services')}
+        className="bg-[#FF66B2] hover:bg-[#ff4da6] text-white font-medium py-3 px-6 rounded-lg shadow-md flex items-center justify-center mx-auto transition-transform hover:scale-105"
+      >
+        Book Your Appointment <FiArrowRight className="ml-2" />
+      </button>
     </div>
   );
 };
@@ -227,9 +252,7 @@ const UpcomingAppointments = ({
       ) : error ? (
         <div className="text-red-500 text-center">{error}</div>
       ) : appointments.length === 0 ? (
-        <div className="text-gray-500 text-center">
-          No upcoming appointments.
-        </div>
+        <EmptyAppointmentsState />
       ) : (
         appointments.map((appt, idx) => (
           <AppointmentCard
