@@ -5,6 +5,9 @@ import { useAuth } from "../contexts/AuthContext";
 import SupportRequestForm from "./SupportRequestForm";
 
 const faqs = [
+
+
+
   {
     question: "How do I book an appointment?",
     answer:

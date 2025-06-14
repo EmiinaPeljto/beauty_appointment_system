@@ -7,10 +7,39 @@ exports.addReview = async (salon_id, user_id, rating, review_text) => {
   );
   return rows;
 };
+exports.getReviewById = async (review_id) => {
+  const [rows] = await db.query("SELECT * FROM reviews WHERE id = ?", [
+    review_id,
+  ]);
+  return rows.length > 0 ? rows[0] : null;
+};
+
+// Update the deleteReview function for better error handling:
+exports.deleteReview = async (review_id) => {
+  try {
+    // Perform deletion
+    const [result] = await db.query(
+      "DELETE FROM reviews WHERE id = ?",
+      [review_id]
+    );
+
+    if (result.affectedRows === 0) {
+      throw new Error("Failed to delete review");
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Database error during review deletion:", error);
+    throw error;
+  }
+};
+
 
 exports.getReviewBySalonId = async (salon_id) => {
   const [rows] = await db.query(
     `SELECT 
+            r.id,
+            r.user_id,
             CONCAT(u.first_name, ' ', u.last_name) AS user_name, 
             u.profile_image, 
             r.rating, 

@@ -1,25 +1,6 @@
-import React, { useEffect } from "react";
 import FAQ from "../components/FAQ";
-import { useAuth } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
-
-
 
 const Help = () => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!user) {
-      localStorage.setItem(
-        "redirectAfterLogin",
-        JSON.stringify({ path: "/help" })
-      );
-      navigate("/login");
-    }
-  }, [user, navigate]);
-
-  if (!user) return null;
   return (
     <>
       <div className="relative isolate bg-white px-6 pt-14 lg:px-8">

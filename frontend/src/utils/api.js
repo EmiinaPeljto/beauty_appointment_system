@@ -3,12 +3,6 @@ import { getToken } from './auth';
 // API base URL
 const API_BASE_URL = 'http://localhost:3000/api/v1/gen';
 
-/**
- * Custom fetch function that includes the JWT token in the Authorization header
- * @param {string} url - The API endpoint
- * @param {Object} options - Fetch options
- * @returns {Promise} - The fetch promise
- */
 const apiFetch = async (url, options = {}) => {
   // Get the token from localStorage
   const token = getToken();
@@ -50,16 +44,9 @@ const apiFetch = async (url, options = {}) => {
   return await response.json();
 };
 
-/**
- * API utility methods
- */
+
 const api = {
-  /**
-   * Send GET request
-   * @param {string} url - The API endpoint
-   * @param {Object} options - Additional fetch options
-   * @returns {Promise} - The fetch promise
-   */
+ 
   get: (url, options = {}) => {
     return apiFetch(url, {
       method: 'GET',
@@ -67,13 +54,6 @@ const api = {
     });
   },
   
-  /**
-   * Send POST request
-   * @param {string} url - The API endpoint
-   * @param {Object} data - Request body data
-   * @param {Object} options - Additional fetch options
-   * @returns {Promise} - The fetch promise
-   */
   post: (url, data = {}, options = {}) => {
     return apiFetch(url, {
       method: 'POST',
@@ -82,13 +62,7 @@ const api = {
     });
   },
   
-  /**
-   * Send PUT request
-   * @param {string} url - The API endpoint
-   * @param {Object} data - Request body data
-   * @param {Object} options - Additional fetch options
-   * @returns {Promise} - The fetch promise
-   */
+
   put: (url, data = {}, options = {}) => {
     return apiFetch(url, {
       method: 'PUT',
@@ -96,13 +70,7 @@ const api = {
       ...options
     });
   },
-  
-  /**
-   * Send DELETE request
-   * @param {string} url - The API endpoint
-   * @param {Object} options - Additional fetch options
-   * @returns {Promise} - The fetch promise
-   */
+
   delete: (url, options = {}) => {
     return apiFetch(url, {
       method: 'DELETE',

@@ -47,6 +47,16 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+            <Route
+              path="/invoice/:appointment_id"
+              element={
+                <ProtectedRoute>
+                  <Invoice />
+                </ProtectedRoute>
+              }
+            />
+
             <Route path="/login" element={<LogIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/help" element={<Help />} />
@@ -55,7 +65,10 @@ function App() {
             <Route path="/appointment" element={<Appointment />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
-            <Route path="/invoice/:appointment_id" element={<Invoice />}></Route>
+            <Route
+              path="/invoice/:appointment_id"
+              element={<Invoice />}
+            ></Route>
             <Route path="/email-verification" element={<EmailVerification />} />
           </Routes>
         </div>

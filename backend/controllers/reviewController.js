@@ -18,6 +18,47 @@ exports.addReview = async (req, res) => {
   }
 };
 
+exports.deleteReview = async (req, res) => {
+  try {
+    const { review_id } = req.params;
+
+    console.log(
+      `Controller: Delete request for review ID ${review_id} `
+    );
+
+    
+
+    if (!review_id) {
+      console.log("Missing review_id in request params");
+      return res.status(400).json({ message: "Review ID is required" });
+    }
+
+    try {
+      await reviewModel.deleteReview(review_id, );
+      console.log(`Review ${review_id} deleted successfully`);
+      return res.status(200).json({ message: "Review deleted successfully" });
+    } catch (modelError) {
+      console.error("Model error:", modelError.message);
+
+      // Check for specific error types
+      if (
+        modelError.message.includes("not found") ||
+        modelError.message.includes("permission")
+      ) {
+        return res.status(403).json({ message: modelError.message });
+      }
+
+      throw modelError; // Re-throw for the outer catch block
+    }
+  } catch (error) {
+    console.error("Controller error deleting review:", error);
+    return res.status(500).json({
+      message: "Failed to delete review",
+      error: error.message,
+    });
+  }
+};
+
 exports.getReviewBySalonId = async (req, res) => {
   try {
     const { salon_id } = req.params;
@@ -36,12 +77,10 @@ exports.averageRating = async (req, res) => {
   try {
     const { salon_id } = req.params;
     const averageRating = await reviewModel.averageRating(salon_id);
-    res
-      .status(200)
-      .json({
-        message: "Average rating fetched successfully",
-        data: averageRating,
-      });
+    res.status(200).json({
+      message: "Average rating fetched successfully",
+      data: averageRating,
+    });
   } catch (error) {
     res
       .status(500)

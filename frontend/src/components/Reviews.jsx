@@ -46,6 +46,13 @@ const Reviews = ({ salonId }) => {
     }
   };
 
+  // Handle review deletion
+  const handleDeleteReview = (deletedReviewId) => {
+    console.log("Review deleted:", deletedReviewId);
+    // Refresh the reviews list
+    setRefreshFlag(prev => !prev);
+  };
+
   return (
     <div className="relative px-6 md:px-12 mt-12 mb-16">
       <div className="flex flex-col items-center mb-8">
@@ -70,7 +77,11 @@ const Reviews = ({ salonId }) => {
             </p>
           )}
           {reviews.map((review, idx) => (
-            <ReviewCard key={idx} review={review} />
+            <ReviewCard 
+              key={review.id || idx} 
+              review={review}
+              onDelete={handleDeleteReview}
+            />
           ))}
         </div>
 
