@@ -106,7 +106,17 @@ exports.getAvailableTimeSlots = async (req, res) => {
     );
 
     // 3. Filter out booked slots
-    const availableSlots = slots.filter((slot) => !bookedTimes.includes(slot));
+    const now = moment();
+    const isToday = now.format("YYYY-MM-DD") === date;
+
+    const availableSlots = slots.filter((slot) => {
+      if (bookedTimes.includes(slot)) return false;
+      if (isToday) {
+        const slotTime = moment(`${date} ${slot}`, "YYYY-MM-DD HH:mm");
+        return slotTime.isAfter(now);
+      }
+      return true;
+    });
 
     res.status(200).json({ slots: availableSlots });
   } catch (error) {

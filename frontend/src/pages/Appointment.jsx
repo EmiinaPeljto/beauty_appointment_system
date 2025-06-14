@@ -44,6 +44,11 @@ const Appointment = () => {
     0
   );
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    sessionStorage.setItem("selectedDate", date);
+  }
+
   useEffect(() => {
     if (!user) {
       if (!window.__loginToastShown) {
@@ -133,6 +138,8 @@ const Appointment = () => {
     );
   }
 
+
+
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto max-w-4xl">
@@ -151,7 +158,7 @@ const Appointment = () => {
         <div className="grid md:grid-cols-2 gap-8 mb-10">
           <CalendarComponent
             selectedDate={selectedDate}
-            onDateChange={setSelectedDate}
+            onDateChange={handleDateChange}
             availableDates={availableDates}
           />
           <TimeSlotComponent
