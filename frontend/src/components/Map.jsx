@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import axios from "axios";
-import mapApiKey from "../utils/mapAPI"; // Import the API key
+//import mapApiKey from "../utils/mapAPI"; // Import the API key
 
 const SalonMap = ({ location }) => {
   const [position, setPosition] = useState(null);
@@ -10,7 +10,7 @@ const SalonMap = ({ location }) => {
     const fetchCoordinates = async () => {
       try {
         const response = await axios.get(
-          `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(location)}&key=${mapApiKey}`
+          `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(location)}&key=${process.env.MAP_API_KEY}`
         );
         const { lat, lng } = response.data.results[0].geometry;
         setPosition([lat, lng]);
