@@ -2,6 +2,12 @@ const appointmentModel = require("../models/appointmentModels");
 const invoiceModel = require("../models/invoiceModels");
 const db = require("../config/db");
 
+const APPOINTMENT_STATUS = {
+  UPCOMING: "upcoming",
+  COMPLETED: "Completed",
+  CANCELLED: "cancelled",
+};
+
 exports.getAppointmentsByStatus = async (req, res) => {
   try {
     const { user_id, status } = req.params;
@@ -26,6 +32,31 @@ exports.getAppointmentsByStatus = async (req, res) => {
     res
       .status(500)
       .json({ message: "Internal server error while fetching appointments." });
+  }
+};
+
+exports.updatePastAppointments = async (req, res) => {
+  try {
+    const updatedCount = await appointmentModel.updatePastAppointments();
+
+    // Check if called as API endpoint or programmatically
+    if (res && !res.headersSent) {
+      return res.status(200).json({
+        message: `Updated ${updatedCount} appointments to Completed status`,
+      });
+    }
+
+    return updatedCount;
+  } catch (error) {
+    console.error("Error updating past appointments:", error);
+
+    if (res && !res.headersSent) {
+      return res
+        .status(500)
+        .json({ message: "Failed to update appointments status" });
+    }
+
+    return 0;
   }
 };
 
@@ -144,11 +175,9 @@ exports.cancelAppointment = async (req, res) => {
     );
 
     if (!appointment) {
-      return res
-        .status(404)
-        .json({
-          message: "Appointment not found or does not belong to this user.",
-        });
+      return res.status(404).json({
+        message: "Appointment not found or does not belong to this user.",
+      });
     }
 
     if (appointment.status === "canceled") {
@@ -174,19 +203,15 @@ exports.cancelAppointment = async (req, res) => {
     if (canceled) {
       res.status(200).json({ message: "Appointment canceled successfully." });
     } else {
-      res
-        .status(500)
-        .json({
-          message: "Failed to cancel the appointment. Please try again.",
-        });
+      res.status(500).json({
+        message: "Failed to cancel the appointment. Please try again.",
+      });
     }
   } catch (error) {
     console.error("Error canceling appointment: ", error);
-    res
-      .status(500)
-      .json({
-        message: "Internal server error while canceling appointment.",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Internal server error while canceling appointment.",
+      error: error.message,
+    });
   }
 };

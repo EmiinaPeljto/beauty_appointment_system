@@ -5,6 +5,7 @@ import CompletedAppointments from "../components/CompletedAppointments";
 import Likes from "../components/Likes";
 import { useAuth } from "../contexts/AuthContext";
 import useUpcomingAppointments from "../hooks/useUpcomingAppointments";
+import useCompletedAppointments from "../hooks/useCompletedAppointments";
 import api from "../utils/api";
 
 const Profile = () => {
@@ -25,13 +26,20 @@ const Profile = () => {
     fetchUserDetails();
   }, [user]);
 
-  // Use the hook to fetch upcoming appointments
+  // Use the hooks to fetch appointments
   const {
-    appointments,
-    loading: apptLoading,
-    error: apptError,
-    refetch
+    appointments: upcomingAppointments,
+    loading: upcomingLoading,
+    error: upcomingError,
+    refetch: refetchUpcoming
   } = useUpcomingAppointments(userDetails?.id);
+
+  const {
+    appointments: completedAppointments,
+    loading: completedLoading,
+    error: completedError,
+    refetch: refetchCompleted
+  } = useCompletedAppointments(userDetails?.id);
 
   if (!userDetails) return <div>Loading...</div>;
 
@@ -40,14 +48,20 @@ const Profile = () => {
   if (activeTab === "Upcoming Appointments") {
     tabContent = (
       <UpcomingAppointments
-        appointments={appointments}
-        loading={apptLoading}
-        error={apptError}
-        refetch={refetch}
+        appointments={upcomingAppointments}
+        loading={upcomingLoading}
+        error={upcomingError}
+        refetch={refetchUpcoming}
       />
     );
   } else if (activeTab === "Completed Appointments") {
-    tabContent = <CompletedAppointments />;
+    tabContent = (
+      <CompletedAppointments
+        appointments={completedAppointments}
+        loading={completedLoading}
+        error={completedError}
+      />
+    );
   } else if (activeTab === "Likes") {
     tabContent = <Likes />;
   }
