@@ -8,6 +8,7 @@ import TimeSlotComponent from "../components/TimeSlotComponent";
 import { useAuth } from "../contexts/AuthContext";
 import toast from "react-hot-toast";
 import useBookAppointment from "../hooks/useBookAppointment";
+import { successToast, errorToast } from "../utils/toastUtils";
 
 const Appointment = () => {
   const location = useLocation();
@@ -47,11 +48,11 @@ const Appointment = () => {
   const handleDateChange = (date) => {
     setSelectedDate(date);
     sessionStorage.setItem("selectedDate", date);
-  }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  },[]);
+  }, []);
 
   useEffect(() => {
     if (!user) {
@@ -94,8 +95,18 @@ const Appointment = () => {
       time: selectedTime,
       service_id: selectedServices.map((s) => s.id),
     });
+
     if (result && result.appointment_id) {
-      navigate(`/invoice/${result.appointment_id}`);
+      // Use our custom toast utility
+      successToast("Appointment booked successfully!");
+
+      // Short delay before navigation
+      setTimeout(() => {
+        navigate(`/invoice/${result.appointment_id}`);
+      }, 1000);
+    } else {
+      // Use our custom toast utility for errors
+      errorToast("Failed to book appointment. Please try again.");
     }
   };
 
@@ -141,8 +152,6 @@ const Appointment = () => {
       </div>
     );
   }
-
-
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

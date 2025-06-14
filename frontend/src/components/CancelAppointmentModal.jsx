@@ -14,8 +14,7 @@ const CancelAppointmentModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 py-6 bg-black/40 backdrop-blur-sm">
-      {/* Modal */}
-      <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-xl p-6 animate-fade-in">
+      <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-lg p-6 animate-fade-in transform transition-all duration-300">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -28,10 +27,10 @@ const CancelAppointmentModal = ({
         </button>
 
         {/* Title */}
-        <h3 className="text-xl text-center font-semibold text-gray-800">{title}</h3>
+        <h3 className="text-xl font-semibold text-gray-800 text-center">{title}</h3>
 
         {/* Content */}
-        <div className="mt-4 text-sm text-center text-gray-600">
+        <div className="mt-4 text-sm text-gray-600 text-center leading-relaxed">
           {children}
         </div>
 
@@ -44,10 +43,11 @@ const CancelAppointmentModal = ({
           >
             {cancelText || "Cancel"}
           </button>
+
           <button
             onClick={onConfirm}
             disabled={isLoading}
-            className="w-full sm:w-auto rounded-full px-5 py-2.5 bg-[#F178B6] text-white hover:from-pink-600 hover:to-pink-700 transition disabled:opacity-70"
+            className="w-full sm:w-auto rounded-full px-5 py-2.5 bg-[#FF66B2] text-white hover:bg-[#E64A9F] transition disabled:opacity-70"
           >
             {isLoading ? (
               <div className="flex items-center justify-center gap-2">
@@ -67,13 +67,13 @@ const CancelAppointmentModal = ({
       {/* Animation style */}
       <style jsx>{`
         .animate-fade-in {
-          animation: fadeIn 0.25s ease-out;
+          animation: fadeIn 0.3s ease-out;
         }
 
         @keyframes fadeIn {
           from {
             opacity: 0;
-            transform: translateY(10px) scale(0.98);
+            transform: translateY(10px) scale(0.95);
           }
           to {
             opacity: 1;

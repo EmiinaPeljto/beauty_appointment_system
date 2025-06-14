@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
+import InvoiceModal from "./InvoiceModal";
 
 // Helper to format ISO date string to YYYY-MM-DD
 const toDateOnly = (isoString) => (isoString ? isoString.slice(0, 10) : "");
 
-const AppointmentCard = ({ id, salonName, date, time,  location }) => (
-  <div className="bg-white shadow-md hover:shadow-lg transition-shadow duration-200 rounded-2xl p-6 mb-5 flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+const AppointmentCard = ({ id, salonName, date, time, location, onClick }) => (
+  <div
+    className="bg-white shadow-md hover:shadow-lg transition-shadow duration-200 rounded-2xl p-6 mb-5 flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0 cursor-pointer"
+    onClick={onClick}
+  >
     <div>
       <h3 className="text-xl font-bold">{salonName}</h3>
       <p className="text-gray-700 mt-1">{location}</p>
@@ -21,9 +25,27 @@ const AppointmentCard = ({ id, salonName, date, time,  location }) => (
   </div>
 );
 
-const CompletedAppointments = ({ appointments = [], loading = false, error = null }) => {
+const CompletedAppointments = ({
+  appointments = [],
+  loading = false,
+  error = null,
+}) => {
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
+
+  const handleCardClick = (id) => {
+    setSelectedAppointmentId(id);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedAppointmentId(null);
+  };
+
   if (loading) {
-    return <div className="text-pink-500 text-center p-4">Loading appointments...</div>;
+    return (
+      <div className="text-pink-500 text-center p-4">
+        Loading appointments...
+      </div>
+    );
   }
 
   if (error) {
@@ -33,7 +55,9 @@ const CompletedAppointments = ({ appointments = [], loading = false, error = nul
   return (
     <div className="max-w-4xl mx-auto p-4">
       {appointments.length === 0 ? (
-        <div className="text-gray-500 text-center">No completed appointments.</div>
+        <div className="text-gray-500 text-center">
+          No completed appointments.
+        </div>
       ) : (
         appointments.map((appt, idx) => (
           <AppointmentCard
@@ -43,9 +67,16 @@ const CompletedAppointments = ({ appointments = [], loading = false, error = nul
             date={appt.date}
             time={appt.time}
             location={appt.location}
+            onClick={() => handleCardClick(appt.id)}
           />
         ))
       )}
+
+      <InvoiceModal
+        isOpen={!!selectedAppointmentId}
+        appointmentId={selectedAppointmentId}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };
