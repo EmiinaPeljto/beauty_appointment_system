@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 const useForgotPassword = () => {
   const [loading, setLoading] = useState(false);
@@ -11,17 +11,10 @@ const useForgotPassword = () => {
     setError(null);
     setSuccess(null);
     try {
-      const res = await axios.post(
-        "http://localhost:3000/api/v1/gen/users/forgot-password",
-        { email }
-      );
-      setSuccess(res.data.message || "Reset link sent! Please check your email.");
+      const res = await api.post("/users/forgot-password", { email });
+      setSuccess(res.message || "Reset link sent! Please check your email.");
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-        err.response?.data?.error ||
-        "Failed to send reset link."
-      );
+      setError(err.message || "Failed to send reset link.");
     } finally {
       setLoading(false);
     }

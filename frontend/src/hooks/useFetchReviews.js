@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import api from "../utils/api";
 
 const useFetchReviews = (salonId, refreshFlag = false) => {
   const [reviews, setReviews] = useState([]);
@@ -6,13 +7,19 @@ const useFetchReviews = (salonId, refreshFlag = false) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!salonId) return;
-    setLoading(true);
-    fetch(`http://localhost:3000/api/v1/gen/reviews/reviewBySalonId/${salonId}`)
-      .then((res) => res.json())
-      .then((data) => setReviews(data.data || []))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+    const fetchReviews = async () => {
+      if (!salonId) return;
+      setLoading(true);
+      try {
+        const data = await api.get(`/reviews/reviewBySalonId/${salonId}`);
+        setReviews(data.data || []);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReviews();
   }, [salonId, refreshFlag]);
 
   return { reviews, loading, error };

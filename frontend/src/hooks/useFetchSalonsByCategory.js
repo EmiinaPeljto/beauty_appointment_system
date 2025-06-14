@@ -1,41 +1,45 @@
 import { useState, useEffect } from "react";
+import api from "../utils/api";
 
-const useFetchSalonsByCategory = (categoryId) => {
-  const [salons, setSalons] = useState([]);
-  const [loading, setLoading] = useState(true);
+const useFetchSalonsByCategory = (categoryIds) => {
+  const [salonsData, setSalonsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchSalons = async () => {
+    const fetchAllSalons = async () => {
+      if (!categoryIds || categoryIds.length === 0) {
+        setIsLoading(false);
+        return;
+      }
+
       try {
-        const response = await fetch(`http://localhost:3000/api/v1/gen/salons/salonsByCategory/${categoryId}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch salons by category");
-        }
-        const data = await response.json();
-        console.log("Fetched salons: ", data);
+        const dataPromises = categoryIds.map(async (categoryId) => {
+          const salonsForCategory = await api.get(`/salons/salonsByCategory/${categoryId}`);
 
-        // Fetch average rating for each salon
-        const salonsWithRatings = await Promise.all(
-          data.map(async (salon) => {
-            const ratingResponse = await fetch(`http://localhost:3000/api/v1/gen/reviews/averageRating/${salon.id}`);
-            const ratingData = await ratingResponse.json();
-            return { ...salon, averageRating: ratingData.data || "N/A" }; // Add averageRating to each salon
-          })
-        );
+          const salonsWithRatings = await Promise.all(
+            salonsForCategory.map(async (salon) => {
+              const ratingData = await api.get(`/reviews/averageRating/${salon.id}`);
+              return { ...salon, averageRating: ratingData.data || "N/A" };
+            })
+          );
 
-        setSalons(salonsWithRatings);
+          return { categoryId, salons: salonsWithRatings };
+        });
+
+        const results = await Promise.all(dataPromises);
+        setSalonsData(results);
       } catch (err) {
         setError(err.message);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
-    fetchSalons();
-  }, [categoryId]);
+    fetchAllSalons();
+  }, [categoryIds]);
 
-  return { salons, loading, error };
+  return { salonsData, isLoading, error };
 };
 
 export default useFetchSalonsByCategory;

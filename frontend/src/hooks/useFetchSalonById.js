@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import api from "../utils/api";
 
 const useFetchSalonById = (salonId) => {
   const [salon, setSalon] = useState(null);
@@ -8,11 +9,7 @@ const useFetchSalonById = (salonId) => {
   useEffect(() => {
     const fetchSalon = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/v1/gen/salons/salonById/${salonId}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch salon data");
-        }
-        const data = await response.json();
+        const data = await api.get(`/salons/salonById/${salonId}`);
         setSalon(data);
       } catch (err) {
         setError(err.message);

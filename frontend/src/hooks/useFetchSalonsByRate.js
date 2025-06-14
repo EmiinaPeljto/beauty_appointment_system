@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 const useFetchBestRatedSalons = () => {
   const [salons, setSalons] = useState([]);
@@ -9,12 +9,10 @@ const useFetchBestRatedSalons = () => {
   useEffect(() => {
     const fetchBestRatedSalons = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3000/api/v1/gen/salons/bestRatedSalons"
-        );
-        setSalons(response.data);
+        const response = await api.get("/salons/bestRatedSalons");
+        setSalons(response);
       } catch (err) {
-        setError("Failed to fetch best-rated salons");
+        setError(err.message || "Failed to fetch best-rated salons");
       } finally {
         setLoading(false);
       }

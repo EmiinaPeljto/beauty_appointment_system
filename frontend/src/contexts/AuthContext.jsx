@@ -65,19 +65,7 @@ export const AuthProvider = ({ children }) => {
       setError(null);
       
       // Make a request to the login endpoint
-      const response = await fetch('http://localhost:3000/api/v1/gen/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
+      const data = await api.post('/users/login', { email, password });
       
       // Save token and user data
       setToken(data.token);
@@ -101,19 +89,7 @@ export const AuthProvider = ({ children }) => {
       setError(null);
       
       // Make a request to the register endpoint
-      const response = await fetch('http://localhost:3000/api/v1/gen/users/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Registration failed');
-      }
+      const data = await api.post('/users/register', userData);
       
       return data;
     } catch (err) {
@@ -130,6 +106,7 @@ export const AuthProvider = ({ children }) => {
     removeToken();
     removeUser();
     setCurrentUser(null);
+    
   };
 
   // Context value

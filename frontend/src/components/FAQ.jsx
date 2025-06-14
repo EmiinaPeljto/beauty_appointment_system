@@ -52,18 +52,24 @@ export default function FAQSection() {
     setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
+  const handleLoginRedirect = () => {
+    const redirectData = { path: `/help` };
+    localStorage.setItem("redirectAfterLogin", JSON.stringify(redirectData));
+    navigate("/login");
+  };
+
   const handleContactClick = () => {
     if (isAuthenticated) {
       setShowSupportModal(true);
     } else {
-      setShowLoginModal(true);
+      handleLoginRedirect();
     }
   };
-
+/*
   const handleLoginRedirect = () => {
     setShowLoginModal(false);
     navigate("/login");
-  };
+  };*/
 
   const closeModals = () => {
     setShowSupportModal(false);

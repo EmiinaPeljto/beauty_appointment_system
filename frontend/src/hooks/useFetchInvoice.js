@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 const useFetchInvoice = (appointment_id) => {
   const [invoice, setInvoice] = useState(null);
@@ -7,14 +7,20 @@ const useFetchInvoice = (appointment_id) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!appointment_id) return;
-    setLoading(true);
-    setError(null);
-    axios
-      .get(`http://localhost:3000/api/v1/gen/invoices/getInvoice/${appointment_id}`)
-      .then((res) => setInvoice(res.data))
-      .catch(() => setError("Failed to fetch invoice"))
-      .finally(() => setLoading(false));
+    const fetchInvoice = async () => {
+      if (!appointment_id) return;
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await api.get(`/invoices/getInvoice/${appointment_id}`);
+        setInvoice(data);
+      } catch (err) {
+        setError(err.message || "Failed to fetch invoice");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchInvoice();
   }, [appointment_id]);
 
   return { invoice, loading, error };

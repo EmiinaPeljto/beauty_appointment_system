@@ -12,19 +12,7 @@ const useEmailVerification = () => {
     setError(null);
     
     try {
-      const response = await fetch('http://localhost:3000/api/v1/gen/emailVerifications/verify-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, code }),
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Verification failed');
-      }
+      const data = await api.post('/emailVerifications/verify-email', { email, code });
       
       setSuccess(true);
       return { success: true, message: data.message };
@@ -42,19 +30,7 @@ const useEmailVerification = () => {
     setError(null);
     
     try {
-      const response = await fetch('http://localhost:3000/api/v1/gen/emailVerifications/resend-verification-code', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to resend code');
-      }
+      const data = await api.post('/emailVerifications/resend-verification-code', { email });
       
       return { success: true, message: data.message };
     } catch (err) {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import { useAuth } from '../contexts/AuthContext';
 
 /**
@@ -65,29 +65,13 @@ const useSubmitSupportRequest = (successCallback) => {
 
     try {
       // Get the authentication token using the correct key
-      const token = localStorage.getItem('auth_token');
-      
-      if (!token) {
-        throw new Error('You must be logged in to submit a support request');
-      }
-      
-      // Prepare request data
       const requestData = {
         subject: formData.subject,
         message: formData.message
       };
 
       // Call the API endpoint to create a support request
-      const response = await axios.post(
-        'http://localhost:3000/api/v1/gen/supportRequests/add',
-        requestData,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
+      const response = await api.post('/supportRequests/add', requestData);
 
       // Handle successful submission
       console.log('Support request submitted successfully:', response.data);
@@ -108,28 +92,10 @@ const useSubmitSupportRequest = (successCallback) => {
       console.error('Error submitting support request:', error);
       
       // More detailed error handling
-      let errorMessage = 'Failed to submit support request';
-      
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log('Error data:', error.response.data);
-        console.log('Error status:', error.response.status);
-        
-        if (error.response.status === 401) {
-          errorMessage = 'You need to be logged in to submit a request';
-        } else if (error.response.data && error.response.data.message) {
-          errorMessage = error.response.data.message;
-        }
-      } else if (error.request) {
-        // The request was made but no response was received
-        errorMessage = 'No response from server. Please check your connection';
-      }
-      
       setStatus({
         loading: false,
         success: false,
-        error: errorMessage
+        error: error.message || 'Failed to submit support request'
       });
     } 
     return null;

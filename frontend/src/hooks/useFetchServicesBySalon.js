@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 const useFetchServicesBySalon = (salonId) => {
   const [servicesByCategory, setServicesByCategory] = useState({});
@@ -9,12 +9,12 @@ const useFetchServicesBySalon = (salonId) => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3000/api/v1/gen/services/servicesBySalon/${salonId}`
+        const response = await api.get(
+          `/services/servicesBySalon/${salonId}`
         );
         const grouped = {};
 
-        response.data.forEach((item) => {
+        response.forEach((item) => {
           if (!grouped[item.category_name]) {
             grouped[item.category_name] = [];
           }
@@ -28,7 +28,7 @@ const useFetchServicesBySalon = (salonId) => {
 
         setServicesByCategory(grouped);
       } catch (err) {
-        setError("Failed to fetch services");
+        setError(err.message || "Failed to fetch services");
       } finally {
         setLoading(false);
       }

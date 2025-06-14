@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import SalonLikeCard from "./SalonLikedCard";
 import useLikedSalons from "../hooks/useLikedSalons";
 import { useAuth } from "../contexts/AuthContext";
-import api from "../api";
+import api from "../utils/api";
 
 const Likes = () => {
   const { user } = useAuth();
@@ -17,7 +17,7 @@ const Likes = () => {
 
   const handleUnlike = async (salonId) => {
     try {
-      await api.delete(`/gen/favourites/deleteFavouriteById/${userId}/${salonId}`);
+      await api.delete(`/favourites/deleteFavouriteById/${userId}/${salonId}`);
       setSalons((prev) => prev.filter((salon) => salon.id !== salonId));
     } catch (err) {
       alert("Failed to remove from favourites.");

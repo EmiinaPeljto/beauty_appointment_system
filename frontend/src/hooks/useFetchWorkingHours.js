@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 const useFetchWorkingHours = (salonId) => {
   const [hours, setHours] = useState([]);
@@ -9,10 +9,10 @@ const useFetchWorkingHours = (salonId) => {
   useEffect(() => {
     const fetchHours = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/v1/gen/salons/workingHours/${salonId}`);
-        setHours(response.data);
+        const response = await api.get(`/salons/workingHours/${salonId}`);
+        setHours(response);
       } catch (err) {
-        setError("Failed to fetch working hours");
+        setError(err.message || "Failed to fetch working hours");
       } finally {
         setLoading(false);
       }

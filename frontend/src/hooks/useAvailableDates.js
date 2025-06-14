@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 const useAvailableDates = (salonId) => {
   const [dates, setDates] = useState([]);
@@ -7,13 +7,19 @@ const useAvailableDates = (salonId) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!salonId) return;
-    setLoading(true);
-    axios
-      .get(`http://localhost:3000/api/v1/gen/salons/availableDates/${salonId}`)
-      .then((res) => setDates(res.data.availableDates || []))
-      .catch(() => setError("Failed to fetch available dates"))
-      .finally(() => setLoading(false));
+    const fetchAvailableDates = async () => {
+      if (!salonId) return;
+      setLoading(true);
+      try {
+        const data = await api.get(`/salons/availableDates/${salonId}`);
+        setDates(data.availableDates || []);
+      } catch (err) {
+        setError(err.message || "Failed to fetch available dates");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAvailableDates();
   }, [salonId]);
 
   return { dates, loading, error };

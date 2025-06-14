@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 const useBookAppointment = () => {
   const [loading, setLoading] = useState(false);
@@ -15,22 +15,18 @@ const useBookAppointment = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/v1/gen/appointments/makeAnAppointment",
-        {
-          user_id,
-          salon_id,
-          date,
-          time,
-          service_id,
-        }
-      );
+      const response = await api.post("/appointments/makeAnAppointment", {
+        user_id,
+        salon_id,
+        date,
+        time,
+        service_id,
+      });
       setLoading(false);
-      return response.data;
+      return response;
     } catch (err) {
       setError(
-        err.response?.data?.message ||
-          "Failed to book appointment. Please try again."
+        err.message || "Failed to book appointment. Please try again."
       );
       setLoading(false);
       return null;

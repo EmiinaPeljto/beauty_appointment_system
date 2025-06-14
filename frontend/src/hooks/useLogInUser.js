@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import { setToken, setUser as storeUser } from "../utils/auth";
 
 const useLogInUser = () => {
@@ -12,19 +12,19 @@ const useLogInUser = () => {
         setError(null);
 
         try {
-            const response = await axios.post("http://localhost:3000/api/v1/gen/users/login", { email, password });
-            
+            const data = await api.post("/users/login", { email, password });
+
             // Store the JWT token in localStorage
-            if (response.data.token) {
-                setToken(response.data.token);
-                storeUser(response.data.user);
+            if (data.token) {
+                setToken(data.token);
+                storeUser(data.user);
             }
-            
-            setUser(response.data.user);
+
+            setUser(data.user);
             setLoading(false);
-            return response.data;
+            return data;
         } catch (err) {
-            setError(err.response ? err.response.data.message : "An error occurred");
+            setError(err.message || "An error occurred");
             setLoading(false);
             return null;
         } finally {

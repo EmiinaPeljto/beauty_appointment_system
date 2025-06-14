@@ -1,4 +1,5 @@
 import { useState } from "react";
+import api from "../utils/api";
 
 const useRegisterUser = () => {
   const [user, setUser] = useState(null);
@@ -10,25 +11,13 @@ const useRegisterUser = () => {
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:3000/api/v1/gen/users/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          first_name: firstName,
-          last_name: lastName,
-          email: email,
-          phone_number: phoneNumber,
-          password: password,
-        }),
+      const data = await api.post("/users/register", {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        phone_number: phoneNumber,
+        password: password,
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Registration failed");
-      }
 
       // Note: In this new flow, we don't set the user yet
       // The user will be created after email verification

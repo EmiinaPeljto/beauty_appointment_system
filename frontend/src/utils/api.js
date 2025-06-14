@@ -1,7 +1,7 @@
 import { getToken } from './auth';
 
 // API base URL
-const API_BASE_URL = 'http://localhost:3000/api/v1/gen';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1/gen';
 
 const apiFetch = async (url, options = {}) => {
   // Get the token from localStorage

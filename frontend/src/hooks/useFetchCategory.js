@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 const useFetchCategory = () => {
     const [categories, setCategories] = useState([]);
@@ -9,10 +9,10 @@ const useFetchCategory = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/api/v1/gen/categories/category");
-                setCategories(response.data);
+                const response = await api.get("/categories/category");
+                setCategories(response);
             } catch (err) {
-                setError("Failed to fetch categories");
+                setError(err.message || "Failed to fetch categories");
             } finally {
                 setLoading(false);
             }

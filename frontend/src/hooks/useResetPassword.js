@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 const useResetPassword = (token) => {
   const [loading, setLoading] = useState(false);
@@ -11,17 +11,13 @@ const useResetPassword = (token) => {
     setError(null);
     setSuccess(null);
     try {
-      const res = await axios.post(
-        `http://localhost:3000/api/v1/gen/users/reset-password/${token}`,
+      const res = await api.post(
+        `/users/reset-password/${token}`,
         { new_password: newPassword }
       );
-      setSuccess(res.data.message || "Password reset successful! You can now log in.");
+      setSuccess(res.message || "Password reset successful! You can now log in.");
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-        err.response?.data?.error ||
-        "Failed to reset password."
-      );
+      setError(err.message || "Failed to reset password.");
     } finally {
       setLoading(false);
     }

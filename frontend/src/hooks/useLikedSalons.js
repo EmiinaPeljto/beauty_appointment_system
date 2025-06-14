@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../api";
+import api from "../utils/api";
 
 const useLikedSalons = (userId) => {
     const [salons, setSalons] = useState([]);
@@ -11,15 +11,15 @@ const useLikedSalons = (userId) => {
         setLoading(true);
         setError(null);
 
-        api.get(`/gen/favourites/getFavoritesByUserId/${userId}`)
-            .then(res => {
-                // Map backend fields to card props
-                const mappedSalons = (res.data?.data || []).map((salon) => ({
+        api.get(`/favourites/getFavoritesByUserId/${userId}`)
+            .then(response => {
+                const salonsList = response.data || [];
+                const mappedSalons = salonsList.map((salon) => ({
                     id: salon.id,
-                    name: salon.name,
-                    rating: parseFloat(salon.rating),
-                    address: salon.location,
                     image: salon.image,
+                    name: salon.name,
+                    address: salon.location,
+                    rating: salon.rating,
                 }));
                 setSalons(mappedSalons);
                 setLoading(false);

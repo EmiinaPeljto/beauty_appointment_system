@@ -49,10 +49,10 @@ const EmptyAppointmentsState = () => (
     <h3 className="text-lg font-medium text-gray-900 mb-1">No upcoming appointments</h3>
     <p className="text-gray-500 mb-6">You don't have any scheduled appointments.</p>
     <a 
-      href="/salons" 
-      className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800"
+      href="/services" 
+      className="inline-flex items-center text-sm font-medium text-pink-500 hover:text-pink-600"
     >
-      Browse salons <FiArrowRight className="ml-1" />
+      Browse services <FiArrowRight className="ml-1" />
     </a>
   </div>
 );

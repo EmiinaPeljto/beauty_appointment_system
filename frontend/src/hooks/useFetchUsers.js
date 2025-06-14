@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 const useFetchUsers = () => {
     const [users, setUsers] = useState([]);
@@ -9,10 +9,10 @@ const useFetchUsers = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/api/v1/gen/users/all");
-                setUsers(response.data);
+                const response = await api.get("/users/all");
+                setUsers(response);
             } catch (err) {
-                setError("Failed to fetch users");
+                setError(err.message || "Failed to fetch users");
             } finally {
                 setLoading(false);
             }

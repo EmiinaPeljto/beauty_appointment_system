@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../utils/api";
 import { useAuth } from "../contexts/AuthContext";
 import { FiCheckCircle } from "react-icons/fi";
 import useFetchReviews from "../hooks/useFetchReviews";
@@ -7,6 +9,7 @@ import AddReviewModal from "./AddReviewModal";
 
 const Reviews = ({ salonId }) => {
   const { isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -19,21 +22,11 @@ const Reviews = ({ salonId }) => {
     setSubmitting(true);
     setError("");
     try {
-      const res = await fetch(
-        `http://localhost:3000/api/v1/gen/reviews/add/${salonId}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            rating,
-            review_text: comment,
-            user_id: user?.id,
-          }),
-          credentials: "include",
-        }
-      );
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to submit review");
+      await api.post(`/reviews/add/${salonId}`, {
+        rating,
+        review_text: comment,
+        user_id: user?.id,
+      });
       setSuccess(true);
       setShowModal(false);
       reset();
@@ -44,6 +37,13 @@ const Reviews = ({ salonId }) => {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  // Handle review deletion
+  const handleLoginRedirect = () => {
+    const redirectData = { path: `/salon/${salonId}?tab=reviews` };
+    localStorage.setItem("redirectAfterLogin", JSON.stringify(redirectData));
+    navigate("/login");
   };
 
   // Handle review deletion
@@ -98,8 +98,8 @@ const Reviews = ({ salonId }) => {
           <div className="mt-8 text-center text-sm text-gray-500">
             <span>
               <a
-                href={`/login?review=1&salonId=${salonId}&tab=reviews`}
-                className="text-pink-500 underline hover:text-pink-600 font-medium"
+                onClick={handleLoginRedirect}
+                className="text-pink-500 underline hover:text-pink-600 font-medium cursor-pointer"
               >
                 Log in
               </a>{" "}

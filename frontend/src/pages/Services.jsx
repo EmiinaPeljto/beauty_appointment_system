@@ -17,51 +17,12 @@ const Services = () => {
     "Nails",
   ];
   
-  const [allSalonsData, setAllSalonsData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  
   const sectionRefs = useRef([]);
   const hash = window.location.hash.substring(1);
 
   useScrollToHash(hash, sectionRefs, categoryIds);
   
-  useEffect(() => {
-    const fetchAllSalons = async () => {
-      try {
-        setIsLoading(true);
-        
-        const promises = categoryIds.map(async (categoryId) => {
-          const response = await fetch(`http://localhost:3000/api/v1/gen/salons/salonsByCategory/${categoryId}`);
-          if (!response.ok) {
-            throw new Error(`Failed to fetch salons for category ${categoryId}`);
-          }
-          
-          const data = await response.json();
-          
-          // Fetch average rating for each salon
-          const salonsWithRatings = await Promise.all(
-            data.map(async (salon) => {
-              const ratingResponse = await fetch(`http://localhost:3000/api/v1/gen/reviews/averageRating/${salon.id}`);
-              const ratingData = await ratingResponse.json();
-              return { ...salon, averageRating: ratingData.data || "N/A" };
-            })
-          );
-          
-          return { categoryId, salons: salonsWithRatings };
-        });
-        
-        const results = await Promise.all(promises);
-        setAllSalonsData(results);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    fetchAllSalons();
-  }, []);
+  const { salonsData: allSalonsData = [], isLoading, error } = useFetchSalonsByCategory(categoryIds);
 
   if (isLoading) {
     return (
