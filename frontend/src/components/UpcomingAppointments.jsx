@@ -4,7 +4,8 @@ import useCancelAppointment from "../hooks/useCancelAppointment";
 import { getUser } from "../utils/auth";
 import ConfirmationModal from "./CancelAppointmentModal";
 import useFetchInvoice from "../hooks/useFetchInvoice";
-import { FiCalendar, FiArrowRight } from "react-icons/fi";
+import { FiArrowRight } from "react-icons/fi";
+import toast from "react-hot-toast";
 
 // Helper to format ISO date string to YYYY-MM-DD
 const toDateOnly = (isoString) => (isoString ? isoString.slice(0, 10) : "");
@@ -68,17 +69,18 @@ const EmptyAppointmentsState = () => {
 
   return (
     <div className="bg-white shadow-md rounded-2xl p-8 text-center mt-4">
-      
-      <h3 className="text-xl font-semibold text-gray-800 mb-3">No Appointments Yet</h3>
-      
-      <p className="text-gray-400 mb-6">
-        You don't have any upcoming appointments. 
-        Book a service with one of our beauty professionals today!
+      <h3 className="text-xl font-semibold text-gray-800 mb-3">
+        No Appointments Yet
+      </h3>
+
+      <p className="text-gray-600 mb-6">
+        You don't have any upcoming appointments. Book a service with one of our
+        beauty professionals today!
       </p>
-      
-      <button 
-        onClick={() => navigate('/services')}
-        className="bg-[#F178B6] hover:bg-[#FF66B2] text-white font-medium py-3 px-6 rounded-lg shadow-md flex items-center justify-center mx-auto transition-transform hover:scale-105"
+
+      <button
+        onClick={() => navigate("/services")}
+        className="bg-[#FF66B2] hover:bg-[#ff4da6] text-white font-medium py-3 px-6 rounded-lg shadow-md flex items-center justify-center mx-auto transition-transform hover:scale-105"
       >
         Book Your Appointment <FiArrowRight className="ml-2" />
       </button>
@@ -94,7 +96,7 @@ const CancelConfirmationContent = ({ appointmentDetails, loading }) => {
       </div>
     );
   }
-  
+
   if (!appointmentDetails) {
     return (
       <div className="py-4 text-center text-gray-500">
@@ -102,73 +104,142 @@ const CancelConfirmationContent = ({ appointmentDetails, loading }) => {
       </div>
     );
   }
-  
-  const { salon_name, date, time, service_names, total_price } = appointmentDetails;
-  
+
+  const { salon_name, date, time, service_names, total_price } =
+    appointmentDetails;
+
   return (
     <div className="space-y-5">
       <p className="text-gray-700">
         Are you sure you want to cancel your appointment?
       </p>
-      
-      <div className="bg-pink-50 border border-pink-100 p-5 rounded-2xl">
-        <div className="flex items-center mb-3">
-          <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 mr-3">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+      <div className="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm">
+        <div className="flex items-center mb-4">
+          <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-[#F178B6] mr-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
           </div>
-          <span className="text-lg font-medium text-gray-800">{salon_name}</span>
+          <span className="text-lg font-semibold text-gray-800">
+            {salon_name}
+          </span>
         </div>
-        
-        <div className="grid grid-cols-2 gap-2 ml-2 text-sm">
-          <div className="flex items-center text-gray-600">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+
+        <div className="grid grid-cols-2 gap-y-3 gap-x-4 text-sm text-gray-700 ml-2">
+          {/* Date */}
+          <div className="flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 mr-2 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
             </svg>
             <span>Date:</span>
           </div>
-          <div className="font-medium text-gray-800">
-            {date ? new Date(date).toLocaleDateString() : ''}
+          <div className="font-medium text-gray-900">
+            {date ? new Date(date).toLocaleDateString() : ""}
           </div>
-          
-          <div className="flex items-center text-gray-600">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+          {/* Time */}
+          <div className="flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 mr-2 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             <span>Time:</span>
           </div>
-          <div className="font-medium text-gray-800">
+          <div className="font-medium text-gray-900">
             {time && time.slice(0, 5)}
           </div>
-          
-          <div className="flex items-center text-gray-600">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+
+          {/* Services */}
+          <div className="flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 mr-2 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+              />
             </svg>
             <span>Services:</span>
           </div>
-          <div className="font-medium text-gray-800">
-            {service_names}
-          </div>
-          
-          <div className="flex items-center text-gray-600">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <div className="font-medium text-gray-900">{service_names}</div>
+
+          {/* Total */}
+          <div className="flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 mr-2 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             <span>Total:</span>
           </div>
-          <div className="font-medium text-gray-800">
+          <div className="font-medium text-gray-900">
             ${parseFloat(total_price).toFixed(2)}
           </div>
         </div>
       </div>
-      
+
       <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-md text-sm">
         <div className="flex">
           <div className="flex-shrink-0 text-red-500">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                clipRule="evenodd"
+              />
             </svg>
           </div>
           <div className="ml-3">
@@ -201,16 +272,15 @@ const UpcomingAppointments = ({
   } = useCancelAppointment();
 
   // Fetch invoice for appointment details
-  const { invoice: appointmentDetails, loading: invoiceLoading } = useFetchInvoice(
-    cancellingAppointment
-  );
+  const { invoice: appointmentDetails, loading: invoiceLoading } =
+    useFetchInvoice(cancellingAppointment);
 
   const user = getUser();
 
   const handleCancelClick = (appointmentId) => {
     setCancellingAppointment(appointmentId);
   };
-  
+
   const handleCloseModal = () => {
     setCancellingAppointment(null);
     resetState();
@@ -218,28 +288,45 @@ const UpcomingAppointments = ({
 
   const handleConfirmCancel = async () => {
     if (!user || !cancellingAppointment) return;
-    
+
     try {
       const success = await cancelAppointment(cancellingAppointment, user.id);
-      
+
       if (success) {
+        // Show toast notification
+        toast.success("Appointment cancelled successfully!", {
+          duration: 2000,
+          position: "top-center",
+          style: {
+            background: "#10B981",
+            color: "#fff",
+            fontWeight: "bold",
+          },
+          iconTheme: {
+            primary: "white",
+            secondary: "#10B981",
+          },
+        });
+
         setTimeout(() => {
           refetch();
           handleCloseModal();
         }, 1000);
       }
     } catch (err) {
+      toast.error("Failed to cancel appointment. Please try again.");
       console.error("Error in handleCancel:", err);
     }
   };
-  
+
   return (
     <div className="max-w-4xl mx-auto p-4">
-      {cancelSuccess && (
+      {/* Remove this block that shows the inline success message */}
+      {/* {cancelSuccess && (
         <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded">
           Appointment cancelled successfully!
         </div>
-      )}
+      )} */}
 
       {cancelError && (
         <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded">
@@ -247,6 +334,7 @@ const UpcomingAppointments = ({
         </div>
       )}
 
+      {/* Rest of your component remains the same */}
       {loading ? (
         <div className="text-pink-500 text-center">Loading appointments...</div>
       ) : error ? (
@@ -264,7 +352,7 @@ const UpcomingAppointments = ({
         ))
       )}
 
-      <ConfirmationModal 
+      <ConfirmationModal
         isOpen={!!cancellingAppointment}
         onClose={handleCloseModal}
         onConfirm={handleConfirmCancel}
@@ -273,7 +361,7 @@ const UpcomingAppointments = ({
         cancelText="No, Keep Appointment"
         isLoading={cancelLoading}
       >
-        <CancelConfirmationContent 
+        <CancelConfirmationContent
           appointmentDetails={appointmentDetails}
           loading={invoiceLoading}
         />
