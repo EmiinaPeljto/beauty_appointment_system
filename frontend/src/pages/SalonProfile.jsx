@@ -24,15 +24,34 @@ const SalonProfile = () => {
     loading: salonLoading,
     error: salonError,
   } = useFetchSalonById(salonId);
+  
   const {
     servicesByCategory,
     loading: servicesLoading,
     error: servicesError,
   } = useFetchServicesBySalon(salonId);
 
-  if (salonLoading || servicesLoading) return <p>Loading...</p>;
-  if (salonError || servicesError)
-    return <p>Error loading salon or services.</p>;
+  // Centralized loading state
+  const isLoading = salonLoading || servicesLoading;
+  const error = salonError || servicesError;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-pink-200 border-t-[#FF66B2] rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-red-500 text-center px-4">
+          Error loading salon data: {error}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
