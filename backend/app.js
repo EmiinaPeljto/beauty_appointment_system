@@ -12,7 +12,22 @@ app.use(express.json());
 
 // Enable CORS
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      process.env.FRONTEND_URL, // Your production URL from .env
+      'http://localhost:5173'   // Development
+    ].filter(Boolean);
+
+    // Regex to match any Vercel preview URL for this project
+    const vercelPreviewRegex = /^https:\/\/beauty-appointment-system-.*\.vercel\.app$/;
+    
+    if (!origin || allowedOrigins.includes(origin) || vercelPreviewRegex.test(origin)) {
+      callback(null, true);
+    } else {
+      console.error(`CORS error: Origin ${origin} not allowed.`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'cache-control', 'pragma', 'Accept'],
