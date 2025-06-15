@@ -1,27 +1,14 @@
-const nodemailer = require('nodemailer');
-
-// Configure Mailgun SMTP transport
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.mailgun.org',
-  port: process.env.SMTP_PORT || 587,
-  secure: false, // true for 465, false for other ports
-  auth: {
-    user: process.env.SMTP_USERNAME,
-    pass: process.env.SMTP_PASSWORD
-  },
-  tls: {
-    // Recommended to add for Mailgun SMTP
-    rejectUnauthorized: false
-  }
-});
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.sendPasswordResetEmail = async (email, name, token) => {
   const resetLink = `${process.env.FRONTEND_URL}/reset-password/${token}`;
-  
-  const mailOptions = {
-    from: process.env.SMTP_USERNAME, // Or your verified domain email
+
+  const msg = {
     to: email,
-    subject: 'Password Reset Request - Beauty Appointment System',
+    from: process.env.SENDGRID_SENDER_EMAIL || "noreply@beautyappointment.com", // Your verified sender
+    subject: "Password Reset Request - Beauty Appointment System",
+    text: `Password Reset Link: ${resetLink}\n\nThis link expires in 5 minutes.`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #4a5568;">Hello ${name},</h2>
@@ -29,7 +16,7 @@ exports.sendPasswordResetEmail = async (email, name, token) => {
         <p>Please click the button below to reset your password:</p>
         <div style="margin: 20px 0;">
           <a href="${resetLink}" 
-             style="background-color: #4299e1; color: white; padding: 10px 20px; 
+             style="background-color: #F178B6; color: white; padding: 10px 20px; 
                     text-decoration: none; border-radius: 4px; display: inline-block;">
             Reset Password
           </a>
@@ -40,32 +27,54 @@ exports.sendPasswordResetEmail = async (email, name, token) => {
         </p>
       </div>
     `,
-    text: `Password Reset Link: ${resetLink}\n\nThis link expires in 5 minutes.`
   };
 
   try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Message sent: %s', info.messageId);
+    await sgMail.send(msg);
+    console.log("Password reset email sent to:", email);
     return true;
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error("Error sending password reset email:", error);
+    if (error.response) {
+      console.error(error.response.body);
+    }
     return false;
   }
 };
 
-exports.sendVerificationEmail = async(email, name, code) =>{
-  const mailOptions = {
-    from: process.env.SMTP_USERNAME,
-    to: email, 
-    subject: 'Verify your email - Beauty Appointment System',
-    html: `<p>Hello ${name},<br>Your verification code is: <b>${code}</b><br>This code expires in 10 minutes.</p>`,
-    text: `Your verification code is: ${code}`,
+exports.sendVerificationEmail = async (email, name, code) => {
+  const msg = {
+    to: email,
+    from: process.env.SENDGRID_SENDER_EMAIL || "noreply@beautyappointment.com", // Your verified sender
+    subject: "Verify your email - Beauty Appointment System",
+    text: `Your verification code is: ${code}\n\nThis code expires in 10 minutes.`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #4a5568;">Hello ${name},</h2>
+        <p>Thank you for registering with Beauty Appointment System.</p>
+        <p>Your verification code is:</p>
+        <div style="margin: 20px 0; text-align: center;">
+          <span style="background-color: #f3f4f6; padding: 10px 20px; font-size: 24px; font-family: monospace; letter-spacing: 3px; border-radius: 4px;">
+            <strong>${code}</strong>
+          </span>
+        </div>
+        <p>This code will expire in 10 minutes.</p>
+        <p style="margin-top: 30px; color: #718096; font-size: 12px;">
+          If you didn't request this code, please ignore this email.
+        </p>
+      </div>
+    `,
   };
+
   try {
-    await transporter.sendMail(mailOptions);
+    await sgMail.send(msg);
+    console.log("Verification email sent to:", email);
     return true;
   } catch (error) {
-    console.error('Error sending verification email:', error);
+    console.error("Error sending verification email:", error);
+    if (error.response) {
+      console.error(error.response.body);
+    }
     return false;
   }
 };
