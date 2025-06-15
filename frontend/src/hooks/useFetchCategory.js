@@ -9,7 +9,7 @@ const useFetchCategory = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await api.get("/categories/category");
+                const response = await api.get("/categories");
                 setCategories(response);
             } catch (err) {
                 setError(err.message || "Failed to fetch categories");
