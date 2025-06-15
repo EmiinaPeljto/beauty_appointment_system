@@ -5,7 +5,7 @@ const db = require("./config/db");
 require("dotenv").config();
 const cron = require("node-cron");
 const appointmentController = require("./controllers/appointmentControllers");
-const auth = require("./config/auth");
+//const auth = require("./config/auth");
 
 app.use(express.json());
 
@@ -23,7 +23,7 @@ app.set('trust proxy', 1);
 
 // Session configuration
 app.use(session({ 
-  secret: auth.jwtSecret, 
+  secret: process.env.JWT_SECRET, 
   resave: true,
   saveUninitialized: true,
   name: 'session_name', 
