@@ -5,6 +5,7 @@ const db = require("./config/db");
 require("dotenv").config();
 const cron = require("node-cron");
 const appointmentController = require("./controllers/appointmentControllers");
+const session = require("express-session");
 //const auth = require("./config/auth");
 
 app.use(express.json());
