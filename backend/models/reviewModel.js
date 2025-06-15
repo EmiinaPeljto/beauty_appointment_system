@@ -18,10 +18,9 @@ exports.getReviewById = async (review_id) => {
 exports.deleteReview = async (review_id) => {
   try {
     // Perform deletion
-    const [result] = await db.query(
-      "DELETE FROM reviews WHERE id = ?",
-      [review_id]
-    );
+    const [result] = await db.query("DELETE FROM reviews WHERE id = ?", [
+      review_id,
+    ]);
 
     if (result.affectedRows === 0) {
       throw new Error("Failed to delete review");
@@ -33,7 +32,6 @@ exports.deleteReview = async (review_id) => {
     throw error;
   }
 };
-
 
 exports.getReviewBySalonId = async (salon_id) => {
   const [rows] = await db.query(
@@ -47,8 +45,9 @@ exports.getReviewBySalonId = async (salon_id) => {
             r.created_at 
         FROM salons s 
         JOIN reviews r ON s.id = r.salon_id 
-        JOIN users u ON u.id = r.user_id 
-        WHERE r.salon_id = ?`,
+        LEFT JOIN users u ON u.id = r.user_id 
+        WHERE r.salon_id = ?
+        ORDER BY r.created_at DESC`,
     [salon_id]
   );
   return rows;
