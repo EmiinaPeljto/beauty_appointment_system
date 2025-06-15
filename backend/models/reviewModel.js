@@ -39,7 +39,6 @@ exports.getReviewBySalonId = async (salon_id) => {
             r.id,
             r.user_id,
             CONCAT(u.first_name, ' ', u.last_name) AS user_name, 
-            u.profile_image, 
             r.rating, 
             r.review_text, 
             r.created_at 
